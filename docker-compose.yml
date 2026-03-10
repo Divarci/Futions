@@ -1,0 +1,22 @@
+services:  
+  crm.backend:
+    build:
+        context: .
+        dockerfile: Api/Source/Adapter/Adapter.RestApi/Dockerfile
+    image: ${DOCKER_REGISTRY-}futionscrmapirestful   
+    container_name: Futions-Api
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_URLS: https://+:8080
+      ConnectionStrings__Sql: Producttion Server Information;
+      ConnectionStrings__Redis: Production redis info
+    ports:
+      - "5001:8080"
+    restart: unless-stopped
+    networks:
+      - futions-network                     
+
+networks:
+  futions-network:
+    driver: bridge
+

@@ -1,0 +1,24 @@
+<Solution>
+  <Folder Name="/Api/" />
+  <Folder Name="/Api/Source/" />
+  <Folder Name="/Api/Source/Adapter/">
+    <Project Path="Api/Source/Adapter/Adapter.RestApi/Adapter.RestApi.csproj" />
+  </Folder>
+  <Folder Name="/Api/Source/Application/">
+    <Project Path="Api/Source/Application/App.Services/App.Services.csproj" />
+    <Project Path="Api/Source/Application/App.UseCases/App.UseCases.csproj" />
+  </Folder>
+  <Folder Name="/Api/Source/Core/">
+    <Project Path="Api/Source/Core/Core.Domain/Core.Domain.csproj" />
+    <Project Path="Api/Source/Core/Core.Library/Core.Library.csproj" />
+  </Folder>
+  <Folder Name="/Api/Source/Infrastructure/">
+    <Project Path="Api/Source/Infrastructure/Infra.Caching/Infra.Caching.csproj" />
+    <Project Path="Api/Source/Infrastructure/Infra.Persistence/Infra.Persistence.csproj" />
+  </Folder>
+  <Folder Name="/Api/Tests/" />
+  <Folder Name="/Web/" />
+  <Project Path="docker-compose.dcproj">
+    <Build />
+  </Project>
+</Solution>

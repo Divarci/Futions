@@ -1,0 +1,3 @@
+- strongly type kullan
+- hep using ile name space kullan
+- her zaman gereksiz namespace'leri sil

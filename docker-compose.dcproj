@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" Sdk="Microsoft.Docker.Sdk">
+  <PropertyGroup Label="Globals">
+    <ProjectVersion>2.1</ProjectVersion>
+    <DockerTargetOS>Linux</DockerTargetOS>
+    <ProjectGuid>81dded9d-158b-e303-5f62-77a2896d2a5a</ProjectGuid>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include=".env" />
+    <None Include=".github\agents\backend-coder.agent.md" />
+    <None Include=".github\agents\backend-tester.agent.md" />
+    <None Include=".github\copilot-instructions.md" />
+    <None Include=".github\instructions\backend-coder.instructions.md" />
+    <None Include=".github\instructions\backend-tester.instructions.md" />
+    <None Include="docker-compose.override.yml">
+      <DependentUpon>docker-compose.yml</DependentUpon>
+    </None>
+    <None Include="docker-compose.yml" />
+    <None Include=".dockerignore" />
+    <None Include="docs\project\backend\source\information\architecture.md" />
+    <None Include="docs\project\backend\source\information\coding-style.md" />
+    <None Include="docs\project\backend\source\information\domain-driven-design.md" />
+    <None Include="docs\project\backend\source\information\event-driven-design.md" />
+    <None Include="docs\project\backend\source\information\information-index.md" />
+    <None Include="docs\project\backend\source\information\naming-conventions.md" />
+    <None Include="docs\project\backend\source\information\reference-flow.md" />
+    <None Include="docs\project\backend\source\information\tech-stack.md" />
+    <None Include="docs\project\backend\source\layers\adapter\adapter-index.md" />
+    <None Include="docs\project\backend\source\layers\adapter\rest-api\api-structure.md" />
+    <None Include="docs\project\backend\source\layers\adapter\rest-api\controller-workflow.md" />
+    <None Include="docs\project\backend\source\layers\adapter\rest-api\endpoint-pattern.md" />
+    <None Include="docs\project\backend\source\layers\adapter\rest-api\request-response-mapper.md" />
+    <None Include="docs\project\backend\source\layers\application\application-index.md" />
+    <None Include="docs\project\backend\source\layers\application\services\service-patterns-base.md" />
+    <None Include="docs\project\backend\source\layers\application\services\service-patterns-collection.md" />
+    <None Include="docs\project\backend\source\layers\application\services\service-patterns-create.md" />
+    <None Include="docs\project\backend\source\layers\application\services\service-patterns-delete.md" />
+    <None Include="docs\project\backend\source\layers\application\services\service-patterns-single.md" />
+    <None Include="docs\project\backend\source\layers\application\services\service-patterns-update.md" />
+    <None Include="docs\project\backend\source\layers\application\services\service-structure.md" />
+    <None Include="docs\project\backend\source\layers\application\use-cases\use-case-patterns-base.md" />
+    <None Include="docs\project\backend\source\layers\application\use-cases\use-case-patterns-collection.md" />
+    <None Include="docs\project\backend\source\layers\application\use-cases\use-case-patterns-create.md" />
+    <None Include="docs\project\backend\source\layers\application\use-cases\use-case-patterns-delete.md" />
+    <None Include="docs\project\backend\source\layers\application\use-cases\use-case-patterns-single.md" />
+    <None Include="docs\project\backend\source\layers\application\use-cases\use-case-patterns-update.md" />
+    <None Include="docs\project\backend\source\layers\application\use-cases\use-case-structure.md" />
+    <None Include="docs\project\backend\source\layers\core\core-index.md" />
+    <None Include="docs\project\backend\source\layers\core\domain\domain-patterns-entity.md" />
+    <None Include="docs\project\backend\source\layers\core\domain\domain-patterns-value-object.md" />
+    <None Include="docs\project\backend\source\layers\core\domain\domain-structure.md" />
+    <None Include="docs\project\backend\source\layers\core\library\abstractions.md" />
+    <None Include="docs\project\backend\source\layers\core\library\attributes.md" />
+    <None Include="docs\project\backend\source\layers\core\library\contracts.md" />
+    <None Include="docs\project\backend\source\layers\core\library\exceptions.md" />
+    <None Include="docs\project\backend\source\layers\core\library\library-structure.md" />
+    <None Include="docs\project\backend\source\layers\core\library\result-pattern.md" />
+    <None Include="docs\project\backend\source\layers\core\library\validators.md" />
+    <None Include="docs\project\backend\source\layers\infrastructure\infrastructure-index.md" />
+    <None Include="docs\project\backend\source\layers\infrastructure\persistence\configurations.md" />
+    <None Include="docs\project\backend\source\layers\infrastructure\persistence\persistence-structure.md" />
+    <None Include="docs\project\backend\source\layers\infrastructure\persistence\repository-patterns-base.md" />
+    <None Include="docs\project\backend\source\layers\infrastructure\persistence\repository-patterns-collection.md" />
+    <None Include="docs\project\backend\source\layers\infrastructure\persistence\repository-patterns-count.md" />
+    <None Include="docs\project\backend\source\layers\infrastructure\persistence\repository-patterns-create.md" />
+    <None Include="docs\project\backend\source\layers\infrastructure\persistence\repository-patterns-delete.md" />
+    <None Include="docs\project\backend\source\layers\infrastructure\persistence\repository-patterns-exist.md" />
+    <None Include="docs\project\backend\source\layers\infrastructure\persistence\repository-patterns-single.md" />
+    <None Include="docs\project\backend\source\layers\infrastructure\persistence\repository-patterns-update.md" />
+    <None Include="docs\project\backend\source\layers\infrastructure\persistence\unit-of-work-pattern.md" />
+    <None Include="docs\project\backend\source\layers\layer-index.md" />
+    <None Include="docs\project\backend\tests\domain-tests\testing-critical-rules.md" />
+    <None Include="docs\project\backend\tests\domain-tests\testing-index.md" />
+    <None Include="docs\project\backend\tests\domain-tests\testing-naming-conventions.md" />
+    <None Include="docs\project\backend\tests\domain-tests\testing-patterns-entity.md" />
+    <None Include="docs\project\backend\tests\domain-tests\testing-patterns-validation.md" />
+    <None Include="docs\project\backend\tests\domain-tests\testing-patterns-value-object.md" />
+    <None Include="docs\project\backend\tests\domain-tests\testing-philosophy.md" />
+    <None Include="docs\project\backend\tests\domain-tests\testing-structure.md" />
+    <None Include="docs\project\backend\tests\domain-tests\testing-tech-stack.md" />
+    <None Include="docs\project\backend\tests\service-tests\testing-critical-rules.md" />
+    <None Include="docs\project\backend\tests\service-tests\testing-index.md" />
+    <None Include="docs\project\backend\tests\service-tests\testing-moq-patterns.md" />
+    <None Include="docs\project\backend\tests\service-tests\testing-naming-conventions.md" />
+    <None Include="docs\project\backend\tests\service-tests\testing-patterns-collection.md" />
+    <None Include="docs\project\backend\tests\service-tests\testing-patterns-create.md" />
+    <None Include="docs\project\backend\tests\service-tests\testing-patterns-delete.md" />
+    <None Include="docs\project\backend\tests\service-tests\testing-patterns-single.md" />
+    <None Include="docs\project\backend\tests\service-tests\testing-patterns-update.md" />
+    <None Include="docs\project\backend\tests\service-tests\testing-philosophy.md" />
+    <None Include="docs\project\backend\tests\service-tests\testing-setup.md" />
+    <None Include="docs\project\backend\tests\service-tests\testing-structure.md" />
+    <None Include="docs\project\backend\tests\service-tests\testing-tech-stack.md" />
+    <None Include="todo.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="docs\project\backend\source\layers\infrastructure\caching\" />
+    <Folder Include="docs\project\frontend\" />
+    <Folder Include="docs\Source\Business\" />
+    <Folder Include="docs\Source\Technical\" />
+  </ItemGroup>
+</Project>
