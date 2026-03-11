@@ -1,6 +1,6 @@
 using Core.Library.Abstractions;
 using Core.Library.ResultPattern;
-namespace Core.Library.Contracts.GenericRepository;
+namespace Core.Library.Contracts.GenericRepositories;
 /// <summary>
 /// Defines the base repository contract for write operations that are
 /// shared across all entities regardless of tenancy.

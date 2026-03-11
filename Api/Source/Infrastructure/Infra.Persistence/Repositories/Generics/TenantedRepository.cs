@@ -1,6 +1,6 @@
 using Core.Library.Abstractions;
 using Core.Library.Abstractions.Interfaces;
-using Core.Library.Contracts.GenericRepository;
+using Core.Library.Contracts.GenericRepositories;
 using Infra.Persistence.Context;
 
 namespace Infra.Persistence.Repositories.Generics;

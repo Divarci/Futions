@@ -1,6 +1,6 @@
 using Core.Library.Abstractions;
 using Core.Library.ResultPattern;
-namespace Core.Library.Contracts.GenericRepository;
+namespace Core.Library.Contracts.GenericRepositories;
 /// <summary>
 /// Defines the repository contract for entities that are not scoped to a tenant.
 /// Extends <see cref="IBaseRepository{TEntity}"/> with tenant-agnostic read operations.

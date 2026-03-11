@@ -8,6 +8,7 @@ public interface IProductService
     /// <summary>
     /// Retrieves a paginated list of products according to the specified parameters.
     /// </summary>
+    /// <param name="tenantId">The tenant ID.</param>
     /// <param name="page">The page number (1-based).</param>
     /// <param name="pageSize">The number of items per page.</param>
     /// <param name="sortBy">The field to sort by.</param>
@@ -16,6 +17,7 @@ public interface IProductService
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A result containing the paginated array of products.</returns>
     Task<Result<Product[]>> GetPaginatedAsync(
+        Guid tenantId,
         int page,
         int pageSize,
         string sortBy,
@@ -26,41 +28,58 @@ public interface IProductService
     /// <summary>
     /// Retrieves a product by its unique identifier.
     /// </summary>
+    /// <param name="tenantId">The tenant ID.</param>
     /// <param name="id">The product ID.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A result containing the product if found.</returns>
     Task<Result<Product>> GetByIdAsync(
+        Guid tenantId,
         Guid id,
         CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Creates a new product entity.
     /// </summary>
+    /// <param name="tenantId">The tenant ID.</param>
     /// <param name="createModel">The product create model.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A result containing the created product.</returns>
     Task<Result<Product>> CreateAsync(
+        Guid tenantId,
         ProductCreateModel createModel,
         CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Updates an existing product entity.
     /// </summary>
+    /// <param name="tenantId">The tenant ID.</param>
     /// <param name="updateModel">The product update model.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A result containing the updated product.</returns>
-    Result<Product> Update(ProductUpdateModel updateModel);
+    Task<Result<Product>> UpdateAsync(
+        Guid tenantId,
+        ProductUpdateModel updateModel,
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Deletes a product entity.
     /// </summary>
+    /// <param name="tenantId">The tenant ID.</param>
     /// <param name="id">The product ID.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A result indicating the outcome of the delete operation.</returns>
-    Result Delete(Guid id);
+    Task<Result> DeleteAsync(
+        Guid tenantId,
+        Guid id,
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Returns the total number of products.
     /// </summary>
+    /// <param name="tenantId">The tenant ID.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A result containing the total count of products.</returns>
-    Task<Result<int>> CountAsync(CancellationToken cancellationToken = default);
+    Task<Result<int>> CountAsync(
+        Guid tenantId, 
+        CancellationToken cancellationToken = default);
 }

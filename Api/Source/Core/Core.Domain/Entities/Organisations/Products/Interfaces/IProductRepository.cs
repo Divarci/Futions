@@ -1,4 +1,4 @@
-using Core.Library.Contracts.GenericRepository;
+using Core.Library.Contracts.GenericRepositories;
 using Core.Library.ResultPattern;
 
 namespace Core.Domain.Entities.Organisations.Products.Interfaces;

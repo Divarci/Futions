@@ -8,6 +8,7 @@ public interface ICompanyPersonService
     /// <summary>
     /// Retrieves a paginated list of company people according to the specified parameters.
     /// </summary>
+    /// <param name="tenantId">The tenant ID.</param>
     /// <param name="page">The page number (1-based).</param>
     /// <param name="pageSize">The number of items per page.</param>
     /// <param name="sortBy">The field to sort by.</param>
@@ -16,6 +17,7 @@ public interface ICompanyPersonService
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A result containing the paginated array of company people.</returns>
     Task<Result<CompanyPerson[]>> GetPaginatedAsync(
+        Guid tenantId,
         int page,
         int pageSize,
         string sortBy,
@@ -26,41 +28,58 @@ public interface ICompanyPersonService
     /// <summary>
     /// Retrieves a company person by its unique identifier.
     /// </summary>
+    /// <param name="tenantId">The tenant ID.</param>
     /// <param name="id">The company person ID.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A result containing the company person if found.</returns>
     Task<Result<CompanyPerson>> GetByIdAsync(
+        Guid tenantId,
         Guid id,
         CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Creates a new company person entity.
     /// </summary>
+    /// <param name="tenantId">The tenant ID.</param>
     /// <param name="createModel">The company person create model.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A result containing the created company person.</returns>
     Task<Result<CompanyPerson>> CreateAsync(
+        Guid tenantId,
         CompanyPersonCreateModel createModel,
         CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Updates an existing company person entity.
     /// </summary>
+    /// <param name="tenantId">The tenant ID.</param>
     /// <param name="updateModel">The company person update model.</param>
-    /// <returns>A result containing the updated company person.</returns>
-    Result<CompanyPerson> Update(CompanyPersonUpdateModel updateModel);
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>A result indicating the outcome of the update operation.</returns>
+    Task<Result> UpdateAsync(
+        Guid tenantId,
+        CompanyPersonUpdateModel updateModel,
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Hard deletes a company person entity.
     /// </summary>
+    /// <param name="tenantId">The tenant ID.</param>
     /// <param name="id">The company person ID.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A result indicating the outcome of the delete operation.</returns>
-    Result Delete(Guid id);
+    Task<Result> DeleteAsync(
+        Guid tenantId,
+        Guid id,
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Returns the total number of company people.
     /// </summary>
+    /// <param name="tenantId">The tenant ID.</param>   
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A result containing the total count of company people.</returns>
-    Task<Result<int>> CountAsync(CancellationToken cancellationToken = default);
+    Task<Result<int>> CountAsync(
+        Guid tenantId, 
+        CancellationToken cancellationToken = default);
 }
