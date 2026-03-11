@@ -6,17 +6,31 @@ services:
     image: ${DOCKER_REGISTRY-}futionscrmapirestful   
     container_name: Futions-Api
     environment:
-      ASPNETCORE_ENVIRONMENT: Production
-      ASPNETCORE_URLS: https://+:8080
-      ConnectionStrings__Sql: Producttion Server Information;
-      ConnectionStrings__Redis: Production redis info
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
+      ASPNETCORE_URLS: ${ASPNETCORE_URLS}
+      ConnectionStrings__Sql: ${SQL_CONNECTION_STRING}
+      ConnectionStrings__Redis: ${REDIS_CONNECTION_STRING}
     ports:
-      - "5001:8080"
+      - "${API_PORT}:8080"
     restart: unless-stopped
     networks:
       - futions-network                     
 
+  crm.scheduler:
+    build:
+      context: .
+      dockerfile: Api/Source/Adapter/Adapter.Scheduler/Dockerfile
+    image: ${DOCKER_REGISTRY-}futionscrmscheduler
+    container_name: Futions-Scheduler
+    environment:
+      DOTNET_ENVIRONMENT: ${DOTNET_ENVIRONMENT}
+      ConnectionStrings__Sql: ${SQL_CONNECTION_STRING}
+      Outbox__IntervalInSeconds: ${OUTBOX_INTERVAL_IN_SECONDS}
+      Outbox__BatchSize: ${OUTBOX_BATCH_SIZE}
+    restart: unless-stopped
+    networks:
+      - futions-network
+
 networks:
   futions-network:
     driver: bridge
-

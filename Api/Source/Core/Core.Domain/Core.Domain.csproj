@@ -8,5 +8,8 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\Core.Library\Core.Library.csproj" />
 	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Entities\System\OutboxMessages\Models\" />
+	</ItemGroup>
 
 </Project>

@@ -14,4 +14,9 @@
     <ProjectReference Include="..\..\Core\Core.Domain\Core.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Handlers\" />
+    <Folder Include="UseCases\" />
+  </ItemGroup>
+
 </Project>

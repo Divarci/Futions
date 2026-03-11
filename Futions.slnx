@@ -3,6 +3,7 @@
   <Folder Name="/Api/Source/" />
   <Folder Name="/Api/Source/Adapter/">
     <Project Path="Api/Source/Adapter/Adapter.RestApi/Adapter.RestApi.csproj" />
+    <Project Path="Api/Source/Adapter/Adapter.Scheduler/Adapter.Scheduler.csproj" Id="58e8b81f-ede7-47a0-afdd-ef289544c1ca" />
   </Folder>
   <Folder Name="/Api/Source/Application/">
     <Project Path="Api/Source/Application/App.Services/App.Services.csproj" />

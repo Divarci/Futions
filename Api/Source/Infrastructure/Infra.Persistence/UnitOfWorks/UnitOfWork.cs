@@ -1,15 +1,16 @@
-﻿using Core.Library.Contracts.UnitOfWorks;
+﻿using Core.Domain.Entities.System.OutboxMessages;
+using Core.Library.Abstractions;
+using Core.Library.Contracts.UnitOfWorks;
 using Core.Library.ResultPattern;
 using Infra.Persistence.Context;
+using Microsoft.EntityFrameworkCore;
 using System.Net;
+using System.Text.Json;
 
 namespace Infra.Persistence.UnitOfWorks;
 
-internal sealed class UnitOfWork(AppDbContext context) : IUnitOfWork, ITransactionalUnitOfWork
-{
-    public async Task CommitAsync(CancellationToken cancellationToken = default)
-        => await context.SaveChangesAsync(cancellationToken);
-
+internal sealed class UnitOfWork(AppDbContext context) : ITransactionalUnitOfWork
+{ 
     public async Task<Result> ExecuteTransactionAsync(
         Func<Task<Result>> operation,
         CancellationToken cancellationToken = default)
@@ -28,6 +29,17 @@ internal sealed class UnitOfWork(AppDbContext context) : IUnitOfWork, ITransacti
                 return result;
             }
 
+            Result domainEventsRegisterResult = await AddDomainEventsAsOutboxMessages(context);
+
+            if (domainEventsRegisterResult.IsFailure)
+            {
+                await transaction.RollbackAsync(cancellationToken);
+
+                return domainEventsRegisterResult;
+            }
+
+            await context.SaveChangesAsync(cancellationToken);
+
             await transaction.CommitAsync(cancellationToken);
 
             return result;
@@ -37,7 +49,7 @@ internal sealed class UnitOfWork(AppDbContext context) : IUnitOfWork, ITransacti
             await transaction.RollbackAsync(cancellationToken);
 
             return Result.Failure
-                (message: ex.Message, 
+                (message: ex.Message,
                 statusCode: HttpStatusCode.InternalServerError);
         }
     }
@@ -60,6 +72,19 @@ internal sealed class UnitOfWork(AppDbContext context) : IUnitOfWork, ITransacti
                 return result;
             }
 
+            Result domainEventsRegisterResult = await AddDomainEventsAsOutboxMessages(context);
+
+            if (domainEventsRegisterResult.IsFailure)
+            {
+                await transaction.RollbackAsync(cancellationToken);
+
+                return Result<T>.Failure(
+                    message: domainEventsRegisterResult.Message,
+                    statusCode: domainEventsRegisterResult.StatusCode);
+            }
+
+            await context.SaveChangesAsync(cancellationToken);
+
             await transaction.CommitAsync(cancellationToken);
 
             return result;
@@ -69,8 +94,37 @@ internal sealed class UnitOfWork(AppDbContext context) : IUnitOfWork, ITransacti
             await transaction.RollbackAsync(cancellationToken);
 
             return Result<T>.Failure(
-                message: ex.Message, 
+                message: ex.Message,
                 statusCode: HttpStatusCode.InternalServerError);
         }
+    }
+
+    private async static Task<Result> AddDomainEventsAsOutboxMessages(DbContext dbContext)
+    {
+        List<Result<OutboxMessage>> outboxMessageResults = [.. dbContext.ChangeTracker
+            .Entries<BaseEntity>()
+            .Select(entry => entry.Entity)
+            .SelectMany(entity =>
+            {
+                var domainEvents = entity.DomainEvents;
+
+                entity.ClearDomainEvents();
+
+                return domainEvents;
+            })
+            .Select(domainEvent => OutboxMessage.Create(
+                Guid.NewGuid(),
+                domainEvent.GetType().Name,
+                JsonSerializer.Serialize(domainEvent, SerializerOptions.Instance),
+                DateTime.UtcNow))];
+
+        if (outboxMessageResults.Any(x => x.IsFailure))
+            return Result.Failure(
+                message: "Failed to create outbox messages from domain events.",
+                statusCode: HttpStatusCode.InternalServerError);
+
+        await dbContext.AddRangeAsync(outboxMessageResults.Select(x => x.Data)!);
+
+        return Result.Success("Outbox messages created successfully");
     }
 }
