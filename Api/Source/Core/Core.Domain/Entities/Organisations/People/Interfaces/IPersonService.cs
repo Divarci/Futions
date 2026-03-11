@@ -72,14 +72,4 @@ public interface IPersonService
         Guid tenantId,
         Guid id,
         CancellationToken cancellationToken = default);
-
-    /// <summary>
-    /// Returns the total number of people.
-    /// </summary>
-    /// <param name="tenantId">The tenant ID.</param>
-    /// <param name="cancellationToken">Cancellation token.</param>
-    /// <returns>A result containing the total count of people.</returns>
-    Task<Result<int>> CountAsync(
-        Guid tenantId, 
-        CancellationToken cancellationToken = default);
 }

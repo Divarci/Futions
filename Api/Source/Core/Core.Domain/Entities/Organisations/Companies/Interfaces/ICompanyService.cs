@@ -71,15 +71,5 @@ public interface ICompanyService
     Task<Result> DeleteAsync(
         Guid tenantId,
         Guid id,
-        CancellationToken cancellationToken = default);
-
-    /// <summary>
-    /// Returns the total number of companies.
-    /// </summary>
-    /// <param name="tenantId">The tenant ID.</param>
-    /// <param name="cancellationToken">Cancellation token.</param>
-    /// <returns>A result containing the total count of companies.</returns>
-    Task<Result<int>> CountAsync(
-        Guid tenantId,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken = default);      
 }

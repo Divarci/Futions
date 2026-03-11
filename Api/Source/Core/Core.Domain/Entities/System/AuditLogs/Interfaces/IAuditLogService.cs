@@ -62,15 +62,5 @@ public interface IAuditLogService
     Task<Result<AuditLog>> SetUpdated(
         Guid tenantId,
         AuditStampModel stampModel,
-        CancellationToken cancellationToken = default);
-
-    /// <summary>
-    /// Returns the total number of audit logs.
-    /// </summary>
-    /// <param name="tenantId">The tenant ID.</param>
-    /// <param name="cancellationToken">Cancellation token.</param>
-    /// <returns>A result containing the total count of audit logs.</returns>
-    Task<Result<int>> CountAsync(
-        Guid tenantId,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken = default);  
 }

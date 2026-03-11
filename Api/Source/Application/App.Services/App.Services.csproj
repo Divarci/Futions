@@ -6,7 +6,6 @@
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
 	<ItemGroup>
-		<Folder Include="Features\" />
 		<Folder Include="Helpers\" />
 	</ItemGroup>
 	<ItemGroup>

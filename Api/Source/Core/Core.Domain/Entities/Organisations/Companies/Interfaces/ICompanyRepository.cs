@@ -3,7 +3,7 @@ using Core.Library.ResultPattern;
 
 namespace Core.Domain.Entities.Organisations.Companies.Interfaces;
 
-public interface ICompanyRepositoy : ITenantedRepository<Company>
+public interface ICompanyRepository : ITenantedRepository<Company>
 {
     /// <summary>
     /// Retrieves a paginated list of companies according to the specified parameters.

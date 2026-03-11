@@ -13,4 +13,14 @@ public interface IOutboxMessageService
     Task<Result<IReadOnlyList<OutboxMessage>>> GetUnprocessedMessagesAsync(
         int batchSize,
         CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Retrieves an outbox message by its unique identifier.
+    /// </summary>
+    /// <param name="id">The outbox message ID.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>A result containing the outbox message if found.</returns>
+    Task<Result<OutboxMessage>> GetByIdAsync(
+        Guid id,
+        CancellationToken cancellationToken = default);      
 }
