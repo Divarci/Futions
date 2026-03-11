@@ -16,26 +16,24 @@ public class AppDbContext(
 
     private static void ProcessAutoseedData(ModelBuilder modelBuilder)
     {
-        var entityTypes = modelBuilder.Model.GetEntityTypes()
+        List<Type> entityTypes = [.. modelBuilder.Model.GetEntityTypes()
             .Select(x => x.ClrType)
-            .Where(x => typeof(IHaveAutoSeedData).IsAssignableFrom(x))
-            .ToList();
+            .Where(x => typeof(IHaveAutoSeedData).IsAssignableFrom(x))];
 
         foreach (var entityType in entityTypes)
         {
-            var fields = entityType
+            List<FieldInfo> fields = [.. entityType
                 .GetFields(BindingFlags.Public | BindingFlags.Static)
-                .Where(p => p.GetCustomAttribute<AutoSeedDataAttribute>() != null)
-                .ToList();
+                .Where(p => p.GetCustomAttribute<AutoSeedDataAttribute>() != null)];
 
             if (fields.Count == 0)
                 continue;
 
-            var seedData = new List<object>();
+            List<object> seedData = [];
 
             foreach (var field in fields)
             {
-                var value = field.GetValue(null);
+                object? value = field.GetValue(null);
 
                 if (value != null)
                     seedData.Add(value);
