@@ -9,20 +9,20 @@ public interface ICompanyPersonService
     /// Retrieves a paginated list of company people according to the specified parameters.
     /// </summary>
     /// <param name="tenantId">The tenant ID.</param>
-    /// <param name="page">The page number (1-based).</param>
-    /// <param name="pageSize">The number of items per page.</param>
-    /// <param name="sortBy">The field to sort by.</param>
-    /// <param name="isAscending">Sort direction: true for ascending, false for descending.</param>
-    /// <param name="filter">Optional filter string.</param>
+    /// <param name="pageQuery">The page number (1-based).</param>
+    /// <param name="pageSizeQuery">The number of items per page.</param>
+    /// <param name="sortByQuery">The field to sort by.</param>
+    /// <param name="isAscendingQuery">Sort direction: true for ascending, false for descending.</param>
+    /// <param name="filterQuery">Optional filter string.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A result containing the paginated array of company people.</returns>
     Task<Result<CompanyPerson[]>> GetPaginatedAsync(
         Guid tenantId,
-        int page,
-        int pageSize,
-        string sortBy,
-        bool isAscending,
-        string? filter,
+        int? pageQuery,
+        int? pageSizeQuery,
+        string? sortByQuery,
+        bool? isAscendingQuery,
+        string? filterQuery,
         CancellationToken cancellationToken = default);
 
     /// <summary>

@@ -5,7 +5,7 @@ namespace App.Services.Features.Organisations.Companies;
 
 internal sealed partial class CompanyService
 {
-    public Task<Result<Company[]>> GetPaginatedAsync(Guid tenantId, int page, int pageSize, string sortBy, bool isAscending, string? filter, CancellationToken cancellationToken = default)
+    public Task<Result<Company[]>> GetPaginatedAsync(Guid tenantId, int? pageQuery, int? pageSizeQuery, string? sortByQuery, bool? isAscendingQuery, string? filterQuery, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
