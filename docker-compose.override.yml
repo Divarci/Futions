@@ -4,9 +4,13 @@ services:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_URLS: http://+:8080
       ConnectionStrings__Sql: Server=sqlserver,1433;Database=Futions;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;Encrypt=False;
-      ConnectionStrings__Redis: Development redis info
+      CacheConfig__HostAndPort: redis:6379
+      CacheConfig__AccessKey: ""
+      CacheConfig__Ssl: "false"
+      CacheConfig__Timeout: "5000"
     depends_on:
       - sqlserver  
+      - redis
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
@@ -36,4 +40,4 @@ services:
       - futions-network 
 
 volumes:
-  sqlserver-data:   
+  sqlserver-data:  

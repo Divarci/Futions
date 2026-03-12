@@ -15,8 +15,18 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Handlers\" />
-    <Folder Include="UseCases\" />
+    <Folder Include="Scheduling\DomainEvents\Organisations\Companies\" />
+    <Folder Include="Scheduling\DomainEvents\Organisations\CompanyPeople\" />
+    <Folder Include="Scheduling\DomainEvents\Organisations\People\" />
+    <Folder Include="Scheduling\DomainEvents\Organisations\Products\" />
+    <Folder Include="Scheduling\DomainEvents\System\AuditLogs\" />
+    <Folder Include="Scheduling\DomainEvents\System\OutboxMessages\" />
+    <Folder Include="UseCases\Organisations\Companies\" />
+    <Folder Include="UseCases\Organisations\CompanyPeople\" />
+    <Folder Include="UseCases\Organisations\People\" />
+    <Folder Include="UseCases\Organisations\Products\" />
+    <Folder Include="UseCases\System\AuditLogs\" />
+    <Folder Include="UseCases\System\OutboxMessages\" />
   </ItemGroup>
 
 </Project>

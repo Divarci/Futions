@@ -1,6 +1,8 @@
-﻿namespace Adapter.Scheduler.Configuration;
+﻿using Core.Library.Abstractions.Interfaces;
 
-internal sealed record OutboxOptions
+namespace Adapter.Scheduler.Configuration;
+
+internal sealed record OutboxOptions : IOutboxOptions
 {
     public int IntervalInSeconds { get; init; }
 

@@ -10,7 +10,7 @@ builder.Services
     .RegisterSchedulerLayer(builder.Configuration)
     .RegisterUseCaseLayer()
     .RegisterServiceLayer()
-    .RegisterCachingLayer()
+    .RegisterCachingLayer(builder.Configuration)
     .RegisterPersistenceLayer();
 
 var host = builder.Build();

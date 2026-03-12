@@ -10,7 +10,7 @@ builder.Services
     .RegisterRestApiLayer()
     .RegisterUseCaseLayer()
     .RegisterServiceLayer()
-    .RegisterCachingLayer()
+    .RegisterCachingLayer(builder.Configuration)
     .RegisterPersistenceLayer();
 
 var app = builder.Build();
