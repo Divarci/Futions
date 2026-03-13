@@ -31,7 +31,7 @@ public partial class Person : BaseEntity, IHaveSoftDelete, IHaveTenant
     public Guid TenantId { get; private set; }
 
     // Methods
-    public static Result<Person> Create(PersonCreateModel model)
+    public static Result<Person> Create(PersonCreateModel model, Guid tenantId)
     {
         Result<Fullname> fullnameResult = Fullname.Create(model.FullnameModel);
 
@@ -41,7 +41,7 @@ public partial class Person : BaseEntity, IHaveSoftDelete, IHaveTenant
                 errorDetails: fullnameResult.ErrorDetails!,
                 statusCode: fullnameResult.StatusCode);
 
-        Person person = new(model.TenantId, fullnameResult.Data!, model.Email);
+        Person person = new(tenantId, fullnameResult.Data!, model.Email);
 
         Result validationResult = Validate(person);
 

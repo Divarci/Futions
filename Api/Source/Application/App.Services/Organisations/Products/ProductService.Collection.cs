@@ -15,6 +15,7 @@ internal sealed partial class ProductService
         Func<Product[], TDto[]> mapper,
         CancellationToken cancellationToken = default) where TDto : class
     {
+        // Get paginated list of products for the specified tenant
         Result<Product[]> entityResult = await _repository
             .GetPaginatedAsync(page, pageSize, sortBy, isAscending, filterQuery, cancellationToken);
 
@@ -23,6 +24,7 @@ internal sealed partial class ProductService
                 message: entityResult.Message,
                 statusCode: entityResult.StatusCode);
 
+        // Get total count of products for the specified tenant
         Result<int> totalCountResult = await _repository
             .CountAsync(tenantId, cancellationToken);
 

@@ -5,8 +5,13 @@ namespace App.Services.Features.Organisations.Companies;
 
 internal sealed partial class PeopleService
 {
-    public Task<Result<Person>> GetByIdAsync(Guid tenantId, Guid id, CancellationToken cancellationToken = default)
+    public async Task<Result<Person>> GetByIdAsync(
+        Guid tenantId,
+        Guid id,
+        CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        // Get the person by id and tenant id
+        return await _personRepository
+            .GetByIdAsync(id, tenantId, cancellationToken);
     }
 }

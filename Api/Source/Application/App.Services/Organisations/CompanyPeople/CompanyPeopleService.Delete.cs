@@ -1,11 +1,35 @@
-﻿using Core.Library.ResultPattern;
+﻿using Core.Domain.Entities.Organisations.CompanyPeople;
+using Core.Library.ResultPattern;
+using System.Net;
 
 namespace App.Services.Features.Organisations.Companies;
 
 internal sealed partial class CompanyPeopleService
 {
-    public Task<Result> DeleteAsync(Guid tenantId, Guid id, CancellationToken cancellationToken = default)
+    public async Task<Result> DeleteAsync(
+        Guid tenantId,
+        Guid id,
+        CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        // Check if the company person belongs to the tenant.
+        Result<bool> tenantCheckResult = await _companyPersonRepository
+            .CheckIfBelongsToTenantAsync(tenantId, id, cancellationToken);
+
+        if (tenantCheckResult.IsFailureAndNoData)
+            return tenantCheckResult;
+
+        // Check if the company person exists.
+        Result<CompanyPerson> companyPersonResult = await _companyPersonRepository
+            .GetByIdAsync(id, cancellationToken);
+
+        if (companyPersonResult.IsFailureAndNoData)
+            return companyPersonResult;
+
+        // Hard delete the company person record from the database.
+        _companyPersonRepository.Delete(companyPersonResult.Data!);
+
+        return Result.Success(
+            message: "Company person deleted successfully.",
+            statusCode: HttpStatusCode.OK);
     }
 }

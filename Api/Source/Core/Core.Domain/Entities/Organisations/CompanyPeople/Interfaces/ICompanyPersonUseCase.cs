@@ -1,13 +1,13 @@
-using Core.Domain.Entities.Organisations.Products.Models;
+using Core.Domain.Entities.Organisations.CompanyPeople.Models;
 using Core.Domain.Entities.System.AuditLogs.Models;
 using Core.Library.ResultPattern;
 
-namespace Core.Domain.Entities.Organisations.Products.Interfaces;
+namespace Core.Domain.Entities.Organisations.CompanyPeople.Interfaces;
 
-public interface IProductUseCase
+public interface ICompanyPersonUseCase
 {
     /// <summary>
-    /// Retrieves a paginated collection of products based on the provided parameters.
+    /// Retrieves a paginated collection of company people based on the provided parameters.
     /// </summary>
     /// <typeparam name="TDto">The type of the data transfer object.</typeparam>
     /// <param name="tenantId">The tenant ID.</param>
@@ -16,7 +16,7 @@ public interface IProductUseCase
     /// <param name="sortByQuery">The field to sort by.</param>
     /// <param name="isAscendingQuery">Indicates whether the sorting should be in ascending order.</param>
     /// <param name="filterQuery">The filter criteria.</param>
-    /// <param name="mapper">A function to map the product entities to the desired DTO type.</param>
+    /// <param name="mapper">A function to map the company person entities to the desired DTO type.</param>
     /// <param name="cancellationToken">A token to cancel the operation.</param>
     /// <returns>A paginated result containing the mapped DTOs.</returns>
     Task<PaginatedResult<TDto[]>> GetPaginatedAsync<TDto>(
@@ -26,54 +26,54 @@ public interface IProductUseCase
         string? sortByQuery,
         bool? isAscendingQuery,
         string? filterQuery,
-        Func<Product[], TDto[]> mapper,
+        Func<CompanyPerson[], TDto[]> mapper,
         CancellationToken cancellationToken = default) where TDto : class;
 
     /// <summary>
-    /// Retrieves a product by its ID.
+    /// Retrieves a company person by its ID.
     /// </summary>
     /// <param name="tenantId">The tenant ID.</param>
-    /// <param name="id">The product ID.</param>
+    /// <param name="id">The company person ID.</param>
     /// <param name="cancellationToken">A token to cancel the operation.</param>
-    /// <returns>A result containing the product if found, or an error if not.</returns>
-    Task<Result<Product>> GetByIdAsync(
+    /// <returns>A result containing the company person if found, or an error if not.</returns>
+    Task<Result<CompanyPerson>> GetByIdAsync(
         Guid tenantId,
         Guid id,
         CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// Creates a new product entity.
+    /// Creates a new company person entity.
     /// </summary>
     /// <param name="tenantId">The tenant ID.</param>
-    /// <param name="createModel">The product create model.</param>
+    /// <param name="createModel">The company person create model.</param>
     /// <param name="auditLogCreateModel">The audit log create model.</param>
     /// <param name="cancellationToken">A token to cancel the operation.</param>
-    /// <returns>A result containing the created product if successful, or an error if not.</returns>
-    Task<Result<Product>> CreateAsync(
+    /// <returns>A result containing the created company person if successful, or an error if not.</returns>
+    Task<Result<CompanyPerson>> CreateAsync(
         Guid tenantId,
-        ProductCreateModel createModel,
+        CompanyPersonCreateModel createModel,
         AuditLogCreateModel auditLogCreateModel,
         CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// Updates an existing product entity.
+    /// Updates an existing company person entity.
     /// </summary>
     /// <param name="tenantId">The tenant ID.</param>
-    /// <param name="updateModel">The product update model.</param>
+    /// <param name="updateModel">The company person update model.</param>
     /// <param name="auditLogCreateModel">The audit log create model.</param>
     /// <param name="cancellationToken">A token to cancel the operation.</param>
-    /// <returns>A result containing the updated product if successful, or an error if not.</returns>
-    Task<Result<Product>> UpdateAsync(
+    /// <returns>A result indicating the success or failure of the update operation.</returns>
+    Task<Result> UpdateAsync(
         Guid tenantId,
-        ProductUpdateModel updateModel,
+        CompanyPersonUpdateModel updateModel,
         AuditLogCreateModel auditLogCreateModel,
         CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// Deletes an existing product entity.
+    /// Deletes an existing company person entity.
     /// </summary>
     /// <param name="tenantId">The tenant ID.</param>
-    /// <param name="id">The product ID.</param>
+    /// <param name="id">The company person ID.</param>
     /// <param name="auditLogCreateModel">The audit log create model.</param>
     /// <param name="cancellationToken">A token to cancel the operation.</param>
     /// <returns>A result indicating the success or failure of the delete operation.</returns>

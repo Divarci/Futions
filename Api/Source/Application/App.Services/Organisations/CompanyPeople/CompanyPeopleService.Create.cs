@@ -1,13 +1,54 @@
 ﻿using Core.Domain.Entities.Organisations.CompanyPeople;
 using Core.Domain.Entities.Organisations.CompanyPeople.Models;
 using Core.Library.ResultPattern;
+using System.Net;
 
 namespace App.Services.Features.Organisations.Companies;
 
 internal sealed partial class CompanyPeopleService
 {
-    public Task<Result<CompanyPerson>> CreateAsync(Guid tenantId, CompanyPersonCreateModel createModel, CancellationToken cancellationToken = default)
+    public async Task<Result<CompanyPerson>> CreateAsync(
+        Guid tenantId,
+        CompanyPersonCreateModel createModel,
+        CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        // Get Tenant and ensure tenantId is valid and exists.Since this is an example,
+        // we will skip this step and assume tenantId is valid and exists.
+
+        // Get the Company to ensure it exists before creating the CompanyPerson entity.
+        Result<bool> companyExistsResult = await _companyRepository
+            .ExistsAsync(createModel.CompanyId, tenantId, cancellationToken);
+
+        if (companyExistsResult.IsFailure)
+            return Result<CompanyPerson>.Failure(
+                message: "Company does not exist.",
+                statusCode: HttpStatusCode.NotFound);
+
+        // Get the Person to ensure it exists before creating the CompanyPerson entity.
+        Result<bool> personExistsResult = await _personRepository
+            .ExistsAsync(createModel.PersonId, tenantId, cancellationToken);
+
+        if (personExistsResult.IsFailure)
+            return Result<CompanyPerson>.Failure(
+                message: "Person does not exist.",
+                statusCode: HttpStatusCode.NotFound);
+
+        // Create CompanyPerson entity from the create model.
+        Result<CompanyPerson> companyPersonCreateResult = CompanyPerson.Create(createModel);
+
+        if (companyPersonCreateResult.IsFailureAndNoData)
+            return companyPersonCreateResult;
+
+        // Persist the new CompanyPerson entity to the database.
+        await _companyPersonRepository.CreateAsync(companyPersonCreateResult.Data!, cancellationToken);
+
+        // Create cache key.
+        string cacheKey = $"{nameof(CompanyPerson)}:tenant({tenantId}):id({companyPersonCreateResult.Data!.Id})";
+
+        // Invalidate the cache for the newly created company person and the collections that may include it.
+        await _cacheInvalidationService.InvalidateEntity(cacheKey);
+        await _cacheInvalidationService.InvalidateCollections();
+
+        return companyPersonCreateResult;
     }
 }

@@ -5,8 +5,13 @@ namespace App.Services.Features.Organisations.Companies;
 
 internal sealed partial class ProductService
 {
-    public Task<Result<Product>> GetByIdAsync(Guid tenantId, Guid id, CancellationToken cancellationToken = default)
+    public async Task<Result<Product>> GetByIdAsync(
+        Guid tenantId,
+        Guid id,
+        CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        // Get the product by id and tenant id.
+        return await _repository
+            .GetByIdAsync(id, tenantId, cancellationToken);
     }
 }

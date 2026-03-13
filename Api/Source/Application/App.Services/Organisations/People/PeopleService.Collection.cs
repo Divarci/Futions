@@ -15,6 +15,7 @@ internal sealed partial class PeopleService
         Func<Person[], TDto[]> mapper,
         CancellationToken cancellationToken = default) where TDto : class
     {
+        // Get paginated list of people for the tenant
         Result<Person[]> entityResult = await _personRepository
             .GetPaginatedAsync(tenantId, page, pageSize, sortBy, isAscending, filterQuery, cancellationToken);
 
@@ -23,6 +24,7 @@ internal sealed partial class PeopleService
                 message: entityResult.Message,
                 statusCode: entityResult.StatusCode);
 
+        // Get total count of people for the tenant
         Result<int> totalCountResult = await _personRepository
             .CountAsync(tenantId, cancellationToken);
 

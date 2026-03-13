@@ -21,7 +21,7 @@ internal sealed partial class CompanyService
 
         // Check if the company has associated people
         Result<bool> hasCompanyPeopleResult = await _companyPersonRepository
-            .HasCompanyPeopleAsync(id, tenantId, cancellationToken);
+            .HasPeopleAsync(id, tenantId, cancellationToken);
             
         if (hasCompanyPeopleResult.IsFailureAndNoData)
             return hasCompanyPeopleResult;

@@ -36,9 +36,9 @@ public partial class Product : BaseEntity, IHaveSoftDelete, IHaveTenant
     public Guid TenantId { get; private set; }
 
     // Methods
-    public static Result<Product> Create(ProductCreateModel model)
+    public static Result<Product> Create(ProductCreateModel model, Guid tenantId)
     {
-        Product product = new(model.TenantId, model.Name, model.Price, model.CompanyId);
+        Product product = new(tenantId, model.Name, model.Price, model.CompanyId);
 
         Result validationResult = Validate(product);
 
