@@ -5,8 +5,13 @@ namespace App.Services.Features.Organisations.Companies;
 
 internal sealed partial class AuditLogService
 {
-    public Task<Result<AuditLog>> GetByIdAsync(Guid tenantId, Guid id, CancellationToken cancellationToken = default)
+    public async Task<Result<AuditLog>> GetByIdAsync(
+        Guid tenantId, 
+        Guid id, 
+        CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        // Get the AuditLog entity from the database using the repository.
+        return await _auditLogRepository
+            .GetByIdAsync(tenantId, id, cancellationToken);            
     }
 }

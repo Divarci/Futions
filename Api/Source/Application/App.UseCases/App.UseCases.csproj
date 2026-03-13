@@ -21,7 +21,6 @@
     <Folder Include="Scheduling\DomainEvents\Organisations\Products\" />
     <Folder Include="Scheduling\DomainEvents\System\AuditLogs\" />
     <Folder Include="Scheduling\DomainEvents\System\OutboxMessages\" />
-    <Folder Include="UseCases\System\AuditLogs\" />
     <Folder Include="UseCases\System\OutboxMessages\" />
   </ItemGroup>
 

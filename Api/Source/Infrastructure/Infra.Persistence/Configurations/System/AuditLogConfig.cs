@@ -8,6 +8,15 @@ public class AuditLogConfig : IEntityTypeConfiguration<AuditLog>
 {
     public void Configure(EntityTypeBuilder<AuditLog> builder)
     {
+        builder.Property(c => c.Description)
+            .HasMaxLength(500)
+            .IsRequired();
+
+        builder.Property(c => c.EntityId)
+            .IsRequired();
+
+        builder.HasIndex(c => c.EntityId);
+
         builder.OwnsOne(c => c.Created, audit =>
         {
             audit.Property(a => a.UserId)                
@@ -19,19 +28,6 @@ public class AuditLogConfig : IEntityTypeConfiguration<AuditLog>
 
             audit.Property(a => a.Timestamp)
                 .IsRequired();
-        });
-
-        builder.OwnsOne(c => c.Updated, audit =>
-        {
-            audit.Property(a => a.UserId)
-                .IsRequired(false);
-
-            audit.Property(a => a.Username)
-                .HasMaxLength(100)
-                .IsRequired(false);
-
-            audit.Property(a => a.Timestamp)
-                .IsRequired(false);
         });
 
 

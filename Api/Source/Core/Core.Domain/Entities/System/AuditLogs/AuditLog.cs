@@ -13,21 +13,24 @@ public partial class AuditLog : BaseEntity, IHaveTenant
     // Constructors
     private AuditLog() { }
 
-    private AuditLog(Guid tenantId, AuditStamp created)
+    private AuditLog(string description, Guid entityId, Guid tenantId, AuditStamp created)
     {
+        Description = description;
+        EntityId = entityId;
         TenantId = tenantId;
         Created = created;
     }
 
     // Properties
+    public string Description { get; private set; } = default!;
+    public Guid EntityId { get; private set; }
     public AuditStamp Created { get; private set; } = default!;
-    public AuditStamp? Updated { get; private set; }
 
     // IHaveTenant properties
     public Guid TenantId { get; private set; }
 
     // Methods
-    public static Result<AuditLog> Create(AuditLogCreateModel model)
+    public static Result<AuditLog> Create(AuditLogCreateModel model, Guid entityId, string description)
     {
         if (model is null)
             return Result<AuditLog>.Failure(
@@ -42,7 +45,7 @@ public partial class AuditLog : BaseEntity, IHaveTenant
                 errorDetails: stampResult.ErrorDetails!,
                 statusCode: stampResult.StatusCode);
 
-        AuditLog auditLog = new( model.TenantId, stampResult.Data!);
+        AuditLog auditLog = new(description, entityId, model.TenantId, stampResult.Data!);
 
         Result validationResult = Validate(auditLog);
 
@@ -57,27 +60,5 @@ public partial class AuditLog : BaseEntity, IHaveTenant
         return Result<AuditLog>.Success(
             message: "Audit log created successfully",
             data: auditLog);
-    }
-
-    public Result SetUpdated(AuditStampModel stampModel)
-    {
-        if (stampModel is null)
-            return Result<AuditLog>.Failure(
-                message: "Model can not be null",
-                statusCode: HttpStatusCode.InternalServerError);
-
-        Result<AuditStamp> stampResult = AuditStamp.Create(stampModel);
-
-        if (stampResult.IsFailure)
-            return Result.Failure(
-                message: stampResult.Message,
-                errorDetails: stampResult.ErrorDetails!,
-                statusCode: stampResult.StatusCode);
-
-        Updated = stampResult.Data!;
-
-        Raise(new AuditLogUpdatedDomainEvent(Id));
-
-        return Result.Success("Audit log updated successfully");
-    }
+    }   
 }

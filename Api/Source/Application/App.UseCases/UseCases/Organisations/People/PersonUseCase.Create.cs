@@ -23,7 +23,12 @@ internal sealed partial class PersonUseCase
                 return personCreateResult;
 
             Result<AuditLog> auditLogCreateResult = await _auditLogService
-                .CreateAsync(tenantId, auditLogCreateModel, cancellationToken);
+                .CreateAsync(
+                    tenantId,
+                    personCreateResult.Data.Id,
+                    $"Person with ID {personCreateResult.Data.Id} has been created by {auditLogCreateModel.CreatedStampModel.Username}.",
+                    auditLogCreateModel,
+                    cancellationToken);
 
             if (auditLogCreateResult.IsFailureAndNoData)
             {

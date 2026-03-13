@@ -23,7 +23,12 @@ internal sealed partial class CompanyPersonUseCase
 
             // Create audit log.
             Result<AuditLog> auditLogCreateResult = await _auditLogService
-                .CreateAsync(tenantId, auditLogCreateModel, cancellationToken);
+                .CreateAsync(
+                    tenantId,
+                    id,
+                    $"Company person with ID {id} has been deleted by {auditLogCreateModel.CreatedStampModel.Username}.",
+                    auditLogCreateModel,
+                    cancellationToken);
 
             if (auditLogCreateResult.IsFailureAndNoData)
             {

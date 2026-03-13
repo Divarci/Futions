@@ -21,8 +21,7 @@ internal sealed partial class AuditLogRepository
             .AsNoTracking()
             .Where(x => x.TenantId == tenantId)
             .WhereIf(!string.IsNullOrWhiteSpace(filter), x =>
-                EF.Functions.Like(x.Created.Username, $"%{filter}%") ||
-                (x.Updated != null && EF.Functions.Like(x.Updated.Username, $"%{filter}%")))
+                EF.Functions.Like(x.Created.Username, $"%{filter}%"))
             .OrderByIf(isAscending, sortBy);
 
         AuditLog[] logs = await query

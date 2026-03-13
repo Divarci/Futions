@@ -21,7 +21,12 @@ internal sealed partial class PersonUseCase
                 return personDeleteResult;
 
             Result<AuditLog> auditLogCreateResult = await _auditLogService
-                .CreateAsync(tenantId, auditLogCreateModel, cancellationToken);
+                .CreateAsync(
+                    tenantId,
+                    id,
+                    $"Person with ID {id} has been deleted by {auditLogCreateModel.CreatedStampModel.Username}.",
+                    auditLogCreateModel,
+                    cancellationToken);
 
             if (auditLogCreateResult.IsFailureAndNoData)
             {

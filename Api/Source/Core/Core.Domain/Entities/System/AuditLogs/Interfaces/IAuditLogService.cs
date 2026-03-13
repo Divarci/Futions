@@ -1,6 +1,5 @@
 using Core.Domain.Entities.Auditing.AuditLogs;
 using Core.Domain.Entities.System.AuditLogs.Models;
-using Core.Domain.ValueObjects.AuditStampValueObject;
 using Core.Library.ResultPattern;
 
 namespace Core.Domain.Entities.System.AuditLogs.Interfaces;
@@ -45,24 +44,15 @@ public interface IAuditLogService
     /// Creates a new audit log entity with the given created stamp.
     /// </summary>
     /// <param name="tenantId">The tenant ID.</param>
+    /// <param name="entityId">The entity ID.</param>
+    /// <param name="description">The description of the audit log.</param>
     /// <param name="createModel">The audit log create model.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A result containing the created audit log.</returns>
     Task<Result<AuditLog>> CreateAsync(
         Guid tenantId,
+        Guid entityId,
+        string description,
         AuditLogCreateModel createModel,
-        CancellationToken cancellationToken = default);
-
-    /// <summary>
-    /// Sets the updated stamp on an existing audit log.
-    /// The created stamp remains immutable.
-    /// </summary>
-    /// <param name="tenantId">The tenant ID.</param>
-    /// <param name="stampModel">The audit stamp model for the updated entry.</param>
-    /// <param name="cancellationToken">Cancellation token.</param>
-    /// <returns>A result containing the updated audit log.</returns>
-    Task<Result<AuditLog>> SetUpdated(
-        Guid tenantId,
-        AuditStampModel stampModel,
         CancellationToken cancellationToken = default);  
 }

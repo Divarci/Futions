@@ -1,6 +1,5 @@
 using Core.Library.ResultPattern;
 using Core.Library.Validators;
-using System.Net;
 
 namespace Core.Domain.Entities.Auditing.AuditLogs;
 
@@ -19,19 +18,21 @@ public partial class AuditLog
     private static void ValidateProperties(List<Result> results, AuditLog auditLog)
     {
         results.AddRange(
-            [            
+            [
                 auditLog.TenantId.Validate(
                     fieldName: nameof(auditLog.TenantId),
-                    allowEmpty: false)
+                    allowEmpty: false),
+                auditLog.EntityId.Validate(
+                    fieldName: nameof(auditLog.EntityId),
+                    allowEmpty: false),
+                auditLog.Description.Validate(
+                    fieldName: nameof(auditLog.Description),
+                    maxLength: 500)
             ]
         );
     }
 
     private static void ValidateBusiness(List<Result> results, AuditLog auditLog)
     {
-        if (auditLog.Updated is not null && auditLog.Updated.Timestamp < auditLog.Created.Timestamp)
-            results.Add(Result.Failure(
-                message: $"The {nameof(auditLog.Updated)} timestamp cannot be earlier than the {nameof(auditLog.Created)} timestamp.",
-                statusCode: HttpStatusCode.BadRequest));
     }
 }

@@ -25,7 +25,12 @@ internal sealed partial class ProductUseCase
 
             // Create audit log.
             Result<AuditLog> auditLogCreateResult = await _auditLogService
-                .CreateAsync(tenantId, auditLogCreateModel, cancellationToken);
+                .CreateAsync(
+                    tenantId,
+                    productCreateResult.Data.Id,
+                    $"Product with ID {productCreateResult.Data.Id} has been created by {auditLogCreateModel.CreatedStampModel.Username}.",
+                    auditLogCreateModel,
+                    cancellationToken);
 
             if (auditLogCreateResult.IsFailureAndNoData)
             {

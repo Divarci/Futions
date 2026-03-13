@@ -22,7 +22,12 @@ internal sealed partial class PersonUseCase
                 return personUpdateResult;
 
             Result<AuditLog> auditLogCreateResult = await _auditLogService
-                .CreateAsync(tenantId, auditLogCreateModel, cancellationToken);
+                .CreateAsync(
+                    tenantId,
+                    updateModel.PersonId,
+                    $"Person with ID {updateModel.PersonId} has been updated by {auditLogCreateModel.CreatedStampModel.Username}.",
+                    auditLogCreateModel,
+                    cancellationToken);
 
             if (auditLogCreateResult.IsFailureAndNoData)
             {

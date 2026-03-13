@@ -15,6 +15,7 @@ internal sealed partial class AuditLogService
         Func<AuditLog[], TDto[]> mapper,
         CancellationToken cancellationToken = default) where TDto : class
     {
+        // Get paginated list of audit logs
         Result<AuditLog[]> entityResult = await _auditLogRepository
             .GetPaginatedAsync(tenantId, page, pageSize, sortBy, isAscending, filterQuery, cancellationToken);
 
@@ -23,6 +24,7 @@ internal sealed partial class AuditLogService
                 message: entityResult.Message,
                 statusCode: entityResult.StatusCode);
 
+        // Get total count of audit logs for pagination metadata
         Result<int> totalCountResult = await _auditLogRepository
             .CountAsync(tenantId, cancellationToken);
 

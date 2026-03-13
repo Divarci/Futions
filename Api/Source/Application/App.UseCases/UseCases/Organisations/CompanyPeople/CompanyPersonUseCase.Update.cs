@@ -24,7 +24,12 @@ internal sealed partial class CompanyPersonUseCase
 
             // Create audit log.
             Result<AuditLog> auditLogCreateResult = await _auditLogService
-                .CreateAsync(tenantId, auditLogCreateModel, cancellationToken);
+                .CreateAsync(
+                    tenantId,
+                    updateModel.CompanyPersonId,
+                    $"Company person with ID {updateModel.CompanyPersonId} has been updated by {auditLogCreateModel.CreatedStampModel.Username}.",
+                    auditLogCreateModel,
+                    cancellationToken);
 
             if (auditLogCreateResult.IsFailureAndNoData)
             {

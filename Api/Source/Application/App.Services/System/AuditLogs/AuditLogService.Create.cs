@@ -6,8 +6,32 @@ namespace App.Services.Features.Organisations.Companies;
 
 internal sealed partial class AuditLogService
 {
-    public Task<Result<AuditLog>> CreateAsync(Guid tenantId, AuditLogCreateModel createModel, CancellationToken cancellationToken = default)
+    public async Task<Result<AuditLog>> CreateAsync(
+        Guid tenantId,
+        Guid entityId,
+        string description,
+        AuditLogCreateModel createModel,
+        CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        // Get Tenant and ensure tenantId is valid and exists.Since this is an example,
+        // we will skip this step and assume tenantId is valid and exists.
+
+        // Create the AuditLog entity using the factory method.
+        Result<AuditLog> auditLogResult = AuditLog.Create(createModel, entityId, description);
+
+        if (auditLogResult.IsFailureAndNoData)
+            return auditLogResult;
+
+        // Persist the AuditLog entity to the database using the repository.
+        await _auditLogRepository.CreateAsync(auditLogResult.Data!, cancellationToken);
+
+        // Create cache key
+        string cacheKey = $"{nameof(AuditLog)}:tenant({tenantId}):id({auditLogResult.Data.Id})";
+
+        // Invalidate the cache for the newly created company and the collections that may include it.
+        await _cacheInvalidationService.InvalidateEntity(cacheKey);
+        await _cacheInvalidationService.InvalidateCollections();
+
+        return auditLogResult;
     }
 }
