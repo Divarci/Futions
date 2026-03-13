@@ -19,7 +19,7 @@ internal sealed partial class CompanyPersonUseCase
                 tenantId, id, cancellationToken),
             useCache: true,
             cacheKey: cacheKey,
-            new(1, 0, 0));
+            _timeout);
 
         return companyPersonResult;
     }

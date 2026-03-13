@@ -15,4 +15,7 @@ internal sealed partial class CompanyUseCase(
     private readonly IAuditLogService _auditLogService = auditLogService;
     private readonly ICacheProvider _cacheProvider = cacheProvider;
     private readonly ITransactionalUnitOfWork _unitOfWork = unitOfWork;
+
+    // Company data is core master data that changes infrequently.
+    private readonly TimeSpan _timeout = TimeSpan.FromHours(1);
 }

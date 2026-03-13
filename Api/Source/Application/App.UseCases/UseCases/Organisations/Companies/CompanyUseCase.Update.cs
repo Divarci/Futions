@@ -1,5 +1,4 @@
 ﻿using Core.Domain.Entities.Auditing.AuditLogs;
-using Core.Domain.Entities.Organisations.Companies;
 using Core.Domain.Entities.Organisations.Companies.Models;
 using Core.Domain.Entities.System.AuditLogs.Models;
 using Core.Library.ResultPattern;

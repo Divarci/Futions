@@ -15,4 +15,7 @@ internal sealed partial class ProductUseCase(
     private readonly IAuditLogService _auditLogService = auditLogService;
     private readonly ICacheProvider _cacheProvider = cacheProvider;
     private readonly ITransactionalUnitOfWork _unitOfWork = unitOfWork;
+
+    // Product data including prices can change more frequently than master data.
+    private readonly TimeSpan _timeout = TimeSpan.FromMinutes(30);
 }

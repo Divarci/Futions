@@ -36,7 +36,7 @@ internal sealed partial class AuditLogUseCase
             serviceCall: async () => await _auditLogService.GetPaginatedAsync(
                 tenantId, page, size, sortBy, ascending,
                 filterQuery, mapper, cancellationToken),
-            new(1, 0, 0));
+            _timeout);
 
         if (retrievalResult.IsFailureAndNoData)
             return retrievalResult;
