@@ -5,7 +5,7 @@ using Core.Library.Contracts.Caching;
 
 namespace App.Services.Features.Organisations.Companies;
 
-internal sealed partial class CompanyPeopleService(
+internal sealed partial class CompanyPersonService(
     ICompanyPersonRepository companyPersonRepository,
     ICompanyRepository companyRepository,
     IPersonRepository personRepository,

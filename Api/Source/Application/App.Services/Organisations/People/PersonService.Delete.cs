@@ -4,7 +4,7 @@ using System.Net;
 
 namespace App.Services.Features.Organisations.Companies;
 
-internal sealed partial class PeopleService
+internal sealed partial class PersonService
 {
     public async Task<Result> DeleteAsync(
         Guid tenantId,

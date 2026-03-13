@@ -4,7 +4,7 @@ using Core.Library.Contracts.Caching;
 
 namespace App.Services.Features.Organisations.Companies;
 
-internal sealed partial class PeopleService(
+internal sealed partial class PersonService(
     IPersonRepository personRepository,
     ICompanyPersonRepository companyPersonRepository,
     ICacheInvalidationService cacheInvalidationService) : IPersonService

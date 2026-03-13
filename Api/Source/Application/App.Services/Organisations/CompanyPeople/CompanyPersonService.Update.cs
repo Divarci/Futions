@@ -5,7 +5,7 @@ using System.Net;
 
 namespace App.Services.Features.Organisations.Companies;
 
-internal sealed partial class CompanyPeopleService
+internal sealed partial class CompanyPersonService
 {
     public async Task<Result> UpdateAsync(
         Guid tenantId,

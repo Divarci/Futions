@@ -1,9 +1,9 @@
-﻿using Core.Domain.Entities.Organisations.CompanyPeople;
+﻿using Core.Domain.Entities.Organisations.People;
 using Core.Library.ResultPattern;
 
 namespace App.Services.Features.Organisations.Companies;
 
-internal sealed partial class CompanyPeopleService
+internal sealed partial class PersonService
 {
     public async Task<PaginatedResult<TDto[]>> GetPaginatedAsync<TDto>(
         Guid tenantId,
@@ -12,11 +12,11 @@ internal sealed partial class CompanyPeopleService
         string sortBy,
         bool isAscending,
         string? filterQuery,
-        Func<CompanyPerson[], TDto[]> mapper,
+        Func<Person[], TDto[]> mapper,
         CancellationToken cancellationToken = default) where TDto : class
     {
-        // Get paginated list of company people for tenant
-        Result<CompanyPerson[]> entityResult = await _companyPersonRepository
+        // Get paginated list of people for the tenant
+        Result<Person[]> entityResult = await _personRepository
             .GetPaginatedAsync(tenantId, page, pageSize, sortBy, isAscending, filterQuery, cancellationToken);
 
         if (entityResult.IsFailure)
@@ -24,9 +24,9 @@ internal sealed partial class CompanyPeopleService
                 message: entityResult.Message,
                 statusCode: entityResult.StatusCode);
 
-        // Get total count of company people for tenant
-        Result<int> totalCountResult = await _companyPersonRepository
-            .CountAsync(cancellationToken);
+        // Get total count of people for the tenant
+        Result<int> totalCountResult = await _personRepository
+            .CountAsync(tenantId, cancellationToken);
 
         if (totalCountResult.IsFailure)
             return PaginatedResult<TDto[]>.Failure(

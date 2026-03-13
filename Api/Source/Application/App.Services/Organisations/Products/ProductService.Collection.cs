@@ -17,7 +17,7 @@ internal sealed partial class ProductService
     {
         // Get paginated list of products for the specified tenant
         Result<Product[]> entityResult = await _repository
-            .GetPaginatedAsync(page, pageSize, sortBy, isAscending, filterQuery, cancellationToken);
+            .GetPaginatedAsync(tenantId, page, pageSize, sortBy, isAscending, filterQuery, cancellationToken);
 
         if (entityResult.IsFailure)
             return PaginatedResult<TDto[]>.Failure(

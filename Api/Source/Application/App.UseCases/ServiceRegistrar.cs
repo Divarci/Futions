@@ -1,4 +1,16 @@
-﻿using Core.Library.Contracts.DomainEvents.Handle;
+﻿using App.UseCases.Processors;
+using App.UseCases.UseCases.Organisations.Companies;
+using App.UseCases.UseCases.Organisations.CompanyPeople;
+using App.UseCases.UseCases.Organisations.People;
+using App.UseCases.UseCases.Organisations.Products;
+using App.UseCases.UseCases.System.AuditLogs;
+using Core.Domain.Entities.Organisations.Companies.Interfaces;
+using Core.Domain.Entities.Organisations.CompanyPeople.Interfaces;
+using Core.Domain.Entities.Organisations.People.Interfaces;
+using Core.Domain.Entities.Organisations.Products.Interfaces;
+using Core.Domain.Entities.System.AuditLogs.Interfaces;
+using Core.Domain.Entities.System.OutboxMessages.Interfaces;
+using Core.Library.Contracts.DomainEvents.Handle;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using System.Reflection;
@@ -13,6 +25,8 @@ public static class ServiceRegistrar
     {
         services.AddDomainEventHandlers();
 
+        services.RegisterUseCases();
+
         return services;
     }
 
@@ -26,5 +40,15 @@ public static class ServiceRegistrar
             services.TryAddScoped(domainEventHandler);
 
         return services;
+    }
+
+    private static void RegisterUseCases(this IServiceCollection services)
+    {
+        services.AddScoped<ICompanyUseCase, CompanyUseCase>();
+        services.AddScoped<IPersonUseCase, PersonUseCase>();
+        services.AddScoped<ICompanyPersonUseCase, CompanyPersonUseCase>();
+        services.AddScoped<IProductUseCase, ProductUseCase>();
+        services.AddScoped<IAuditLogUseCase, AuditLogUseCase>();
+        services.AddScoped<IOutboxProcessor, OutboxProcessor>();
     }
 }

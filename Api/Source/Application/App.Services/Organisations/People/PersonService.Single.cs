@@ -3,7 +3,7 @@ using Core.Library.ResultPattern;
 
 namespace App.Services.Features.Organisations.Companies;
 
-internal sealed partial class PeopleService
+internal sealed partial class PersonService
 {
     public async Task<Result<Person>> GetByIdAsync(
         Guid tenantId,
