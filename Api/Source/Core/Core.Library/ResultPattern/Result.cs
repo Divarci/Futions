@@ -139,4 +139,10 @@ public class PaginatedResult<T> : Result<T> where T : class
         int pageNumber, int pageSize, int totalCount, int pageCount)
         => new(HttpStatusCode.OK, false, message, null,
             data, new(pageNumber, pageSize, totalCount, pageCount));
+
+    /// <summary>
+    /// Creates a failed paginated result with the specified error message and optional HTTP status code.
+    /// </summary>   
+    public static new PaginatedResult<T> Failure(string message, HttpStatusCode? statusCode = null)
+        => new(statusCode, true, message, null, default, null);
 }

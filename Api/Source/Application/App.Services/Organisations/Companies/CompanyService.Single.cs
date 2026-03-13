@@ -5,8 +5,13 @@ namespace App.Services.Features.Organisations.Companies;
 
 internal sealed partial class CompanyService
 {
-    public Task<Result<Company>> GetByIdAsync(Guid tenantId, Guid id, CancellationToken cancellationToken = default)
+    public async Task<Result<Company>> GetByIdAsync(
+        Guid tenantId, 
+        Guid id, 
+        CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        // Get the company by id and tenant id
+        return await _companyRepository
+            .GetByIdAsync(id, tenantId, cancellationToken);        
     }
 }

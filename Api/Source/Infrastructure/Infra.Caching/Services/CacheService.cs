@@ -69,21 +69,24 @@ public class CacheService(ConnectionMultiplexer redis) : ICacheProvider, ICacheI
             statusCode: result.StatusCode);
     }
 
-    public async Task<Result<TEntity[]>> GetCollection<TEntity>(
+    public async Task<PaginatedResult<TDto[]>> GetPaginatedCollection<TDto>(
         string cacheKey,
         bool useCache,
-        Func<Task<Result<TEntity[]>>> serviceCall,
-        TimeSpan cacheExpiration) where TEntity : BaseEntity
+        Func<Task<PaginatedResult<TDto[]>>> serviceCall,
+        TimeSpan cacheExpiration) where TDto : class
     {
-        if (useCache && await GetAsync<TEntity[]>(cacheKey) is { } cachedData)
+        if (useCache && await GetAsync<PaginatedResult<TDto[]>>(cacheKey) is { } cachedData)
         {
-            return Result<TEntity[]>.Success(
+            return PaginatedResult<TDto[]>.Success(
                 message: "List retrieved from cache",
-                data: cachedData,
-                statusCode: HttpStatusCode.OK);
+                data: cachedData.Data ?? [],
+                pageNumber: cachedData.Metadata?.PageNumber ?? 0,
+                pageSize: cachedData.Metadata?.PageSize ?? 0,
+                totalCount: cachedData.Metadata?.TotalCount ?? 0,
+                pageCount: cachedData.Metadata?.PageCount ?? 0);
         }
 
-        Result<TEntity[]> dataResult = await serviceCall();
+        PaginatedResult<TDto[]> dataResult = await serviceCall();
 
         if (dataResult.IsFailureAndNoData)
             return dataResult;
@@ -91,10 +94,13 @@ public class CacheService(ConnectionMultiplexer redis) : ICacheProvider, ICacheI
         if (cacheExpiration.TotalSeconds > 0 && !string.IsNullOrWhiteSpace(cacheKey))
             await SetAsync(cacheKey, dataResult.Data, cacheExpiration);
 
-        return Result<TEntity[]>.Success(
-            message: dataResult.Message,
-            data: dataResult.Data,
-            statusCode: dataResult.StatusCode);
+        return PaginatedResult<TDto[]>.Success(
+            message: "List retrieved from database",
+            data: dataResult.Data ?? [],
+            pageNumber: dataResult.Metadata?.PageNumber ?? 0,
+            pageSize: dataResult.Metadata?.PageSize ?? 0,
+            totalCount: dataResult.Metadata?.TotalCount ?? 0,
+            pageCount: dataResult.Metadata?.PageCount ?? 0);
     }
 
     private async Task<T?> GetAsync<T>(string key)
@@ -117,8 +123,10 @@ public class CacheService(ConnectionMultiplexer redis) : ICacheProvider, ICacheI
     {
         try
         {
+            string cacheKey = $"collection_{key}";
+
             string serialisedData = JsonSerializer.Serialize(value, _jsonOptions);
-            await _db.StringSetAsync(key, serialisedData, slidingExpiration);
+            await _db.StringSetAsync(cacheKey, serialisedData, slidingExpiration);
         }
         catch (RedisException)
         {

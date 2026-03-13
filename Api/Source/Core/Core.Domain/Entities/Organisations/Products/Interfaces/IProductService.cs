@@ -9,21 +9,23 @@ public interface IProductService
     /// Retrieves a paginated list of products according to the specified parameters.
     /// </summary>
     /// <param name="tenantId">The tenant ID.</param>
-    /// <param name="pageQuery">The page number (1-based).</param>
-    /// <param name="pageSizeQuery">The number of items per page.</param>
-    /// <param name="sortByQuery">The field to sort by.</param>
-    /// <param name="isAscendingQuery">Sort direction: true for ascending, false for descending.</param>
+    /// <param name="page">The page number (1-based).</param>
+    /// <param name="pageSize">The number of items per page.</param>
+    /// <param name="sortBy">The field to sort by.</param>
+    /// <param name="isAscending">Sort direction: true for ascending, false for descending.</param>
     /// <param name="filterQuery">Optional filter string.</param>
+    /// <param name="mapper">A function to map the product entities to the desired DTO type.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A result containing the paginated array of products.</returns>
-    Task<Result<Product[]>> GetPaginatedAsync(
+    Task<PaginatedResult<TDto[]>> GetPaginatedAsync<TDto>(
         Guid tenantId,
-        int? pageQuery,
-        int? pageSizeQuery,
-        string? sortByQuery,
-        bool? isAscendingQuery,
+        int page,
+        int pageSize,
+        string sortBy,
+        bool isAscending,
         string? filterQuery,
-        CancellationToken cancellationToken = default);
+        Func<Product[], TDto[]> mapper,
+        CancellationToken cancellationToken = default) where TDto : class;
 
     /// <summary>
     /// Retrieves a product by its unique identifier.

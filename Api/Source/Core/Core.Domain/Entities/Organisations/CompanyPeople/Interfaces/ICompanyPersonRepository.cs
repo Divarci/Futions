@@ -24,4 +24,16 @@ public interface ICompanyPersonRepository : IGlobalRepository<CompanyPerson>
         bool isAscending,
         string? filter,
         CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Checks if a company has any associated company people.
+    /// </summary>
+    /// <param name="tenantId">The tenant ID to filter company people by.</param>
+    /// <param name="companyId">The company ID to check for associated company people.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>A result indicating whether the company has any associated company people.</returns>
+    Task<Result<bool>> HasCompanyPeopleAsync(
+        Guid tenantId,
+        Guid companyId,
+        CancellationToken cancellationToken = default);
 }

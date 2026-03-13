@@ -35,8 +35,13 @@ public partial class Company : BaseEntity, IHaveSoftDelete, IHaveTenant
     public Guid TenantId { get; private set; } = default!;
 
     // Methods
-    public static Result<Company> Create(CompanyCreateModel model)
+    public static Result<Company> Create(CompanyCreateModel model, Guid tenantId)
     {
+        if (model is null)
+            return Result<Company>.Failure(
+                message: "Model can not be null",
+                statusCode: HttpStatusCode.InternalServerError);
+
         Result<Address> addressResult = Address.Create(model.AddressModel);
 
         if (addressResult.IsFailure)
@@ -45,7 +50,7 @@ public partial class Company : BaseEntity, IHaveSoftDelete, IHaveTenant
                 errorDetails: addressResult.ErrorDetails!,
                 statusCode: addressResult.StatusCode);
 
-        Company company = new(model.TenantId, model.Name, addressResult.Data!);
+        Company company = new(tenantId, model.Name, addressResult.Data!);
 
         Result validationResult = Validate(company);
 
@@ -89,7 +94,7 @@ public partial class Company : BaseEntity, IHaveSoftDelete, IHaveTenant
 
         if (validationResult.IsFailure)
             return validationResult;
-        
+
         Raise(new CompanyNameUpdatedDomainEvent(Id));
 
         return Result.Success("Company name updated successfully");

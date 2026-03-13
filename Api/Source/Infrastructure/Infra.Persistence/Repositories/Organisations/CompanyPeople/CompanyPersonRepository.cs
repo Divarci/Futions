@@ -8,5 +8,4 @@ namespace Infra.Persistence.Repositories.Organisations.CompanyPeople;
 internal sealed partial class CompanyPersonRepository(
     AppDbContext context) : GlobalRepository<CompanyPerson>(context), ICompanyPersonRepository
 {
-
 }

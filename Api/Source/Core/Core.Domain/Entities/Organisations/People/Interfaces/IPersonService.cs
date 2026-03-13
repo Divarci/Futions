@@ -9,21 +9,23 @@ public interface IPersonService
     /// Retrieves a paginated list of people according to the specified parameters.
     /// </summary>
     /// <param name="tenantId">The tenant ID.</param>
-    /// <param name="pageQuery">The page number (1-based).</param>
-    /// <param name="pageSizeQuery">The number of items per page.</param>
-    /// <param name="sortByQuery">The field to sort by.</param>
-    /// <param name="isAscendingQuery">Sort direction: true for ascending, false for descending.</param>
+    /// <param name="page">The page number (1-based).</param>
+    /// <param name="pageSize">The number of items per page.</param>
+    /// <param name="sortBy">The field to sort by.</param>
+    /// <param name="isAscending">Sort direction: true for ascending, false for descending.</param>
     /// <param name="filterQuery">Optional filter string.</param>
+    /// <param name="mapper">A function to map the person entities to the desired DTO type.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A result containing the paginated array of people.</returns>
-    Task<Result<Person[]>> GetPaginatedAsync(
+    Task<PaginatedResult<TDto[]>> GetPaginatedAsync<TDto>(
         Guid tenantId,
-        int? pageQuery,
-        int? pageSizeQuery,
-        string? sortByQuery,
-        bool? isAscendingQuery,
+        int page,
+        int pageSize,
+        string sortBy,
+        bool isAscending,
         string? filterQuery,
-        CancellationToken cancellationToken = default);
+        Func<Person[], TDto[]> mapper,
+        CancellationToken cancellationToken = default) where TDto : class;
 
     /// <summary>
     /// Retrieves a person by its unique identifier.

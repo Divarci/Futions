@@ -24,18 +24,17 @@ public interface ICacheProvider
         TimeSpan cacheExpiration) where TEntity : BaseEntity;
 
     /// <summary>
-    /// Gets a collection of items with caching
+    /// Gets a paginated collection of items with caching
     /// </summary>
     /// <typeparam name="TEntity">The entity type returned by the service</typeparam>
     /// <param name="cacheKey">The cache key to use</param>
     /// <param name="useCache">Whether to use caching</param>
     /// <param name="serviceCall">The service call to execute</param>
-    /// <param name="skip">Number of items to skip for pagination</param>
     /// <param name="cacheExpiration">Cache expiration time</param>
-    /// <returns>Result containing the collection</returns>
-    Task<Result<TEntity[]>> GetCollection<TEntity>(
+    /// <returns>Paginated result containing the collection</returns>
+    Task<PaginatedResult<TDto[]>> GetPaginatedCollection<TDto>(
         string cacheKey,
         bool useCache,
-        Func<Task<Result<TEntity[]>>> serviceCall,
-        TimeSpan cacheExpiration) where TEntity : BaseEntity;
+        Func<Task<PaginatedResult<TDto[]>>> serviceCall,
+        TimeSpan cacheExpiration) where TDto : class;
 }
