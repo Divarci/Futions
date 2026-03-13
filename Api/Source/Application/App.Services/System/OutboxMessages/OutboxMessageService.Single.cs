@@ -5,8 +5,12 @@ namespace App.Services.Features.Organisations.Companies;
 
 internal sealed partial class OutboxMessageService
 {
-    public Task<Result<OutboxMessage>> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task<Result<OutboxMessage>> GetByIdAsync(
+        Guid id, 
+        CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        // Get the outbox message by its ID using the repository
+        return await _outboxMessageRepository
+            .GetByIdAsync(id, cancellationToken);
     }
 }

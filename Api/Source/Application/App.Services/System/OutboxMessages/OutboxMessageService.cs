@@ -3,7 +3,7 @@
 namespace App.Services.Features.Organisations.Companies;
 
 internal sealed partial class OutboxMessageService(
-    IOutboxMessageRepository repository) : IOutboxMessageService
+    IOutboxMessageRepository outboxMessageRepository) : IOutboxMessageService
 {
-    private readonly IOutboxMessageRepository _repository = repository;
+    private readonly IOutboxMessageRepository _outboxMessageRepository = outboxMessageRepository;
 }
