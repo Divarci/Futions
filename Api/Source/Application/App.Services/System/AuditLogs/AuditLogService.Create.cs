@@ -13,9 +13,6 @@ internal sealed partial class AuditLogService
         AuditLogCreateModel createModel,
         CancellationToken cancellationToken = default)
     {
-        // Get Tenant and ensure tenantId is valid and exists.Since this is an example,
-        // we will skip this step and assume tenantId is valid and exists.
-
         // Create the AuditLog entity using the factory method.
         Result<AuditLog> auditLogResult = AuditLog.Create(createModel, entityId, description);
 

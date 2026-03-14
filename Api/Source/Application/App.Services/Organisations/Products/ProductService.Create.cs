@@ -11,9 +11,6 @@ internal sealed partial class ProductService
         ProductCreateModel createModel,
         CancellationToken cancellationToken = default)
     {
-        // Get Tenant and ensure tenantId is valid and exists.Since this is an example,
-        // we will skip this step and assume tenantId is valid and exists.
-
         // Get Company and ensure companyId is valid and exists.
         Result<bool> companyExistsResult = await _companyRepository
             .ExistsAsync(createModel.CompanyId, tenantId, cancellationToken);

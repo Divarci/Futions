@@ -21,11 +21,15 @@ public class Result
 
     [JsonIgnore]
     public HttpStatusCode? StatusCode { get; set; }
+
     [JsonIgnore]
     public bool IsFailure { get; set; }
+
     [JsonIgnore]
     public bool IsSuccess => !IsFailure;
+
     public string Message { get; set; }
+
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public ErrorDetails? ErrorDetails { get; set; }
 

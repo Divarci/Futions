@@ -1,4 +1,6 @@
-﻿namespace Adapter.RestApi;
+﻿using Adapter.RestApi.AspNetCore.Diagnostics;
+
+namespace Adapter.RestApi;
 
 public static class ServiceRegistrar
 {
@@ -6,6 +8,8 @@ public static class ServiceRegistrar
     {
         services.AddControllers();
         services.AddOpenApi();
+        services.AddExceptionHandler<GlobalExceptionHandler>();
+        services.AddProblemDetails();
 
         return services;
     }

@@ -12,9 +12,6 @@ internal sealed partial class CompanyPersonService
         CompanyPersonCreateModel createModel,
         CancellationToken cancellationToken = default)
     {
-        // Get Tenant and ensure tenantId is valid and exists.Since this is an example,
-        // we will skip this step and assume tenantId is valid and exists.
-
         // Get the Company to ensure it exists before creating the CompanyPerson entity.
         Result<bool> companyExistsResult = await _companyRepository
             .ExistsAsync(createModel.CompanyId, tenantId, cancellationToken);

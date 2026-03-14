@@ -11,9 +11,6 @@ internal sealed partial class PersonService
         PersonCreateModel createModel,
         CancellationToken cancellationToken = default)
     {
-        // Get Tenant and ensure tenantId is valid and exists.Since this is an example,
-        // we will skip this step and assume tenantId is valid and exists.
-
         // Create Company entity from the create model and tenantId.
         Result<Person> personCreateResult = Person.Create(createModel, tenantId);
 
