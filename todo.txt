@@ -1,3 +1,4 @@
 - logging
 - Custom exception
 - validation
+- Domain event handler
