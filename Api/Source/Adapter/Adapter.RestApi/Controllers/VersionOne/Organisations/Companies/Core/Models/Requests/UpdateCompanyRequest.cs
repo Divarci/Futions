@@ -1,8 +1,8 @@
-﻿using Adapter.RestApi.Controllers.Shared.AddressValueObject.Requests;
+using Adapter.RestApi.Controllers.Shared.AddressValueObject.Requests;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace Adapter.RestApi.Controllers.VersionOne.Organisations.Companies.Models.Requests;
+namespace Adapter.RestApi.Controllers.VersionOne.Organisations.Companies.Core.Models.Requests;
 
 public class UpdateCompanyRequest
 {

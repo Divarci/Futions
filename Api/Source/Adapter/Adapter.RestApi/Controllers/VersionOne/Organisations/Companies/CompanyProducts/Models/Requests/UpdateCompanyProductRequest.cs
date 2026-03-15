@@ -1,9 +1,9 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace Adapter.RestApi.Controllers.VersionOne.Organisations.Products.Models.Requests;
+namespace Adapter.RestApi.Controllers.VersionOne.Organisations.Companies.CompanyProducts.Models.Requests;
 
-public class UpdateProductRequest
+public class UpdateCompanyProductRequest
 {
     [JsonPropertyName("name")]
     [MaxLength(100)]

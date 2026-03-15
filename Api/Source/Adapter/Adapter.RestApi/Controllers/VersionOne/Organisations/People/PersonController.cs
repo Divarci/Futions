@@ -1,8 +1,8 @@
 using Adapter.RestApi.AspNetCore.Extensions;
+using Adapter.RestApi.Controllers.Shared.Mappers;
 using Adapter.RestApi.Controllers.Shared.Models;
 using Adapter.RestApi.Controllers.VersionOne.Organisations.People.Models.Requests;
 using Adapter.RestApi.Controllers.VersionOne.Organisations.People.Models.Responses;
-using Adapter.RestApi.Controllers.VersionOne.System.AuditLogs;
 using Asp.Versioning;
 using Core.Domain.Entities.Organisations.People;
 using Core.Domain.Entities.Organisations.People.Interfaces;

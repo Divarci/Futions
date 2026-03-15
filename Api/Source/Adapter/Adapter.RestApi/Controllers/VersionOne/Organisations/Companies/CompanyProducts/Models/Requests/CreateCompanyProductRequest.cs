@@ -1,13 +1,10 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace Adapter.RestApi.Controllers.VersionOne.Organisations.Products.Models.Requests;
+namespace Adapter.RestApi.Controllers.VersionOne.Organisations.Companies.CompanyProducts.Models.Requests;
 
-public record CreateProductRequest
+public record CreateCompanyProductRequest
 {
-    [Required, JsonPropertyName("companyId")]
-    public Guid? CompanyId { get; init; }
-
     [Required, JsonPropertyName("name")]
     [MaxLength(100)]
     public string? Name { get; init; }

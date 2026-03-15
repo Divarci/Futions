@@ -1,7 +1,7 @@
-﻿using Adapter.RestApi.Controllers.Shared.AddressValueObject.Responses;
+using Adapter.RestApi.Controllers.Shared.AddressValueObject.Responses;
 using System.Text.Json.Serialization;
 
-namespace Adapter.RestApi.Controllers.VersionOne.Organisations.Companies.Models.Responses;
+namespace Adapter.RestApi.Controllers.VersionOne.Organisations.Companies.Core.Models.Responses;
 
 public record CompanyResponse
 {

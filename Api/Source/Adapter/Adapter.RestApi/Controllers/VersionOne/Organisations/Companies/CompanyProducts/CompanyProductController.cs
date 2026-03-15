@@ -1,131 +1,138 @@
-﻿using Adapter.RestApi.AspNetCore.Extensions;
+using Adapter.RestApi.Controllers.Shared.Mappers;
 using Adapter.RestApi.Controllers.Shared.Models;
-using Adapter.RestApi.Controllers.VersionOne.Organisations.Companies.Models.Requests;
-using Adapter.RestApi.Controllers.VersionOne.Organisations.Companies.Models.Responses;
-using Adapter.RestApi.Controllers.VersionOne.System.AuditLogs;
+using Adapter.RestApi.Controllers.VersionOne.Organisations.Companies.CompanyProducts.Models.Requests;
+using Adapter.RestApi.Controllers.VersionOne.Organisations.Companies.CompanyProducts.Models.Responses;
 using Asp.Versioning;
-using Core.Domain.Entities.Organisations.Companies;
-using Core.Domain.Entities.Organisations.Companies.Interfaces;
-using Core.Domain.Entities.Organisations.Companies.Models;
+using Core.Domain.Entities.Organisations.Products;
+using Core.Domain.Entities.Organisations.Products.Interfaces;
+using Core.Domain.Entities.Organisations.Products.Models;
 using Core.Domain.ValueObjects.AuditStampValueObject;
 using Core.Library.ResultPattern;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Adapter.RestApi.Controllers.VersionOne.Organisations.Companies;
+namespace Adapter.RestApi.Controllers.VersionOne.Organisations.Companies.CompanyProducts;
 
 [ApiVersion(ApiVersion.V1)]
-[Route("api/v{version:apiVersion}/tenants/{tenantId:guid}/companies")]
+[Route("api/v{version:apiVersion}/tenants/{tenantId:guid}/companies/{companyId:guid}/products")]
 [ApiController]
-public class CompanyController(
-    ICompanyUseCase companyUseCase) : BaseController
+public class CompanyProductController(
+    IProductUseCase productUseCase) : BaseController
 {
-    private readonly ICompanyUseCase _companyUseCase = companyUseCase;
+    private readonly IProductUseCase _productUseCase = productUseCase;
 
     [HttpGet]
-    public async Task<IActionResult> GetCompaniesAsync(
+    public async Task<IActionResult> GetCompanyProductsAsync(
         Guid tenantId,
+        Guid companyId,
         [FromQuery] PaginationFilterModel filter,
         CancellationToken cancellationToken)
     {
-        PaginatedResult<CompanyResponse[]> paginatedCompanies = await _companyUseCase.GetPaginatedAsync(
+        PaginatedResult<CompanyProductResponse[]> paginatedProducts = await _productUseCase.GetPaginatedAsync(
             tenantId,
+            companyId,
             filter.Page,
             filter.PageSize,
             filter.SortBy,
             filter.IsAscending,
             filter.Filter,
-            CompanyMapper.ToArrayResponse,
+            CompanyProductMapper.ToArrayResponse,
             cancellationToken);
 
-        return HandleResult(paginatedCompanies);
+        return HandleResult(paginatedProducts);
     }
 
-    [HttpGet("{companyId}")]
-    [ProducesResponseType<PaginatedResult<CompanyResponse[]>>(StatusCodes.Status200OK)]
+    [HttpGet("{productId}")]
+    [ProducesResponseType<PaginatedResult<CompanyProductResponse[]>>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status403Forbidden)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status404NotFound)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> GetCompanyAsync(
+    public async Task<IActionResult> GetCompanyProductAsync(
         Guid tenantId,
         Guid companyId,
+        Guid productId,
         CancellationToken cancellationToken)
     {
-        Result<CompanyResponse> company = await _companyUseCase.GetByIdAsync(
+        Result<CompanyProductResponse> product = await _productUseCase.GetByIdAsync(
             tenantId,
-            companyId,
-            CompanyMapper.ToResponse,
+            productId,
+            CompanyProductMapper.ToResponse,
             cancellationToken);
 
-        return HandleResult(company);
+        return HandleResult(product);
     }
 
     [HttpPost]
-    [ProducesResponseType<Result<CompanyResponse>>(StatusCodes.Status200OK)]
+    [ProducesResponseType<Result<CompanyProductResponse>>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status403Forbidden)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status422UnprocessableEntity)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> CreateCompanyAsync(
+    public async Task<IActionResult> CreateCompanyProductAsync(
         Guid tenantId,
-        CreateCompanyRequest request,
+        Guid companyId,
+        CreateCompanyProductRequest request,
         CancellationToken cancellationToken = default)
     {
-        CompanyCreateModel companyCreateModel = CompanyMapper.ToCreateModel(request, tenantId);
+        ProductCreateModel productCreateModel = CompanyProductMapper.ToCreateModel(request, tenantId, companyId);
         AuditStampCreateModel auditLogCreateModel = AuditLogMapper.ToCreateModel(
             Guid.NewGuid(),
             "asd@asd.dasd",
             tenantId);
 
-        Result<Company> createdCompany = await _companyUseCase.CreateAsync(
-            companyCreateModel,
+        Result<Product> createdProduct = await _productUseCase.CreateAsync(
+            productCreateModel,
             auditLogCreateModel,
             cancellationToken);
 
         return HandleResult(
-            result: createdCompany,
-            mapper: CompanyMapper.ToResponse);
+            result: createdProduct,
+            mapper: CompanyProductMapper.ToResponse);
     }
 
-    [HttpPatch("{companyId}")]
-    [ProducesResponseType<Result<CompanyResponse>>(StatusCodes.Status200OK)]
+    [HttpPatch("{productId}")]
+    [ProducesResponseType<Result<CompanyProductResponse>>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status403Forbidden)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status422UnprocessableEntity)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> UpdateCompanyAsync(
+    public async Task<IActionResult> UpdateCompanyProductAsync(
         Guid tenantId,
         Guid companyId,
-        UpdateCompanyRequest request,
+        Guid productId,
+        UpdateCompanyProductRequest request,
         CancellationToken cancellationToken = default)
     {
-        CompanyUpdateModel companyUpdateModel = CompanyMapper.ToUpdateModel(request, companyId);
+        ProductUpdateModel productUpdateModel = CompanyProductMapper.ToUpdateModel(request, productId);
         AuditStampCreateModel auditStampCreateModel = AuditLogMapper.ToCreateModel(
             Guid.NewGuid(),
             "asd@asd.dasd",
             tenantId);
 
-        Result updatedCompany = await _companyUseCase.UpdateAsync(
+        Result<Product> updatedProduct = await _productUseCase.UpdateAsync(
             tenantId,
-            companyUpdateModel,
+            productUpdateModel,
             auditStampCreateModel,
             cancellationToken);
 
-        return HandleResult(result: updatedCompany);
+        return HandleResult(
+            result: updatedProduct,
+            mapper: CompanyProductMapper.ToResponse);
     }
 
-    [HttpDelete("{companyId}")]
-    [ProducesResponseType<Result<CompanyResponse>>(StatusCodes.Status200OK)]
+    [HttpDelete("{productId}")]
+    [ProducesResponseType<Result<CompanyProductResponse>>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status403Forbidden)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> DeleteCompanyAsync(
+    public async Task<IActionResult> DeleteCompanyProductAsync(
         Guid tenantId,
         Guid companyId,
+        Guid productId,
         CancellationToken cancellationToken = default)
     {
         AuditStampCreateModel auditStampCreateModel = AuditLogMapper.ToCreateModel(
@@ -133,12 +140,12 @@ public class CompanyController(
             "asd@asd.dasd",
             tenantId);
 
-        Result deletedCompany = await _companyUseCase.DeleteAsync(
+        Result deletedProduct = await _productUseCase.DeleteAsync(
             tenantId,
-            companyId,
+            productId,
             auditStampCreateModel,
             cancellationToken);
 
-        return HandleResult(result: deletedCompany);
+        return HandleResult(result: deletedProduct);
     }
 }

@@ -1,6 +1,6 @@
 ﻿using Core.Domain.ValueObjects.AuditStampValueObject;
 
-namespace Adapter.RestApi.Controllers.VersionOne.System.AuditLogs;
+namespace Adapter.RestApi.Controllers.Shared.Mappers;
 
 internal static class AuditLogMapper
 {

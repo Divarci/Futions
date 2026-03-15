@@ -1,8 +1,8 @@
 using System.Text.Json.Serialization;
 
-namespace Adapter.RestApi.Controllers.VersionOne.Organisations.Products.Models.Responses;
+namespace Adapter.RestApi.Controllers.VersionOne.Organisations.Companies.CompanyProducts.Models.Responses;
 
-public record ProductResponse
+public record CompanyProductResponse
 {
     [JsonPropertyName("id")]
     public required Guid Id { get; init; }
