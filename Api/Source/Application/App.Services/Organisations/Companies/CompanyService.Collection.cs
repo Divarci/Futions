@@ -5,7 +5,7 @@ namespace App.Services.Features.Organisations.Companies;
 
 internal sealed partial class CompanyService
 {
-    public async Task<PaginatedResult<TDto[]>> GetPaginatedAsync<TDto>(
+    public async Task<PaginatedResult<TDto[]>> GetPaginatedCompaniesAsync<TDto>(
         Guid tenantId, 
         int page, 
         int pageSize, 
@@ -17,7 +17,7 @@ internal sealed partial class CompanyService
     {
         // Get paginated list of companies for the tenant
         Result<Company[]> entityResult = await _companyRepository
-            .GetPaginatedAsync(tenantId, page, pageSize, sortBy, ascending, filterQuery, cancellationToken);
+            .GetPaginatedCompaniesAsync(tenantId, page, pageSize, sortBy, ascending, filterQuery, cancellationToken);
 
         if (entityResult.IsFailure)        
             return PaginatedResult<TDto[]>.Failure(

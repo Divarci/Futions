@@ -2,7 +2,7 @@
 using Core.Domain.Entities.Organisations.People.Interfaces;
 using Core.Library.Contracts.Caching;
 
-namespace App.Services.Features.Organisations.Companies;
+namespace App.Services.Features.Organisations.People;
 
 internal sealed partial class PersonService(
     IPersonRepository personRepository,

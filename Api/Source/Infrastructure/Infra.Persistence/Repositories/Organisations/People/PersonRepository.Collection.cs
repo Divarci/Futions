@@ -8,7 +8,7 @@ namespace Infra.Persistence.Repositories.Organisations.People;
 
 internal sealed partial class PersonRepository
 {
-    public async Task<Result<Person[]>> GetPaginatedAsync(
+    public async Task<Result<Person[]>> GetPaginatedPeopleAsync(
         Guid tenantId,
         int page,
         int pageSize,

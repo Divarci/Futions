@@ -5,15 +5,16 @@ namespace App.Services.Features.Organisations.Companies;
 
 internal sealed partial class CompanyPersonService
 {
-    public async Task<Result<TDto>> GetByIdAsync<TDto>(
+    public async Task<Result<TDto>> GetCompanyPersonByIdAsync<TDto>(
         Guid tenantId,
-        Guid id,
+        Guid companyId,
+        Guid companyPersonId,
         Func<CompanyPerson, TDto> mapper,
         CancellationToken cancellationToken = default) where TDto : class
     {
         // Get the company person by id for tenant.
         Result<CompanyPerson> entityResult = await _companyPersonRepository
-            .GetByIdAsync(tenantId, id, cancellationToken);
+            .GetCompanyPersonByIdAsync(tenantId, companyId, companyPersonId,cancellationToken);
 
         if (entityResult.IsFailureAndNoData)
             return Result<TDto>.Failure(

@@ -27,7 +27,7 @@ public class CompanyProductController(
         [FromQuery] PaginationFilterModel filter,
         CancellationToken cancellationToken)
     {
-        PaginatedResult<CompanyProductResponse[]> paginatedProducts = await _productUseCase.GetPaginatedAsync(
+        PaginatedResult<CompanyProductResponse[]> paginatedProducts = await _productUseCase.GetPaginatedCompanyProductsAsync(
             tenantId,
             companyId,
             filter.Page,
@@ -54,8 +54,9 @@ public class CompanyProductController(
         Guid productId,
         CancellationToken cancellationToken)
     {
-        Result<CompanyProductResponse> product = await _productUseCase.GetByIdAsync(
+        Result<CompanyProductResponse> product = await _productUseCase.GetCompanyProductByIdAsync(
             tenantId,
+            companyId,
             productId,
             CompanyProductMapper.ToResponse,
             cancellationToken);
@@ -82,7 +83,7 @@ public class CompanyProductController(
             "asd@asd.dasd",
             tenantId);
 
-        Result<Product> createdProduct = await _productUseCase.CreateAsync(
+        Result<Product> createdProduct = await _productUseCase.CreateCompanyProductAsync(
             productCreateModel,
             auditLogCreateModel,
             cancellationToken);
@@ -106,21 +107,18 @@ public class CompanyProductController(
         UpdateCompanyProductRequest request,
         CancellationToken cancellationToken = default)
     {
-        ProductUpdateModel productUpdateModel = CompanyProductMapper.ToUpdateModel(request, productId);
+        ProductUpdateModel productUpdateModel = CompanyProductMapper.ToUpdateModel(request, tenantId, companyId, productId);
         AuditStampCreateModel auditStampCreateModel = AuditLogMapper.ToCreateModel(
             Guid.NewGuid(),
             "asd@asd.dasd",
             tenantId);
 
-        Result<Product> updatedProduct = await _productUseCase.UpdateAsync(
-            tenantId,
+        Result<Product> updatedProduct = await _productUseCase.UpdateCompanyProductAsync(
             productUpdateModel,
             auditStampCreateModel,
             cancellationToken);
 
-        return HandleResult(
-            result: updatedProduct,
-            mapper: CompanyProductMapper.ToResponse);
+        return HandleResult(result: updatedProduct);
     }
 
     [HttpDelete("{productId}")]
@@ -140,8 +138,9 @@ public class CompanyProductController(
             "asd@asd.dasd",
             tenantId);
 
-        Result deletedProduct = await _productUseCase.DeleteAsync(
+        Result deletedProduct = await _productUseCase.DeleteCompanyProductAsync(
             tenantId,
+            companyId,
             productId,
             auditStampCreateModel,
             cancellationToken);

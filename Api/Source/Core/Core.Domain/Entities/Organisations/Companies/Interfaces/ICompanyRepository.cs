@@ -16,7 +16,7 @@ public interface ICompanyRepository : ITenantedRepository<Company>
     /// <param name="tenantId">The tenant ID to filter companies by.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A result containing the paginated array of companies.</returns>
-    Task<Result<Company[]>> GetPaginatedAsync(
+    Task<Result<Company[]>> GetPaginatedCompaniesAsync(
         Guid tenantId,
         int page,
         int pageSize,

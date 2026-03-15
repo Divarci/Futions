@@ -1,19 +1,19 @@
 ﻿using Core.Domain.Entities.Organisations.People;
 using Core.Library.ResultPattern;
 
-namespace App.Services.Features.Organisations.Companies;
+namespace App.Services.Features.Organisations.People;
 
 internal sealed partial class PersonService
 {
-    public async Task<Result<TDto>> GetByIdAsync<TDto>(
+    public async Task<Result<TDto>> GetPersonByIdAsync<TDto>(
         Guid tenantId,
-        Guid id,
+        Guid personId,
         Func<Person, TDto> mapper,
         CancellationToken cancellationToken = default) where TDto : class
     {
         // Get the person by id and tenant id
         Result<Person> entityResult = await _personRepository
-            .GetByIdAsync(id, tenantId, cancellationToken);
+            .GetByIdAsync(personId, tenantId, cancellationToken);
 
         if (entityResult.IsFailureAndNoData)
             return Result<TDto>.Failure(

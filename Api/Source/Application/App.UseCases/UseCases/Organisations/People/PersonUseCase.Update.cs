@@ -7,20 +7,21 @@ namespace App.UseCases.UseCases.Organisations.People;
 
 internal sealed partial class PersonUseCase
 {
-    public async Task<Result> UpdateAsync(
-        Guid tenantId,
+    public async Task<Result> UpdatePersonAsync(
         PersonUpdateModel updateModel,
         AuditStampCreateModel auditStampCreateModel,
         CancellationToken cancellationToken = default)
     {
         return await _unitOfWork.ExecuteTransactionAsync(async () =>
         {
+            // Update person
             Result personUpdateResult = await _personService
-                .UpdateAsync(tenantId, updateModel, cancellationToken);
+                .UpdatePersonAsync(updateModel, cancellationToken);
 
             if (personUpdateResult.IsFailure)
                 return personUpdateResult;
 
+            // Create audit log
             Result<AuditLog> auditLogCreateResult = await _auditLogService
                 .CreateAsync(
                     updateModel.PersonId,

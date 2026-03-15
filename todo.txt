@@ -2,3 +2,5 @@
 - Custom exception
 - validation
 - Domain event handler
+- a.log mesaj
+- fail error details

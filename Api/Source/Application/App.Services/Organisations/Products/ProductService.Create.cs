@@ -6,7 +6,7 @@ namespace App.Services.Features.Organisations.Companies;
 
 internal sealed partial class ProductService
 {
-    public async Task<Result<Product>> CreateAsync(
+    public async Task<Result<Product>> CreateCompanyProductAsync(
         ProductCreateModel createModel,
         CancellationToken cancellationToken = default)
     {
@@ -29,7 +29,7 @@ internal sealed partial class ProductService
         await _repository.CreateAsync(productCreateResult.Data, cancellationToken);
 
         // Create cache key.
-        string cacheKey = $"{nameof(Product)}:tenant({createModel.TenantId}):id({productCreateResult.Data!.Id})";
+        string cacheKey = $"{nameof(Product)}:tenant({createModel.TenantId}):company({createModel.CompanyId}):product({productCreateResult.Data.Id})";
 
         // Invalidate the cache for the newly created product and the collections that may include it.
         await _cacheInvalidationService.InvalidateEntity(cacheKey);

@@ -8,7 +8,7 @@ namespace Infra.Persistence.Repositories.Organisations.Products;
 
 internal sealed partial class ProductRepository
 {
-    public async Task<Result<Product[]>> GetPaginatedAsync(
+    public async Task<Result<Product[]>> GetPaginatedCompanyProductsAsync(
         Guid tenantId,
         Guid companyId,
         int page,

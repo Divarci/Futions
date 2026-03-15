@@ -7,14 +7,13 @@ namespace App.Services.Features.Organisations.Companies;
 
 internal sealed partial class ProductService
 {
-    public async Task<Result<Product>> UpdateAsync(
-        Guid tenantId,
+    public async Task<Result<Product>> UpdateCompanyProductAsync(
         ProductUpdateModel updateModel,
         CancellationToken cancellationToken = default)
     {
         // Retrieve the product to update.
         Result<Product> productResult = await _repository
-            .GetByIdAsync(updateModel.ProductId, tenantId, cancellationToken);
+            .GetCompanyProductByIdAsync(updateModel.ProductId, updateModel.TenantId, updateModel.CompanyId, cancellationToken);
 
         if (productResult.IsFailureAndNoData)
             return productResult;

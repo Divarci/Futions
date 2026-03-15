@@ -2,11 +2,11 @@
 using Core.Domain.Entities.Organisations.People.Models;
 using Core.Library.ResultPattern;
 
-namespace App.Services.Features.Organisations.Companies;
+namespace App.Services.Features.Organisations.People;
 
 internal sealed partial class PersonService
 {
-    public async Task<Result<Person>> CreateAsync(
+    public async Task<Result<Person>> CreatePersonAsync(
         PersonCreateModel createModel,
         CancellationToken cancellationToken = default)
     {
@@ -20,7 +20,7 @@ internal sealed partial class PersonService
         await _personRepository.CreateAsync(personCreateResult.Data!, cancellationToken);
 
         // Create cache key
-        string cacheKey = $"{nameof(Person)}:tenant({createModel.TenantId}):id({personCreateResult.Data!.Id})";
+        string cacheKey = $"{nameof(Person)}:tenant({createModel.TenantId}):person({personCreateResult.Data.Id})";
 
         // Invalidate the cache for the newly created person and the collections that may include it.
         await _cacheInvalidationService.InvalidateEntity(cacheKey);

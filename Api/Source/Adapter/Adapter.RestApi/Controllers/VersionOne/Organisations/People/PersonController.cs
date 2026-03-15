@@ -1,4 +1,3 @@
-using Adapter.RestApi.AspNetCore.Extensions;
 using Adapter.RestApi.Controllers.Shared.Mappers;
 using Adapter.RestApi.Controllers.Shared.Models;
 using Adapter.RestApi.Controllers.VersionOne.Organisations.People.Models.Requests;
@@ -27,7 +26,7 @@ public class PersonController(
         [FromQuery] PaginationFilterModel filter,
         CancellationToken cancellationToken)
     {
-        PaginatedResult<PersonResponse[]> paginatedPeople = await _personUseCase.GetPaginatedAsync(
+        PaginatedResult<PersonResponse[]> paginatedPeople = await _personUseCase.GetPaginatedPeopleAsync(
             tenantId,
             filter.Page,
             filter.PageSize,
@@ -52,7 +51,7 @@ public class PersonController(
         Guid personId,
         CancellationToken cancellationToken)
     {
-        Result<PersonResponse> person = await _personUseCase.GetByIdAsync(
+        Result<PersonResponse> person = await _personUseCase.GetPersonByIdAsync(
             tenantId,
             personId,
             PersonMapper.ToResponse,
@@ -79,7 +78,7 @@ public class PersonController(
             "asd@asd.dasd",
             tenantId);
 
-        Result<Person> createdPerson = await _personUseCase.CreateAsync(
+        Result<Person> createdPerson = await _personUseCase.CreatePersonAsync(
             personCreateModel,
             auditLogCreateModel,
             cancellationToken);
@@ -102,14 +101,13 @@ public class PersonController(
         UpdatePersonRequest request,
         CancellationToken cancellationToken = default)
     {
-        PersonUpdateModel personUpdateModel = PersonMapper.ToUpdateModel(request, personId);
+        PersonUpdateModel personUpdateModel = PersonMapper.ToUpdateModel(request, tenantId, personId);
         AuditStampCreateModel auditStampCreateModel = AuditLogMapper.ToCreateModel(
             Guid.NewGuid(),
             "asd@asd.dasd",
             tenantId);
 
-        Result updatedPerson = await _personUseCase.UpdateAsync(
-            tenantId,
+        Result updatedPerson = await _personUseCase.UpdatePersonAsync(
             personUpdateModel,
             auditStampCreateModel,
             cancellationToken);
@@ -133,7 +131,7 @@ public class PersonController(
             "asd@asd.dasd",
             tenantId);
 
-        Result deletedPerson = await _personUseCase.DeleteAsync(
+        Result deletedPerson = await _personUseCase.DeletePersonAsync(
             tenantId,
             personId,
             auditStampCreateModel,

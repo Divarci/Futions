@@ -1,4 +1,5 @@
 ﻿using App.Services.Features.Organisations.Companies;
+using App.Services.Features.Organisations.People;
 using Core.Domain.Entities.Organisations.Companies.Interfaces;
 using Core.Domain.Entities.Organisations.CompanyPeople.Interfaces;
 using Core.Domain.Entities.Organisations.People.Interfaces;

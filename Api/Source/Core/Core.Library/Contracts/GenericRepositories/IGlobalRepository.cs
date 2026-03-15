@@ -12,21 +12,21 @@ public interface IGlobalRepository<TEntity> : IBaseRepository<TEntity>
     /// <summary>
     /// Retrieves an entity by its unique identifier.
     /// </summary>
-    /// <param name="id">The unique identifier of the entity.</param>
+    /// <param name="entityId">The unique identifier of the entity.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A result containing the entity if found.</returns>
     Task<Result<TEntity>> GetByIdAsync(
-        Guid id,
+        Guid entityId,
         CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Checks whether an entity with the specified identifier exists.
     /// </summary>
-    /// <param name="id">The unique identifier of the entity.</param>
+    /// <param name="entityId">The unique identifier of the entity.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A result indicating whether the entity exists.</returns>
     Task<Result<bool>> ExistsAsync(
-        Guid id,
+        Guid entityId,
         CancellationToken cancellationToken = default);
 
     /// <summary>

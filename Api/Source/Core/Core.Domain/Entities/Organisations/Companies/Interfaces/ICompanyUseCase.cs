@@ -5,7 +5,7 @@ using Core.Library.ResultPattern;
 namespace Core.Domain.Entities.Organisations.Companies.Interfaces;
 
 public interface ICompanyUseCase
-{    
+{
     /// <summary>
     /// Retrieves a paginated collection of companies based on the provided parameters.
     /// </summary>
@@ -15,9 +15,10 @@ public interface ICompanyUseCase
     /// <param name="sortByQuery">The field to sort by.</param>
     /// <param name="isAscendingQuery">Indicates whether the sorting should be in ascending order.</param>
     /// <param name="filterQuery">The filter criteria.</param>
+    /// <param name="mapper">A function to map the company entities to the desired DTO type.</param>
     /// <param name="cancellationToken">A token to cancel the operation.</param>
     /// <returns>A paginated result containing the company entities.</returns>
-    Task<PaginatedResult<TDto[]>> GetPaginatedAsync<TDto>(
+    Task<PaginatedResult<TDto[]>> GetPaginatedCompaniesAsync<TDto>(
         Guid tenantId,
         int? pageQuery,
         int? pageSizeQuery,
@@ -31,12 +32,13 @@ public interface ICompanyUseCase
     /// Retrieves a company by its ID.
     /// </summary>
     /// <param name="tenantId">The tenant ID.</param>
-    /// <param name="id">The company ID.</param>
+    /// <param name="companyId">The company ID.</param>
+    /// <param name="mapper">A function to map the company entity to the desired DTO type.</param>
     /// <param name="cancellationToken">A token to cancel the operation.</param>
     /// <returns>A result containing the company if found, or an error if not.</returns>
-    Task<Result<TDto>> GetByIdAsync<TDto>(
+    Task<Result<TDto>> GetCompanyByIdAsync<TDto>(
         Guid tenantId,
-        Guid id,
+        Guid companyId,
         Func<Company, TDto> mapper,
         CancellationToken cancellationToken = default) where TDto : class;
     
@@ -47,7 +49,7 @@ public interface ICompanyUseCase
     /// <param name="auditStampCreateModel">The audit stamp create model.</param>
     /// <param name="cancellationToken">A token to cancel the operation.</param>
     /// <returns>A result containing the created company if successful, or an error if not.</returns>
-    Task<Result<Company>> CreateAsync(
+    Task<Result<Company>> CreateCompanyAsync(
         CompanyCreateModel createModel,
         AuditStampCreateModel auditStampCreateModel,
         CancellationToken cancellationToken = default);
@@ -55,13 +57,11 @@ public interface ICompanyUseCase
     /// <summary>
     /// Updates an existing company entity.
     /// </summary>
-    /// <param name="tenantId">The tenant ID.</param>
     /// <param name="updateModel">The company update model.</param>
     /// <param name="auditStampCreateModel">The audit stamp create model.</param>
     /// <param name="cancellationToken">A token to cancel the operation.</param>
     /// <returns>A result indicating the success or failure of the update operation.</returns>
-    Task<Result> UpdateAsync(
-        Guid tenantId,
+    Task<Result> UpdateCompanyAsync(
         CompanyUpdateModel updateModel,
         AuditStampCreateModel auditStampCreateModel,
         CancellationToken cancellationToken = default);
@@ -70,13 +70,13 @@ public interface ICompanyUseCase
     /// Deletes an existing company entity.
     /// </summary>
     /// <param name="tenantId">The tenant ID.</param>
-    /// <param name="id">The company ID.</param>
+    /// <param name="companyId">The company ID.</param>
     /// <param name="auditStampCreateModel">The audit stamp create model.</param>
     /// <param name="cancellationToken">A token to cancel the operation.</param>
     /// <returns>A result indicating the success or failure of the delete operation.</returns>
-    Task<Result> DeleteAsync(
+    Task<Result> DeleteCompanyAsync(
         Guid tenantId,
-        Guid id,
+        Guid companyId,
         AuditStampCreateModel auditStampCreateModel,
         CancellationToken cancellationToken = default);
 

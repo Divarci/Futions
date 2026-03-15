@@ -7,14 +7,13 @@ namespace App.Services.Features.Organisations.Companies;
 
 internal sealed partial class CompanyPersonService
 {
-    public async Task<Result> UpdateAsync(
-        Guid tenantId,
+    public async Task<Result> UpdateCompanyPersonAsync(
         CompanyPersonUpdateModel updateModel,
         CancellationToken cancellationToken = default)
     {
         // Retrieve the company person to update.
         Result<CompanyPerson> companyPersonResult = await _companyPersonRepository
-            .GetByIdAsync(tenantId, updateModel.CompanyPersonId, cancellationToken);
+            .GetCompanyPersonByIdAsync(updateModel.TenantId, updateModel.CompanyId, updateModel.CompanyPersonId, cancellationToken);
 
         if (companyPersonResult.IsFailureAndNoData)
             return companyPersonResult;

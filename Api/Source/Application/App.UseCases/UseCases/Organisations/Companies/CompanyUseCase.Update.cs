@@ -7,8 +7,7 @@ namespace App.UseCases.UseCases.Organisations.Companies;
 
 internal sealed partial class CompanyUseCase
 {
-        public async Task<Result> UpdateAsync(
-            Guid tenantId,
+        public async Task<Result> UpdateCompanyAsync(
             CompanyUpdateModel updateModel,
             AuditStampCreateModel auditStampCreateModel,
             CancellationToken cancellationToken = default)
@@ -17,7 +16,7 @@ internal sealed partial class CompanyUseCase
             {
                 // Update company
                 Result companyUpdateResult = await _companyService
-                    .UpdateAsync(tenantId, updateModel, cancellationToken);
+                    .UpdateCompanyAsync(updateModel, cancellationToken);
     
                 if (companyUpdateResult.IsFailure)
                     return companyUpdateResult;

@@ -15,9 +15,10 @@ public interface IProductService
     /// <param name="sortBy">The field to sort by.</param>
     /// <param name="isAscending">Sort direction: true for ascending, false for descending.</param>
     /// <param name="filterQuery">Optional filter string.</param>
+    /// <param name="mapper">Mapper function</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A result containing the paginated array of products.</returns>
-    Task<PaginatedResult<TDto[]>> GetPaginatedAsync<TDto>(
+    Task<PaginatedResult<TDto[]>> GetPaginatedCompanyProductsAsync<TDto>(
         Guid tenantId,
         Guid companyId,
         int page,
@@ -29,15 +30,18 @@ public interface IProductService
         CancellationToken cancellationToken = default) where TDto : class;
 
     /// <summary>
-    /// Retrieves a product by its unique identifier.
+    /// Retrieves a product by its ID.
     /// </summary>
     /// <param name="tenantId">The tenant ID.</param>
-    /// <param name="id">The product ID.</param>
-    /// <param name="cancellationToken">Cancellation token.</param>
-    /// <returns>A result containing the product if found.</returns>
-    Task<Result<TDto>> GetByIdAsync<TDto>(
+    /// <param name="companyId">The company ID.</param>
+    /// <param name="productId">The product ID.</param>
+    /// <param name="mapper">Mapper function</param>
+    /// <param name="cancellationToken">A token to cancel the operation.</param>
+    /// <returns>A result containing the product if found, or an error if not.</returns>
+    Task<Result<TDto>> GetCompanyProductByIdAsync<TDto>(
         Guid tenantId,
-        Guid id,
+        Guid companyId,
+        Guid productId,
         Func<Product, TDto> mapper,
         CancellationToken cancellationToken = default) where TDto : class;
 
@@ -47,19 +51,17 @@ public interface IProductService
     /// <param name="createModel">The product create model.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A result containing the created product.</returns>
-    Task<Result<Product>> CreateAsync(
+    Task<Result<Product>> CreateCompanyProductAsync(
         ProductCreateModel createModel,
         CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Updates an existing product entity.
     /// </summary>
-    /// <param name="tenantId">The tenant ID.</param>
     /// <param name="updateModel">The product update model.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A result containing the updated product.</returns>
-    Task<Result<Product>> UpdateAsync(
-        Guid tenantId,
+    Task<Result<Product>> UpdateCompanyProductAsync(
         ProductUpdateModel updateModel,
         CancellationToken cancellationToken = default);
 
@@ -67,11 +69,13 @@ public interface IProductService
     /// Deletes a product entity.
     /// </summary>
     /// <param name="tenantId">The tenant ID.</param>
-    /// <param name="id">The product ID.</param>
+    /// <param name="companyId">The company ID.</param>
+    /// <param name="productId">The product ID.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A result indicating the outcome of the delete operation.</returns>
-    Task<Result> DeleteAsync(
+    Task<Result> DeleteCompanyProductAsync(
         Guid tenantId,
-        Guid id,
+        Guid companyId,
+        Guid productId,
         CancellationToken cancellationToken = default);
 }

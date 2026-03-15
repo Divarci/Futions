@@ -6,36 +6,42 @@ namespace Core.Domain.Entities.Organisations.CompanyPeople.Interfaces;
 public interface ICompanyPersonService
 {
     /// <summary>
-    /// Retrieves a paginated list of company people according to the specified parameters.
+    /// Retrieves a paginated collection of company people based on the provided parameters.
     /// </summary>
     /// <param name="tenantId">The tenant ID.</param>
-    /// <param name="page">The page number (1-based).</param>
-    /// <param name="pageSize">The number of items per page.</param>
-    /// <param name="sortBy">The field to sort by.</param>
-    /// <param name="isAscending">Sort direction: true for ascending, false for descending.</param>
-    /// <param name="filterQuery">Optional filter string.</param>
-    /// <param name="cancellationToken">Cancellation token.</param>
-    /// <returns>A result containing the paginated array of company people.</returns>
-    Task<PaginatedResult<TDto[]>> GetPaginatedAsync<TDto>(
+    /// <param name="companyId">The company ID.</param>
+    /// <param name="pageQuery">The page number.</param>
+    /// <param name="pageSizeQuery">The page size.</param>
+    /// <param name="sortByQuery">The field to sort by.</param>
+    /// <param name="isAscendingQuery">Indicates whether the sorting should be in ascending order.</param>
+    /// <param name="filterQuery">The filter criteria.</param>
+    /// <param name="mapper">Mapper function</param>
+    /// <param name="cancellationToken">A token to cancel the operation.</param>
+    /// <returns>A paginated result containing the company person entities.</returns>
+    Task<PaginatedResult<TDto[]>> GetPaginatedCompanyPeopleAsync<TDto>(
         Guid tenantId,
-        int page,
-        int pageSize,
-        string sortBy,
-        bool isAscending,
-        string? filterQuery,
+        Guid companyId,
+        int pageQuery,
+        int pageSizeQuery,
+        string sortByQuery,
+        bool isAscendingQuery,
+        string filterQuery,
         Func<CompanyPerson[], TDto[]> mapper,
         CancellationToken cancellationToken = default) where TDto : class;
 
     /// <summary>
-    /// Retrieves a company person by its unique identifier.
+    /// Retrieves a company person by its ID.
     /// </summary>
     /// <param name="tenantId">The tenant ID.</param>
-    /// <param name="id">The company person ID.</param>
-    /// <param name="cancellationToken">Cancellation token.</param>
-    /// <returns>A result containing the company person if found.</returns>
-    Task<Result<TDto>> GetByIdAsync<TDto>(
+    /// <param name="companyId">The company ID.</param>
+    /// <param name="companyPersonId">The company person ID.</param>
+    /// <param name="mapper">Mapper function</param>
+    /// <param name="cancellationToken">A token to cancel the operation.</param>
+    /// <returns>A result containing the company person if found, or an error if not.</returns>
+    Task<Result<TDto>> GetCompanyPersonByIdAsync<TDto>(
         Guid tenantId,
-        Guid id,
+        Guid companyId,
+        Guid companyPersonId,
         Func<CompanyPerson, TDto> mapper,
         CancellationToken cancellationToken = default) where TDto : class;
 
@@ -46,7 +52,7 @@ public interface ICompanyPersonService
     /// <param name="createModel">The company person create model.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A result containing the created company person.</returns>
-    Task<Result<CompanyPerson>> CreateAsync(
+    Task<Result<CompanyPerson>> CreateCompanyPersonAsync(
         Guid tenantId,
         CompanyPersonCreateModel createModel,
         CancellationToken cancellationToken = default);
@@ -54,12 +60,10 @@ public interface ICompanyPersonService
     /// <summary>
     /// Updates an existing company person entity.
     /// </summary>
-    /// <param name="tenantId">The tenant ID.</param>
     /// <param name="updateModel">The company person update model.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A result indicating the outcome of the update operation.</returns>
-    Task<Result> UpdateAsync(
-        Guid tenantId,
+    Task<Result> UpdateCompanyPersonAsync(
         CompanyPersonUpdateModel updateModel,
         CancellationToken cancellationToken = default);
 
@@ -67,11 +71,13 @@ public interface ICompanyPersonService
     /// Hard deletes a company person entity.
     /// </summary>
     /// <param name="tenantId">The tenant ID.</param>
-    /// <param name="id">The company person ID.</param>
+    /// <param name="companyId">The company ID.</param>
+    /// <param name="companyPersonId">The company person ID.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A result indicating the outcome of the delete operation.</returns>
-    Task<Result> DeleteAsync(
+    Task<Result> DeleteCompanyPersonAsync(
         Guid tenantId,
-        Guid id,
+        Guid companyId,
+        Guid companyPersonId,
         CancellationToken cancellationToken = default);
 }

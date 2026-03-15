@@ -1,11 +1,11 @@
 ﻿using Core.Domain.Entities.Organisations.People;
 using Core.Library.ResultPattern;
 
-namespace App.Services.Features.Organisations.Companies;
+namespace App.Services.Features.Organisations.People;
 
 internal sealed partial class PersonService
 {
-    public async Task<PaginatedResult<TDto[]>> GetPaginatedAsync<TDto>(
+    public async Task<PaginatedResult<TDto[]>> GetPaginatedPeopleAsync<TDto>(
         Guid tenantId,
         int page,
         int pageSize,
@@ -17,7 +17,7 @@ internal sealed partial class PersonService
     {
         // Get paginated list of people for the tenant
         Result<Person[]> entityResult = await _personRepository
-            .GetPaginatedAsync(tenantId, page, pageSize, sortBy, isAscending, filterQuery, cancellationToken);
+            .GetPaginatedPeopleAsync(tenantId, page, pageSize, sortBy, isAscending, filterQuery, cancellationToken);
 
         if (entityResult.IsFailure)
             return PaginatedResult<TDto[]>.Failure(

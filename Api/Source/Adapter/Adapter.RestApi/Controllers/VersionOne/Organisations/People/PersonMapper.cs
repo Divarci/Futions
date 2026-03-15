@@ -26,9 +26,10 @@ internal static class PersonMapper
             FullnameModel = FullnameMaper.ToUpdateModel(request.Fullname!)
         };
 
-    internal static PersonUpdateModel ToUpdateModel(UpdatePersonRequest request, Guid personId)
+    internal static PersonUpdateModel ToUpdateModel(UpdatePersonRequest request, Guid tenantId, Guid personId)
         => new()
         {
+            TenantId = tenantId,
             PersonId = personId,
             FullnameModel = request.Fullname is not null
                 ? FullnameMaper.ToUpdateModel(request.Fullname)

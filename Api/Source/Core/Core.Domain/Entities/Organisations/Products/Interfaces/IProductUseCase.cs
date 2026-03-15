@@ -16,9 +16,10 @@ public interface IProductUseCase
     /// <param name="sortByQuery">The field to sort by.</param>
     /// <param name="isAscendingQuery">Indicates whether the sorting should be in ascending order.</param>
     /// <param name="filterQuery">The filter criteria.</param>
+    /// <param name="mapper">Mapper function</param>
     /// <param name="cancellationToken">A token to cancel the operation.</param>
     /// <returns>A paginated result containing the product entities.</returns>
-    Task<PaginatedResult<TDto[]>> GetPaginatedAsync<TDto>(
+    Task<PaginatedResult<TDto[]>> GetPaginatedCompanyProductsAsync<TDto>(
         Guid tenantId,
         Guid companyId,
         int? pageQuery,
@@ -33,12 +34,15 @@ public interface IProductUseCase
     /// Retrieves a product by its ID.
     /// </summary>
     /// <param name="tenantId">The tenant ID.</param>
-    /// <param name="id">The product ID.</param>
+    /// <param name="companyId">The company ID.</param>
+    /// <param name="productId">The product ID.</param>
+    /// <param name="mapper">Mapper function</param>
     /// <param name="cancellationToken">A token to cancel the operation.</param>
     /// <returns>A result containing the product if found, or an error if not.</returns>
-    Task<Result<TDto>> GetByIdAsync<TDto>(
+    Task<Result<TDto>> GetCompanyProductByIdAsync<TDto>(
         Guid tenantId,
-        Guid id,
+        Guid companyId,
+        Guid productId,
         Func<Product, TDto> mapper,
         CancellationToken cancellationToken = default) where TDto : class;
 
@@ -49,7 +53,7 @@ public interface IProductUseCase
     /// <param name="auditStampCreateModel">The audit stamp create model.</param>
     /// <param name="cancellationToken">A token to cancel the operation.</param>
     /// <returns>A result containing the created product if successful, or an error if not.</returns>
-    Task<Result<Product>> CreateAsync(
+    Task<Result<Product>> CreateCompanyProductAsync(
         ProductCreateModel createModel,
         AuditStampCreateModel auditStampCreateModel,
         CancellationToken cancellationToken = default);
@@ -57,13 +61,11 @@ public interface IProductUseCase
     /// <summary>
     /// Updates an existing product entity.
     /// </summary>
-    /// <param name="tenantId">The tenant ID.</param>
     /// <param name="updateModel">The product update model.</param>
     /// <param name="auditStampCreateModel">The audit stamp create model.</param>
     /// <param name="cancellationToken">A token to cancel the operation.</param>
     /// <returns>A result containing the updated product if successful, or an error if not.</returns>
-    Task<Result<Product>> UpdateAsync(
-        Guid tenantId,
+    Task<Result<Product>> UpdateCompanyProductAsync(
         ProductUpdateModel updateModel,
         AuditStampCreateModel auditStampCreateModel,
         CancellationToken cancellationToken = default);
@@ -72,13 +74,15 @@ public interface IProductUseCase
     /// Deletes an existing product entity.
     /// </summary>
     /// <param name="tenantId">The tenant ID.</param>
-    /// <param name="id">The product ID.</param>
+    /// <param name="companyId">The company ID</param>
+    /// <param name="productId">The product ID.</param>
     /// <param name="auditStampCreateModel">The audit stamp create model.</param>
     /// <param name="cancellationToken">A token to cancel the operation.</param>
     /// <returns>A result indicating the success or failure of the delete operation.</returns>
-    Task<Result> DeleteAsync(
+    Task<Result> DeleteCompanyProductAsync(
         Guid tenantId,
-        Guid id,
+        Guid companyId,
+        Guid productId,
         AuditStampCreateModel auditStampCreateModel,
         CancellationToken cancellationToken = default);
 }

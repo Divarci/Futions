@@ -8,8 +8,7 @@ namespace App.UseCases.UseCases.Organisations.Products;
 
 internal sealed partial class ProductUseCase
 {
-    public async Task<Result<Product>> UpdateAsync(
-        Guid tenantId,
+    public async Task<Result<Product>> UpdateCompanyProductAsync(
         ProductUpdateModel updateModel,
         AuditStampCreateModel auditStampCreateModel,
         CancellationToken cancellationToken = default)
@@ -18,7 +17,7 @@ internal sealed partial class ProductUseCase
         {
             // Update product.
             Result<Product> productUpdateResult = await _productService
-                .UpdateAsync(tenantId, updateModel, cancellationToken);
+                .UpdateCompanyProductAsync(updateModel, cancellationToken);
 
             if (productUpdateResult.IsFailureAndNoData)
                 return productUpdateResult;

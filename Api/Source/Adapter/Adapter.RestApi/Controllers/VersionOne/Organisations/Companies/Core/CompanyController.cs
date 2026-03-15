@@ -26,7 +26,7 @@ public class CompanyController(
         [FromQuery] PaginationFilterModel filter,
         CancellationToken cancellationToken)
     {
-        PaginatedResult<CompanyResponse[]> paginatedCompanies = await _companyUseCase.GetPaginatedAsync(
+        PaginatedResult<CompanyResponse[]> paginatedCompanies = await _companyUseCase.GetPaginatedCompaniesAsync(
             tenantId,
             filter.Page,
             filter.PageSize,
@@ -51,7 +51,7 @@ public class CompanyController(
         Guid companyId,
         CancellationToken cancellationToken)
     {
-        Result<CompanyResponse> company = await _companyUseCase.GetByIdAsync(
+        Result<CompanyResponse> company = await _companyUseCase.GetCompanyByIdAsync(
             tenantId,
             companyId,
             CompanyMapper.ToResponse,
@@ -78,7 +78,7 @@ public class CompanyController(
             "asd@asd.dasd",
             tenantId);
 
-        Result<Company> createdCompany = await _companyUseCase.CreateAsync(
+        Result<Company> createdCompany = await _companyUseCase.CreateCompanyAsync(
             companyCreateModel,
             auditLogCreateModel,
             cancellationToken);
@@ -101,14 +101,13 @@ public class CompanyController(
         UpdateCompanyRequest request,
         CancellationToken cancellationToken = default)
     {
-        CompanyUpdateModel companyUpdateModel = CompanyMapper.ToUpdateModel(request, companyId);
+        CompanyUpdateModel companyUpdateModel = CompanyMapper.ToUpdateModel(request, tenantId, companyId);
         AuditStampCreateModel auditStampCreateModel = AuditLogMapper.ToCreateModel(
             Guid.NewGuid(),
             "asd@asd.dasd",
             tenantId);
 
-        Result updatedCompany = await _companyUseCase.UpdateAsync(
-            tenantId,
+        Result updatedCompany = await _companyUseCase.UpdateCompanyAsync(
             companyUpdateModel,
             auditStampCreateModel,
             cancellationToken);
@@ -132,7 +131,7 @@ public class CompanyController(
             "asd@asd.dasd",
             tenantId);
 
-        Result deletedCompany = await _companyUseCase.DeleteAsync(
+        Result deletedCompany = await _companyUseCase.DeleteCompanyAsync(
             tenantId,
             companyId,
             auditStampCreateModel,

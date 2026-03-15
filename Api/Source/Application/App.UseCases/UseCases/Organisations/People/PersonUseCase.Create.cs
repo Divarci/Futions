@@ -8,7 +8,7 @@ namespace App.UseCases.UseCases.Organisations.People;
 
 internal sealed partial class PersonUseCase
 {
-    public async Task<Result<Person>> CreateAsync(
+    public async Task<Result<Person>> CreatePersonAsync(
         PersonCreateModel createModel,
         AuditStampCreateModel auditStampCreateModel,
         CancellationToken cancellationToken = default)
@@ -16,7 +16,7 @@ internal sealed partial class PersonUseCase
         return await _unitOfWork.ExecuteTransactionAsync(async () =>
         {
             Result<Person> personCreateResult = await _personService
-                .CreateAsync(createModel, cancellationToken);
+                .CreatePersonAsync(createModel, cancellationToken);
 
             if (personCreateResult.IsFailureAndNoData)
                 return personCreateResult;

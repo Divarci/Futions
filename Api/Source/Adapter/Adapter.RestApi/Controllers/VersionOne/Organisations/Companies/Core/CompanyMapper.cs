@@ -28,9 +28,10 @@ internal static class CompanyMapper
             Name = request.Name!
         };
 
-    internal static CompanyUpdateModel ToUpdateModel(UpdateCompanyRequest request, Guid companyId)
+    internal static CompanyUpdateModel ToUpdateModel(UpdateCompanyRequest request,Guid tenantId, Guid companyId)
         => new()
         {
+            TenantId = tenantId,
             CompanyId = companyId,
             Name = request.Name,
             AddressModel = request.Address is not null

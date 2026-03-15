@@ -8,7 +8,7 @@ namespace Infra.Persistence.Repositories.Organisations.Companies;
 
 internal sealed partial class CompanyRepository
 {
-    public async Task<Result<Company[]>> GetPaginatedAsync(
+    public async Task<Result<Company[]>> GetPaginatedCompaniesAsync(
         Guid tenantId,
         int page, 
         int pageSize,

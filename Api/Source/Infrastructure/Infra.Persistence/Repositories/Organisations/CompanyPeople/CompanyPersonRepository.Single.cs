@@ -7,16 +7,18 @@ namespace Infra.Persistence.Repositories.Organisations.CompanyPeople;
 
 internal sealed partial class CompanyPersonRepository
 {
-    public async Task<Result<CompanyPerson>> GetByIdAsync(
+    public async Task<Result<CompanyPerson>> GetCompanyPersonByIdAsync(
         Guid tenantId,
-        Guid id,
+        Guid companyId,
+        Guid companyPersonId,
         CancellationToken cancellationToken = default)
     {
         CompanyPerson? companyPerson = await _context.Set<CompanyPerson>()
             .AsNoTracking()
-            .FirstOrDefaultAsync(x => x.Id == id && 
+            .SingleOrDefaultAsync(x => x.Id == companyPersonId && 
                 x.Company.TenantId == tenantId && 
                 x.Person.TenantId == tenantId && 
+                x.CompanyId == companyId &&
                 !x.Company.IsDeleted && 
                 !x.Person.IsDeleted, 
                 cancellationToken);

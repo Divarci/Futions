@@ -51,6 +51,7 @@ internal sealed partial class CompanyPersonRepository
 
     public async Task<Result<bool>> CheckIfBelongsToTenantAsync(
         Guid tenantId,
+        Guid companyId,
         Guid companyPersonId,
         CancellationToken cancellationToken = default)
     {
@@ -60,6 +61,7 @@ internal sealed partial class CompanyPersonRepository
                 x.Id == companyPersonId &&
                 x.Company.TenantId == tenantId &&
                 x.Person.TenantId == tenantId &&
+                x.CompanyId == companyId &&
                 !x.Company.IsDeleted &&
                 !x.Person.IsDeleted,
                 cancellationToken);

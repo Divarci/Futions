@@ -6,9 +6,10 @@ namespace App.UseCases.UseCases.Organisations.CompanyPeople;
 
 internal sealed partial class CompanyPersonUseCase
 {
-    public async Task<Result> DeleteAsync(
+    public async Task<Result> DeleteCompanyPersonAsync(
         Guid tenantId,
-        Guid id,
+        Guid companyId,
+        Guid companyPersonId,
         AuditStampCreateModel auditStampCreateModel,
         CancellationToken cancellationToken = default)
     {
@@ -16,7 +17,7 @@ internal sealed partial class CompanyPersonUseCase
         {
             // Delete company person.
             Result companyPersonDeleteResult = await _companyPersonService
-                .DeleteAsync(tenantId, id, cancellationToken);
+                .DeleteCompanyPersonAsync(tenantId, companyId, companyPersonId, cancellationToken);
 
             if (companyPersonDeleteResult.IsFailure)
                 return companyPersonDeleteResult;
@@ -24,8 +25,8 @@ internal sealed partial class CompanyPersonUseCase
             // Create audit log.
             Result<AuditLog> auditLogCreateResult = await _auditLogService
                 .CreateAsync(
-                    id,
-                    $"Company person with ID {id} has been deleted by {auditStampCreateModel.Username}.",
+                    companyPersonId,
+                    $"Company person with ID {companyPersonId} has been deleted by {auditStampCreateModel.Username}.",
                     auditStampCreateModel,
                     cancellationToken);
 

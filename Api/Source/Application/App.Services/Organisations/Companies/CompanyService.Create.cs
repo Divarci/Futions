@@ -6,7 +6,7 @@ namespace App.Services.Features.Organisations.Companies;
 
 internal sealed partial class CompanyService
 {
-    public async Task<Result<Company>> CreateAsync(
+    public async Task<Result<Company>> CreateCompanyAsync(
         CompanyCreateModel createModel,
         CancellationToken cancellationToken = default)
     {
@@ -20,7 +20,7 @@ internal sealed partial class CompanyService
         await _companyRepository.CreateAsync(companyCreateResult.Data!, cancellationToken);
 
         // Create cache key
-        string cacheKey = $"{nameof(Company)}:tenant({createModel.TenantId}):id({companyCreateResult.Data.Id})";
+        string cacheKey = $"{nameof(Company)}:tenant({createModel.TenantId}):company({companyCreateResult.Data.Id})";
 
         // Invalidate the cache for the newly created company and the collections that may include it.
         await _cacheInvalidationService.InvalidateEntity(cacheKey);

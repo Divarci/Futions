@@ -28,9 +28,11 @@ internal static class CompanyProductMapper
             Price = request.Price!.Value
         };
 
-    internal static ProductUpdateModel ToUpdateModel(UpdateCompanyProductRequest request, Guid productId)
+    internal static ProductUpdateModel ToUpdateModel(UpdateCompanyProductRequest request,Guid tenantId, Guid companyId, Guid productId)
         => new()
         {
+            TenantId = tenantId,
+            CompanyId = companyId,
             ProductId = productId,
             Name = request.Name,
             Price = request.Price

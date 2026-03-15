@@ -3,18 +3,17 @@ using Core.Domain.Entities.Organisations.People.Models;
 using Core.Library.ResultPattern;
 using System.Net;
 
-namespace App.Services.Features.Organisations.Companies;
+namespace App.Services.Features.Organisations.People;
 
 internal sealed partial class PersonService
 {
-    public async Task<Result> UpdateAsync(
-        Guid tenantId,
+    public async Task<Result> UpdatePersonAsync(
         PersonUpdateModel updateModel,
         CancellationToken cancellationToken = default)
     {
         // Get the person by id and tenant id
         Result<Person> personResult = await _personRepository
-            .GetByIdAsync(updateModel.PersonId, tenantId, cancellationToken);
+            .GetByIdAsync(updateModel.PersonId, updateModel.TenantId, cancellationToken);
 
         if (personResult.IsFailureAndNoData)
             return personResult;
@@ -42,7 +41,15 @@ internal sealed partial class PersonService
                 return updateEmailResult;
         }
 
+        // Persist the updated person entity
         _personRepository.Update(person);
+
+        // Create cache key
+        string cacheKey = $"{nameof(Person)}:tenant({updateModel.TenantId}):person({updateModel.PersonId})";
+
+        // Invalidate the cache for the updated person and the collections that may include it.
+        await _cacheInvalidationService.InvalidateEntity(cacheKey);
+        await _cacheInvalidationService.InvalidateCollections();
 
         return Result.Success(
             message: "Person updated successfully.",

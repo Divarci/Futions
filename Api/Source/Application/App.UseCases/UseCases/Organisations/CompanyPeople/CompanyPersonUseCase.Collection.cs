@@ -6,8 +6,9 @@ namespace App.UseCases.UseCases.Organisations.CompanyPeople;
 
 internal sealed partial class CompanyPersonUseCase
 {
-    public async Task<PaginatedResult<TDto[]>> GetPaginatedAsync<TDto>(
+    public async Task<PaginatedResult<TDto[]>> GetPaginatedCompanyPeopleAsync<TDto>(
         Guid tenantId,
+        Guid companyId,
         int? pageQuery,
         int? pageSizeQuery,
         string? sortByQuery,
@@ -26,15 +27,15 @@ internal sealed partial class CompanyPersonUseCase
         // Generate a cache key based on the method parameters.
         string cacheKey = CacheKeyHelper.Collection(
             nameof(CompanyPerson),
-            nameof(GetPaginatedAsync),
-            [tenantId, page, size, sortBy, ascending, filterQuery ?? string.Empty]);
+            nameof(GetPaginatedCompanyPeopleAsync),
+            [tenantId, companyId, page, size, sortBy, ascending, filterQuery ?? string.Empty]);
 
         // Attempt to retrieve the paginated collection from the cache, or call the service method if not cached.
         PaginatedResult<TDto[]> retrievalResult = await _cacheProvider.GetPaginatedCollection(
             cacheKey: cacheKey,
             useCache: true,
-            serviceCall: async () => await _companyPersonService.GetPaginatedAsync(
-                tenantId, page, size, sortBy, ascending,
+            serviceCall: async () => await _companyPersonService.GetPaginatedCompanyPeopleAsync(
+                tenantId, companyId, page, size, sortBy, ascending,
                 filterQuery, mapper, cancellationToken),
             _timeout);
 

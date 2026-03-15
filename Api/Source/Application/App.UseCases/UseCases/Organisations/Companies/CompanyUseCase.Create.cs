@@ -8,7 +8,7 @@ namespace App.UseCases.UseCases.Organisations.Companies;
 
 internal sealed partial class CompanyUseCase
 {
-    public async Task<Result<Company>> CreateAsync(
+    public async Task<Result<Company>> CreateCompanyAsync(
         CompanyCreateModel createModel,
         AuditStampCreateModel auditStampCreateModel,
         CancellationToken cancellationToken = default)
@@ -17,7 +17,7 @@ internal sealed partial class CompanyUseCase
         {
             // Create company
             Result<Company> companyCreateResult = await _companyService
-                .CreateAsync(createModel, cancellationToken);
+                .CreateCompanyAsync(createModel, cancellationToken);
 
             if (companyCreateResult.IsFailureAndNoData)
                 return companyCreateResult;

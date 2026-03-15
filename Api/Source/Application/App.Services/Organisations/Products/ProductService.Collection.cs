@@ -5,7 +5,7 @@ namespace App.Services.Features.Organisations.Companies;
 
 internal sealed partial class ProductService
 {
-    public async Task<PaginatedResult<TDto[]>> GetPaginatedAsync<TDto>(
+    public async Task<PaginatedResult<TDto[]>> GetPaginatedCompanyProductsAsync<TDto>(
         Guid tenantId,
         Guid companyId,
         int page,
@@ -16,18 +16,18 @@ internal sealed partial class ProductService
         Func<Product[], TDto[]> mapper,
         CancellationToken cancellationToken = default) where TDto : class
     {
-        // Get paginated list of products for the specified tenant
+        // Get paginated list of company products for the specified tenant
         Result<Product[]> entityResult = await _repository
-            .GetPaginatedAsync(tenantId, companyId, page, pageSize, sortBy, isAscending, filterQuery, cancellationToken);
+            .GetPaginatedCompanyProductsAsync(tenantId, companyId, page, pageSize, sortBy, isAscending, filterQuery, cancellationToken);
 
         if (entityResult.IsFailure)
             return PaginatedResult<TDto[]>.Failure(
                 message: entityResult.Message,
                 statusCode: entityResult.StatusCode);
 
-        // Get total count of products for the specified tenant
+        // Get total count of company products for the specified tenant
         Result<int> totalCountResult = await _repository
-            .CountAsync(tenantId, cancellationToken);
+            .CountCompanyProductsAsync(tenantId, companyId, cancellationToken);
 
         if (totalCountResult.IsFailure)
             return PaginatedResult<TDto[]>.Failure(

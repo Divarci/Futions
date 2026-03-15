@@ -6,9 +6,10 @@ namespace App.UseCases.UseCases.Organisations.Products;
 
 internal sealed partial class ProductUseCase
 {
-    public async Task<Result> DeleteAsync(
+    public async Task<Result> DeleteCompanyProductAsync(
         Guid tenantId,
-        Guid id,
+        Guid companyId,
+        Guid productId,
         AuditStampCreateModel auditStampCreateModel,
         CancellationToken cancellationToken = default)
     {
@@ -16,7 +17,7 @@ internal sealed partial class ProductUseCase
         {
             // Delete product.
             Result productDeleteResult = await _productService
-                .DeleteAsync(tenantId, id, cancellationToken);
+                .DeleteCompanyProductAsync(tenantId, companyId, productId, cancellationToken);
 
             if (productDeleteResult.IsFailure)
                 return productDeleteResult;
@@ -24,8 +25,8 @@ internal sealed partial class ProductUseCase
             // Create audit log.
             Result<AuditLog> auditLogCreateResult = await _auditLogService
                 .CreateAsync(
-                    id,
-                    $"Product with ID {id} has been deleted by {auditStampCreateModel.Username}.",
+                    productId,
+                    $"Product with ID {productId} has been deleted by {auditStampCreateModel.Username}.",
                     auditStampCreateModel,
                     cancellationToken);
 

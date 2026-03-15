@@ -7,14 +7,13 @@ namespace App.Services.Features.Organisations.Companies;
 
 internal sealed partial class CompanyService
 {
-    public async Task<Result> UpdateAsync(
-        Guid tenantId,
+    public async Task<Result> UpdateCompanyAsync(
         CompanyUpdateModel updateModel,
         CancellationToken cancellationToken = default)
     {
         // Retrieve the company to update
         Result<Company> companyResult = await _companyRepository
-            .GetByIdAsync(updateModel.CompanyId, tenantId, cancellationToken);
+            .GetByIdAsync(updateModel.CompanyId, updateModel.TenantId, cancellationToken);
 
         if (companyResult.IsFailureAndNoData)
             return companyResult;
@@ -44,6 +43,13 @@ internal sealed partial class CompanyService
 
         // Persist the updated company entity
         _companyRepository.Update(company);
+
+        // Create cache key
+        string cacheKey = $"{nameof(Company)}:tenant({updateModel.TenantId}):company({updateModel.CompanyId})";
+
+        // Invalidate the cache for the newly created company and the collections that may include it.
+        await _cacheInvalidationService.InvalidateEntity(cacheKey);
+        await _cacheInvalidationService.InvalidateCollections();
 
         return Result.Success(
             message: "Company updated successfully.",

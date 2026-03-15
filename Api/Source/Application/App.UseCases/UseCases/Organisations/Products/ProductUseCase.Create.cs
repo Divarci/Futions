@@ -8,7 +8,7 @@ namespace App.UseCases.UseCases.Organisations.Products;
 
 internal sealed partial class ProductUseCase
 {
-    public async Task<Result<Product>> CreateAsync(
+    public async Task<Result<Product>> CreateCompanyProductAsync(
         ProductCreateModel createModel,
         AuditStampCreateModel auditStampCreateModel,
         CancellationToken cancellationToken = default)
@@ -17,7 +17,7 @@ internal sealed partial class ProductUseCase
         {
             // Create product.
             Result<Product> productCreateResult = await _productService
-                .CreateAsync(createModel, cancellationToken);
+                .CreateCompanyProductAsync(createModel, cancellationToken);
 
             if (productCreateResult.IsFailureAndNoData)
                 return productCreateResult;

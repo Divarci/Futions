@@ -8,8 +8,9 @@ namespace Infra.Persistence.Repositories.Organisations.CompanyPeople;
 
 internal sealed partial class CompanyPersonRepository
 {
-    public async Task<Result<CompanyPerson[]>> GetPaginatedAsync(
+    public async Task<Result<CompanyPerson[]>> GetPaginatedCompanyPeopleAsync(
         Guid tenantId,
+        Guid companyId,
         int page,
         int pageSize,
         string sortBy,
@@ -22,6 +23,7 @@ internal sealed partial class CompanyPersonRepository
             .Where(x => 
                 x.Company.TenantId == tenantId && 
                 x.Person.TenantId == tenantId && 
+                x.CompanyId == companyId &&
                 !x.Company.IsDeleted && !x.Person.IsDeleted)
             .WhereIf(!string.IsNullOrWhiteSpace(filter), x => EF.Functions.Like(x.Title, $"%{filter}%"))
             .OrderByIf(isAscending, sortBy);

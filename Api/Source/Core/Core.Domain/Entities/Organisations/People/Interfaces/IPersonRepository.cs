@@ -16,7 +16,7 @@ public interface IPersonRepository : ITenantedRepository<Person>
     /// <param name="tenantId">The tenant ID to filter persons by.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A result containing the paginated array of persons.</returns>
-    Task<Result<Person[]>> GetPaginatedAsync(
+    Task<Result<Person[]>> GetPaginatedPeopleAsync(
         Guid tenantId,
         int page,
         int pageSize,
