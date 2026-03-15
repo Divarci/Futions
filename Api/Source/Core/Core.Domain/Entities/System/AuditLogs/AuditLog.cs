@@ -1,5 +1,4 @@
 using Core.Domain.Entities.System.AuditLogs.DomainEvents;
-using Core.Domain.Entities.System.AuditLogs.Models;
 using Core.Domain.ValueObjects.AuditStampValueObject;
 using Core.Library.Abstractions;
 using Core.Library.Abstractions.Interfaces;
@@ -30,14 +29,14 @@ public partial class AuditLog : BaseEntity, IHaveTenant
     public Guid TenantId { get; private set; }
 
     // Methods
-    public static Result<AuditLog> Create(AuditLogCreateModel model, Guid entityId, string description)
+    public static Result<AuditLog> Create(AuditStampCreateModel model, Guid entityId, string description)
     {
         if (model is null)
             return Result<AuditLog>.Failure(
                 message: "Model can not be null",
                 statusCode: HttpStatusCode.InternalServerError);
 
-        Result<AuditStamp> stampResult = AuditStamp.Create(model.CreatedStampModel);
+        Result<AuditStamp> stampResult = AuditStamp.Create(model);
 
         if (stampResult.IsFailure)
             return Result<AuditLog>.Failure(

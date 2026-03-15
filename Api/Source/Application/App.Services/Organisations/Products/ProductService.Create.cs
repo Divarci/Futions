@@ -7,13 +7,12 @@ namespace App.Services.Features.Organisations.Companies;
 internal sealed partial class ProductService
 {
     public async Task<Result<Product>> CreateAsync(
-        Guid tenantId,
         ProductCreateModel createModel,
         CancellationToken cancellationToken = default)
     {
         // Get Company and ensure companyId is valid and exists.
         Result<bool> companyExistsResult = await _companyRepository
-            .ExistsAsync(createModel.CompanyId, tenantId, cancellationToken);
+            .ExistsAsync(createModel.CompanyId, createModel.TenantId, cancellationToken);
 
         if (companyExistsResult.IsFailure)
             return Result<Product>.Failure(
@@ -21,7 +20,7 @@ internal sealed partial class ProductService
                 statusCode: companyExistsResult.StatusCode);
 
         // Create Product entity from the create model.
-        Result<Product> productCreateResult = Product.Create(createModel, tenantId);
+        Result<Product> productCreateResult = Product.Create(createModel);
 
         if (productCreateResult.IsFailureAndNoData)
             return productCreateResult;
@@ -30,7 +29,7 @@ internal sealed partial class ProductService
         await _repository.CreateAsync(productCreateResult.Data, cancellationToken);
 
         // Create cache key.
-        string cacheKey = $"{nameof(Product)}:tenant({tenantId}):id({productCreateResult.Data!.Id})";
+        string cacheKey = $"{nameof(Product)}:tenant({createModel.TenantId}):id({productCreateResult.Data!.Id})";
 
         // Invalidate the cache for the newly created product and the collections that may include it.
         await _cacheInvalidationService.InvalidateEntity(cacheKey);

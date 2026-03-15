@@ -17,11 +17,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\VersionOne\Organisations\Companies\" />
     <Folder Include="Controllers\VersionOne\Organisations\CompanyPeople\" />
     <Folder Include="Controllers\VersionOne\Organisations\People\" />
     <Folder Include="Controllers\VersionOne\Organisations\Products\" />
-    <Folder Include="Controllers\VersionOne\System\AuditLogs\" />
+    <Folder Include="Controllers\VersionOne\System\AuditLogs\Requests\" />
   </ItemGroup>
 
   <ItemGroup>

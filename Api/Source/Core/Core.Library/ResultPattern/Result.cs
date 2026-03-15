@@ -123,7 +123,7 @@ public class Result<T> : Result
 /// Extends <see cref="Result{T}"/> with pagination metadata.
 /// </summary>
 /// <typeparam name="T">The type of the data returned by the operation. Must be a reference type.</typeparam>
-public class PaginatedResult<T> : Result<T> where T : class
+public class PaginatedResult<T> : Result<T>
 {
     private PaginatedResult(HttpStatusCode? statusCode, bool isFailure,
         string message, ErrorDetails? errorDetails, T? data, Metadata? metadata)

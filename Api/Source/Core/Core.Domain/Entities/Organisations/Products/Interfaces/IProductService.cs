@@ -14,18 +14,16 @@ public interface IProductService
     /// <param name="sortBy">The field to sort by.</param>
     /// <param name="isAscending">Sort direction: true for ascending, false for descending.</param>
     /// <param name="filterQuery">Optional filter string.</param>
-    /// <param name="mapper">A function to map the product entities to the desired DTO type.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A result containing the paginated array of products.</returns>
-    Task<PaginatedResult<TDto[]>> GetPaginatedAsync<TDto>(
+    Task<PaginatedResult<Product[]>> GetPaginatedAsync(
         Guid tenantId,
         int page,
         int pageSize,
         string sortBy,
         bool isAscending,
         string? filterQuery,
-        Func<Product[], TDto[]> mapper,
-        CancellationToken cancellationToken = default) where TDto : class;
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Retrieves a product by its unique identifier.
@@ -42,12 +40,10 @@ public interface IProductService
     /// <summary>
     /// Creates a new product entity.
     /// </summary>
-    /// <param name="tenantId">The tenant ID.</param>
     /// <param name="createModel">The product create model.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A result containing the created product.</returns>
     Task<Result<Product>> CreateAsync(
-        Guid tenantId,
         ProductCreateModel createModel,
         CancellationToken cancellationToken = default);
 

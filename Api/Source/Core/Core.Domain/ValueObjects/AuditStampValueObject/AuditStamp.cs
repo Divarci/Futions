@@ -19,7 +19,7 @@ public sealed partial record AuditStamp
     public string Username { get; private set; }
 
     // Methods
-    public static Result<AuditStamp> Create(AuditStampModel model)
+    public static Result<AuditStamp> Create(AuditStampCreateModel model)
     {
         if (model is null)
             return Result<AuditStamp>.Failure(

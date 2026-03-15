@@ -14,18 +14,16 @@ public interface ICompanyPersonService
     /// <param name="sortBy">The field to sort by.</param>
     /// <param name="isAscending">Sort direction: true for ascending, false for descending.</param>
     /// <param name="filterQuery">Optional filter string.</param>
-    /// <param name="mapper">A function to map the company person entities to the desired DTO type.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A result containing the paginated array of company people.</returns>
-    Task<PaginatedResult<TDto[]>> GetPaginatedAsync<TDto>(
+    Task<PaginatedResult<CompanyPerson[]>> GetPaginatedAsync(
         Guid tenantId,
         int page,
         int pageSize,
         string sortBy,
         bool isAscending,
         string? filterQuery,
-        Func<CompanyPerson[], TDto[]> mapper,
-        CancellationToken cancellationToken = default) where TDto : class;
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Retrieves a company person by its unique identifier.

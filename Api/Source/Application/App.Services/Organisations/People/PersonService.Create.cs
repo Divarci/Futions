@@ -7,21 +7,20 @@ namespace App.Services.Features.Organisations.Companies;
 internal sealed partial class PersonService
 {
     public async Task<Result<Person>> CreateAsync(
-        Guid tenantId,
         PersonCreateModel createModel,
         CancellationToken cancellationToken = default)
     {
-        // Create Company entity from the create model and tenantId.
-        Result<Person> personCreateResult = Person.Create(createModel, tenantId);
+        // Create Person entity from the create model.
+        Result<Person> personCreateResult = Person.Create(createModel);
 
         if (personCreateResult.IsFailureAndNoData)
             return personCreateResult;
 
-        // Persist the new Company entity to the database.
+        // Persist the new Person entity to the database.
         await _personRepository.CreateAsync(personCreateResult.Data!, cancellationToken);
 
         // Create cache key
-        string cacheKey = $"{nameof(Person)}:tenant({tenantId}):id({personCreateResult.Data!.Id})";
+        string cacheKey = $"{nameof(Person)}:tenant({createModel.TenantId}):id({personCreateResult.Data!.Id})";
 
         // Invalidate the cache for the newly created person and the collections that may include it.
         await _cacheInvalidationService.InvalidateEntity(cacheKey);

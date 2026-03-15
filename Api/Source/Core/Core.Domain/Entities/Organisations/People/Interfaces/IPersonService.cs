@@ -14,18 +14,16 @@ public interface IPersonService
     /// <param name="sortBy">The field to sort by.</param>
     /// <param name="isAscending">Sort direction: true for ascending, false for descending.</param>
     /// <param name="filterQuery">Optional filter string.</param>
-    /// <param name="mapper">A function to map the person entities to the desired DTO type.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A result containing the paginated array of people.</returns>
-    Task<PaginatedResult<TDto[]>> GetPaginatedAsync<TDto>(
+    Task<PaginatedResult<Person[]>> GetPaginatedAsync(
         Guid tenantId,
         int page,
         int pageSize,
         string sortBy,
         bool isAscending,
         string? filterQuery,
-        Func<Person[], TDto[]> mapper,
-        CancellationToken cancellationToken = default) where TDto : class;
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Retrieves a person by its unique identifier.
@@ -42,12 +40,10 @@ public interface IPersonService
     /// <summary>
     /// Creates a new person entity.
     /// </summary>
-    /// <param name="tenantId">The tenant ID.</param>
     /// <param name="createModel">The person create model.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A result containing the created person.</returns>
     Task<Result<Person>> CreateAsync(
-        Guid tenantId,
         PersonCreateModel createModel,
         CancellationToken cancellationToken = default);
 

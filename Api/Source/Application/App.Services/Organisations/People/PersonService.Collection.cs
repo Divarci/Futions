@@ -5,22 +5,21 @@ namespace App.Services.Features.Organisations.Companies;
 
 internal sealed partial class PersonService
 {
-    public async Task<PaginatedResult<TDto[]>> GetPaginatedAsync<TDto>(
+    public async Task<PaginatedResult<Person[]>> GetPaginatedAsync(
         Guid tenantId,
         int page,
         int pageSize,
         string sortBy,
         bool isAscending,
         string? filterQuery,
-        Func<Person[], TDto[]> mapper,
-        CancellationToken cancellationToken = default) where TDto : class
+        CancellationToken cancellationToken = default)
     {
         // Get paginated list of people for the tenant
         Result<Person[]> entityResult = await _personRepository
             .GetPaginatedAsync(tenantId, page, pageSize, sortBy, isAscending, filterQuery, cancellationToken);
 
         if (entityResult.IsFailure)
-            return PaginatedResult<TDto[]>.Failure(
+            return PaginatedResult<Person[]>.Failure(
                 message: entityResult.Message,
                 statusCode: entityResult.StatusCode);
 
@@ -29,13 +28,13 @@ internal sealed partial class PersonService
             .CountAsync(tenantId, cancellationToken);
 
         if (totalCountResult.IsFailure)
-            return PaginatedResult<TDto[]>.Failure(
+            return PaginatedResult<Person[]>.Failure(
                 message: totalCountResult.Message,
                 statusCode: totalCountResult.StatusCode);
 
-        return PaginatedResult<TDto[]>.Success(
+        return PaginatedResult<Person[]>.Success(
             message: "List retrieved successfully",
-            data: mapper(entityResult.Data ?? []),
+            data: entityResult.Data ?? [],
             pageNumber: page,
             pageSize: pageSize,
             totalCount: totalCountResult.Data,

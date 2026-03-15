@@ -6,15 +6,14 @@ namespace App.UseCases.UseCases.Organisations.Companies;
 
 internal sealed partial class CompanyUseCase
 {
-    public async Task<PaginatedResult<TDto[]>> GetPaginatedAsync<TDto>(
+    public async Task<PaginatedResult<Company[]>> GetPaginatedAsync(
            Guid tenantId,
            int? pageQuery,
            int? pageSizeQuery,
            string? sortByQuery,
            bool? isAscendingQuery,
            string? filterQuery,
-           Func<Company[], TDto[]> mapper,
-           CancellationToken cancellationToken = default) where TDto : class
+           CancellationToken cancellationToken = default)
     {
         // Validate and set default values for pagination and sorting parameters
         int page = pageQuery < 1 || pageQuery is null ? 1 : pageQuery.Value;
@@ -30,12 +29,12 @@ internal sealed partial class CompanyUseCase
             [tenantId, page, size, sortBy, ascending, filterQuery ?? string.Empty]);
 
         // Attempt to retrieve the paginated collection from the cache, or call the service method if not cached
-        PaginatedResult<TDto[]> retrievalResult = await _cacheProvider.GetPaginatedCollection(
+        PaginatedResult<Company[]> retrievalResult = await _cacheProvider.GetPaginatedCollection(
             cacheKey: cacheKey,
             useCache: true,
             serviceCall: async () => await _companyService.GetPaginatedAsync(
                 tenantId, page, size, sortBy, ascending,
-                filterQuery, mapper, cancellationToken),
+                filterQuery, cancellationToken),
             _timeout);
 
         if (retrievalResult.IsFailureAndNoData)

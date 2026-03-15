@@ -1,7 +1,7 @@
 using Core.Domain.Entities.Auditing.AuditLogs;
 using Core.Domain.Entities.Organisations.Products;
 using Core.Domain.Entities.Organisations.Products.Models;
-using Core.Domain.Entities.System.AuditLogs.Models;
+using Core.Domain.ValueObjects.AuditStampValueObject;
 using Core.Library.ResultPattern;
 
 namespace App.UseCases.UseCases.Organisations.Products;
@@ -11,7 +11,7 @@ internal sealed partial class ProductUseCase
     public async Task<Result<Product>> UpdateAsync(
         Guid tenantId,
         ProductUpdateModel updateModel,
-        AuditLogCreateModel auditLogCreateModel,
+        AuditStampCreateModel auditStampCreateModel,
         CancellationToken cancellationToken = default)
     {
         return await _unitOfWork.ExecuteTransactionAsync(async () =>
@@ -26,10 +26,9 @@ internal sealed partial class ProductUseCase
             // Create audit log.
             Result<AuditLog> auditLogCreateResult = await _auditLogService
                 .CreateAsync(
-                    tenantId,
                     updateModel.ProductId,
-                    $"Product with ID {updateModel.ProductId} has been updated by {auditLogCreateModel.CreatedStampModel.Username}.",
-                    auditLogCreateModel,
+                    $"Product with ID {updateModel.ProductId} has been updated by {auditStampCreateModel.Username}.",
+                    auditStampCreateModel,
                     cancellationToken);
 
             if (auditLogCreateResult.IsFailureAndNoData)

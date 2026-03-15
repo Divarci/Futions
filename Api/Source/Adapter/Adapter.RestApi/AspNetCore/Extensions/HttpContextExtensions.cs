@@ -23,6 +23,21 @@ public static class HttpContextExtensions
     }
 
     /// <summary>
+    /// Retrieves the tenant ID from an authenticated HTTP context.
+    /// </summary>
+    /// <param name="httpContext">The HTTP context.</param>
+    /// <returns>The tenant ID.</returns>
+    /// <exception cref="InvalidOperationException">
+    /// Thrown when the tenantId claim is missing or invalid.
+    /// </exception>
+    public static Guid GetRequiredTenantId(this HttpContext httpContext)
+    {
+        return httpContext.GetTenantId()
+            ?? throw new InvalidOperationException(
+                "TenantId claim is missing or invalid. Ensure the endpoint is protected with [Authorize].");
+    }
+
+    /// <summary>
     /// Retrieves the user ID from the current HTTP context.
     /// </summary>
     /// <param name="httpContext">The HTTP context.</param>
@@ -40,6 +55,46 @@ public static class HttpContextExtensions
             : null;
     }
 
+    /// <summary>
+    /// Retrieves the user ID from an authenticated HTTP context.
+    /// </summary>
+    /// <param name="httpContext">The HTTP context.</param>
+    /// <returns>The user ID.</returns>
+    /// <exception cref="InvalidOperationException">
+    /// Thrown when the NameIdentifier claim is missing or invalid.
+    /// </exception>
+    public static Guid GetRequiredUserId(this HttpContext httpContext)
+    {
+        return httpContext.GetUserId()
+            ?? throw new InvalidOperationException(
+                "UserId claim is missing or invalid. Ensure the endpoint is protected with [Authorize].");
+    }
+
+    /// <summary>
+    /// Retrieves the user email from the current HTTP context.
+    /// </summary>
+    /// <param name="httpContext">The HTTP context.</param>
+    /// <returns>The user email if available; otherwise, null.</returns>
+    public static string? GetUserEmail(this HttpContext httpContext)
+    {
+        return httpContext?.User?
+            .FindFirst(ClaimTypes.Email)?.Value;
+    }
+
+    /// <summary>
+    /// Retrieves the user email from an authenticated HTTP context.
+    /// </summary>
+    /// <param name="httpContext">The HTTP context.</param>
+    /// <returns>The user email.</returns>
+    /// <exception cref="InvalidOperationException">
+    /// Thrown when the Email claim is missing.
+    /// </exception>
+    public static string GetRequiredUserEmail(this HttpContext httpContext)
+    {
+        return httpContext.GetUserEmail()
+            ?? throw new InvalidOperationException(
+                "Email claim is missing. Ensure the endpoint is protected with [Authorize].");
+    }
 
     /// <summary>
     /// Checks if the current user is in the specified role.

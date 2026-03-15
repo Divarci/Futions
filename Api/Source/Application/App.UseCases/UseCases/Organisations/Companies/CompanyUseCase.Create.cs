@@ -1,7 +1,7 @@
 ﻿using Core.Domain.Entities.Auditing.AuditLogs;
 using Core.Domain.Entities.Organisations.Companies;
 using Core.Domain.Entities.Organisations.Companies.Models;
-using Core.Domain.Entities.System.AuditLogs.Models;
+using Core.Domain.ValueObjects.AuditStampValueObject;
 using Core.Library.ResultPattern;
 
 namespace App.UseCases.UseCases.Organisations.Companies;
@@ -9,16 +9,15 @@ namespace App.UseCases.UseCases.Organisations.Companies;
 internal sealed partial class CompanyUseCase
 {
     public async Task<Result<Company>> CreateAsync(
-        Guid tenantId,
         CompanyCreateModel createModel,
-        AuditLogCreateModel auditLogCreateModel,
+        AuditStampCreateModel auditStampCreateModel,
         CancellationToken cancellationToken = default)
     {
         return await _unitOfWork.ExecuteTransactionAsync(async () =>
         {
             // Create company
             Result<Company> companyCreateResult = await _companyService
-                .CreateAsync(tenantId, createModel, cancellationToken);
+                .CreateAsync(createModel, cancellationToken);
 
             if (companyCreateResult.IsFailureAndNoData)
                 return companyCreateResult;
@@ -26,10 +25,9 @@ internal sealed partial class CompanyUseCase
             // Create audit log
             Result<AuditLog> auditLogCreateResult = await _auditLogService
                 .CreateAsync(
-                    tenantId,
                     companyCreateResult.Data.Id,
-                    $"Company created with name: {companyCreateResult.Data.Name} by {auditLogCreateModel.CreatedStampModel.Username}",
-                    auditLogCreateModel, 
+                    $"Company created with name: {companyCreateResult.Data.Name} by {auditStampCreateModel.Username}",
+                    auditStampCreateModel, 
                     cancellationToken);
 
             if (auditLogCreateResult.IsFailureAndNoData)

@@ -10,22 +10,20 @@ public interface ICompanyService
     /// </summary>
     /// <param name="tenantId">The tenant ID.</param>
     /// <param name="page">The page number (1-based).</param>
-    /// <param name="size">The number of items per page.</param>
+    /// <param name="pageSize">The number of items per page.</param>
     /// <param name="sortBy">The field to sort by.</param>
     /// <param name="isAscending">Sort direction: true for ascending, false for descending.</param>
     /// <param name="filterQuery">Optional filter string.</param>
-    /// <param name="mapper">A function to map the company entities to the desired DTO type.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A result containing the paginated array of companies.</returns>
-    Task<PaginatedResult<TDto[]>> GetPaginatedAsync<TDto>(
+    Task<PaginatedResult<Company[]>> GetPaginatedAsync(
         Guid tenantId,
         int page,
         int pageSize,
         string sortBy,
         bool isAscending,
         string? filterQuery,
-        Func<Company[], TDto[]> mapper,
-        CancellationToken cancellationToken = default) where TDto : class;
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Retrieves a company by its unique identifier.
@@ -42,12 +40,10 @@ public interface ICompanyService
     /// <summary>
     /// Creates a new company entity.
     /// </summary>
-    /// <param name="tenantId">The tenant ID.</param>
     /// <param name="createModel">The company create model.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A result containing the created company.</returns>
     Task<Result<Company>> CreateAsync(
-        Guid tenantId,
         CompanyCreateModel createModel,
         CancellationToken cancellationToken = default);
 

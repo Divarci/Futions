@@ -1,5 +1,5 @@
 using Core.Domain.Entities.Auditing.AuditLogs;
-using Core.Domain.Entities.System.AuditLogs.Models;
+using Core.Domain.ValueObjects.AuditStampValueObject;
 using Core.Library.ResultPattern;
 
 namespace App.UseCases.UseCases.Organisations.Products;
@@ -9,7 +9,7 @@ internal sealed partial class ProductUseCase
     public async Task<Result> DeleteAsync(
         Guid tenantId,
         Guid id,
-        AuditLogCreateModel auditLogCreateModel,
+        AuditStampCreateModel auditStampCreateModel,
         CancellationToken cancellationToken = default)
     {
         return await _unitOfWork.ExecuteTransactionAsync(async () =>
@@ -24,10 +24,9 @@ internal sealed partial class ProductUseCase
             // Create audit log.
             Result<AuditLog> auditLogCreateResult = await _auditLogService
                 .CreateAsync(
-                    tenantId,
                     id,
-                    $"Product with ID {id} has been deleted by {auditLogCreateModel.CreatedStampModel.Username}.",
-                    auditLogCreateModel,
+                    $"Product with ID {id} has been deleted by {auditStampCreateModel.Username}.",
+                    auditStampCreateModel,
                     cancellationToken);
 
             if (auditLogCreateResult.IsFailureAndNoData)
