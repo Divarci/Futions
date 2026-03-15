@@ -1,13 +1,10 @@
-﻿using Adapter.RestApi.Controllers.Shared.AddressValueObject.Requests;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Adapter.RestApi.Controllers.VersionOne.Organisations.Companies.Models.Requests;
 
 public record CreateCompanyRequest
 {
     [Required]
-    public string? Name { get; init; } = default!;
+    public string? Name { get; init; }
 
-    [Required]
-    public CreateAddressRequest? Address { get; init; } = default!;
 }

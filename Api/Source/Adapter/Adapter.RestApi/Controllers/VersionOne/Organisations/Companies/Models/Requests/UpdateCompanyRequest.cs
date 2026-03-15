@@ -6,5 +6,5 @@ public class UpdateCompanyRequest
 {
     public string? Name { get; init; }
 
-    public CreateAddressRequest? Address { get; init; }
+    public UpdateAddressRequest? Address { get; init; }
 }

@@ -13,16 +13,15 @@ public partial class Person : BaseEntity, IHaveSoftDelete, IHaveTenant
     // Constructors
     private Person() { }
 
-    private Person(Guid tenantId, Fullname fullname, string email)
+    private Person(Guid tenantId, Fullname fullname)
     {
         TenantId = tenantId;
         Fullname = fullname;
-        Email = email;
     }
 
     // Properties
     public Fullname Fullname { get; private set; } = default!;
-    public string Email { get; private set; } = default!;
+    public string? Email { get; private set; }
 
     // IHaveSoftDelete Properties
     public bool IsDeleted { get; private set; }
@@ -41,7 +40,7 @@ public partial class Person : BaseEntity, IHaveSoftDelete, IHaveTenant
                 errorDetails: fullnameResult.ErrorDetails!,
                 statusCode: fullnameResult.StatusCode);
 
-        Person person = new(model.TenantId, fullnameResult.Data!, model.Email);
+        Person person = new(model.TenantId, fullnameResult.Data!);
 
         Result validationResult = Validate(person);
 

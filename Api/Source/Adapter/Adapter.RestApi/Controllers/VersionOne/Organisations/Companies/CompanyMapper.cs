@@ -25,8 +25,7 @@ internal static class CompanyMapper
         => new()
         {
             TenantId = tenantId,
-            Name = request.Name!,
-            AddressModel = AddressMaper.ToCreateModel(request.Address!)
+            Name = request.Name!
         };
 
     internal static CompanyUpdateModel ToUpdateModel(UpdateCompanyRequest request, Guid companyId)
@@ -34,6 +33,8 @@ internal static class CompanyMapper
         {
             CompanyId = companyId,
             Name = request.Name,
-            AddressModel = AddressMaper.ToUpdateModel(request.Address!)
+            AddressModel = request.Address is not null 
+                ? AddressMaper.ToUpdateModel(request.Address) 
+                : null
         };
 }

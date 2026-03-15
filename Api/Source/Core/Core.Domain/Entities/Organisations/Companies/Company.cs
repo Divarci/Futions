@@ -15,16 +15,15 @@ public partial class Company : BaseEntity, IHaveSoftDelete, IHaveTenant
     // Constructors
     private Company() { }
 
-    private Company(Guid tenantId, string name, Address address)
+    private Company(Guid tenantId, string name)
     {
         Name = name;
-        Address = address;
         TenantId = tenantId;
     }
 
     // Properties
     public string Name { get; private set; } = default!;
-    public Address Address { get; private set; } = default!;
+    public Address? Address { get; private set; }
 
     // Navigation Properties
     public ICollection<Product> Products { get; private set; } = [];
@@ -33,7 +32,7 @@ public partial class Company : BaseEntity, IHaveSoftDelete, IHaveTenant
     public bool IsDeleted { get; private set; }
 
     // IHaveTenant Properties
-    public Guid TenantId { get; private set; } = default!;
+    public Guid TenantId { get; private set; } = default;
 
     // Methods
     public static Result<Company> Create(CompanyCreateModel model)
@@ -43,15 +42,7 @@ public partial class Company : BaseEntity, IHaveSoftDelete, IHaveTenant
                 message: "Model can not be null",
                 statusCode: HttpStatusCode.InternalServerError);
 
-        Result<Address> addressResult = Address.Create(model.AddressModel);
-
-        if (addressResult.IsFailure)
-            return Result<Company>.Failure(
-                message: addressResult.Message,
-                errorDetails: addressResult.ErrorDetails!,
-                statusCode: addressResult.StatusCode);
-
-        Company company = new(model.TenantId, model.Name, addressResult.Data!);
+        Company company = new(model.TenantId, model.Name);
 
         Result validationResult = Validate(company);
 

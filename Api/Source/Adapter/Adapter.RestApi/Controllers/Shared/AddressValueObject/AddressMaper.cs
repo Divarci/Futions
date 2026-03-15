@@ -5,18 +5,8 @@ using Core.Domain.ValueObjects.AddressValueObject;
 namespace Adapter.RestApi.Controllers.Shared.AddressValueObject;
 
 internal static class AddressMaper
-{
-    internal static AddressModel ToCreateModel(CreateAddressRequest request)
-        => new()
-        {
-            LineOne = request.AddressLineOne!,
-            LineTwo = request.AddressLineTwo,
-            LineThree = request.AddressLineThree,
-            LineFour = request.AddressLineFour,
-            Postcode = request.Postcode!
-        };
-
-    internal static AddressModel ToUpdateModel(CreateAddressRequest request)
+{  
+    internal static AddressModel ToUpdateModel(UpdateAddressRequest request)
        => new()
        {
            LineOne = request.AddressLineOne!,
