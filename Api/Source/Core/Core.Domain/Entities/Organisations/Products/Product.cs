@@ -5,6 +5,7 @@ using Core.Library.Abstractions;
 using Core.Library.Abstractions.Interfaces;
 using Core.Library.ResultPattern;
 using System.Net;
+using System.Text.Json.Serialization;
 
 namespace Core.Domain.Entities.Organisations.Products;
 
@@ -13,6 +14,7 @@ public partial class Product : BaseEntity, IHaveSoftDelete, IHaveTenant
     // Constructors
     private Product() { }
 
+    [JsonConstructor]
     private Product(Guid tenantId, string name, decimal price, Guid companyId)
     {
         TenantId = tenantId;
@@ -52,7 +54,8 @@ public partial class Product : BaseEntity, IHaveSoftDelete, IHaveTenant
 
         return Result<Product>.Success(
             message: "Product created successfully",
-            data: product);
+            data: product,
+            statusCode: HttpStatusCode.OK);
     }
 
     public Result SoftDelete()
@@ -67,7 +70,8 @@ public partial class Product : BaseEntity, IHaveSoftDelete, IHaveTenant
         Raise(new ProductDeletedDomainEvent(Id));
 
         return Result.Success(
-            message: "Product deleted successfully");
+            message: "Product deleted successfully",
+            statusCode: HttpStatusCode.OK);
     }
 
     public Result UpdateName(string name)
@@ -87,7 +91,8 @@ public partial class Product : BaseEntity, IHaveSoftDelete, IHaveTenant
         Raise(new ProductNameUpdatedDomainEvent(Id));
 
         return Result.Success(
-            message: "Product name updated successfully");
+            message: "Product name updated successfully",
+            statusCode: HttpStatusCode.OK);
     }
 
     public Result UpdatePrice(decimal price)
@@ -107,6 +112,7 @@ public partial class Product : BaseEntity, IHaveSoftDelete, IHaveTenant
         Raise(new ProductPriceUpdatedDomainEvent(Id));
 
         return Result.Success(
-            message: "Product price updated successfully");
+            message: "Product price updated successfully",
+            statusCode: HttpStatusCode.OK);
     }
 }

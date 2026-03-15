@@ -37,7 +37,9 @@ public static class GuidValidator
                 message: $"{fieldName} validation failed",
                 errorDetails: ErrorDetails.Create(validationErrors),
                 statusCode: HttpStatusCode.UnprocessableEntity)
-            : Result.Success("Validation successful");
+            : Result.Success(
+                message: "Validation successful",
+                statusCode: HttpStatusCode.OK);
     }
 
     /// <summary>
@@ -67,6 +69,8 @@ public static class GuidValidator
                 message: $"{fieldName} validation failed",
                 errorDetails: ErrorDetails.Create(validationErrors),
                 statusCode: HttpStatusCode.UnprocessableEntity)
-            : Result.Success("Validation successful");
+            : Result.Success(
+                message: "Validation successful",
+                statusCode: HttpStatusCode.OK);
     }
 }

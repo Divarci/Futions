@@ -38,6 +38,7 @@ public sealed partial record Fullname
 
         return Result<Fullname>.Success(
             message: "Fullname created successfully",
-            data: fullname);
+            data: fullname,
+            statusCode: HttpStatusCode.OK);
     }   
 }

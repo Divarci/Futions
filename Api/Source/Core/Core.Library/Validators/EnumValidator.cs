@@ -36,7 +36,9 @@ public static class EnumValidator
                 message: $"{fieldName} validation failed",
                 errorDetails: ErrorDetails.Create(validationErrors),
                 statusCode: HttpStatusCode.UnprocessableEntity)
-            : Result.Success("Validation successful");
+            : Result.Success(
+                message: "Validation successful",
+                statusCode: HttpStatusCode.OK);
     }
 
     /// <summary>
@@ -65,6 +67,8 @@ public static class EnumValidator
                 message: $"{fieldName} validation failed",
                 errorDetails: ErrorDetails.Create(validationErrors),
                 statusCode: HttpStatusCode.UnprocessableEntity)
-            : Result.Success("Validation successful");
+            : Result.Success(
+                message: "Validation successful",
+                statusCode: HttpStatusCode.OK);
     }
 }

@@ -11,7 +11,7 @@ builder.Services
     .RegisterUseCaseLayer()
     .RegisterServiceLayer()
     .RegisterCachingLayer(builder.Configuration)
-    .RegisterPersistenceLayer();
+    .RegisterPersistenceLayer(builder.Configuration);
 
 var host = builder.Build();
 host.Run();

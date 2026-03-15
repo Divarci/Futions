@@ -13,7 +13,7 @@ public class BaseController : ControllerBase
     /// </summary>
     protected ActionResult HandleResult(Result result)
     {
-        if (result is null || result.StatusCode is null)
+        if (result is null)
             throw new InvalidOperationException("Result cannot be null.");
 
         int statusCode = (int)result.StatusCode;
@@ -36,12 +36,12 @@ public class BaseController : ControllerBase
     /// <exception cref="InvalidOperationException"></exception>
     protected ActionResult HandleResult<T, M>(Result<T> result, Func<T, M> mapper)
     {
-        if (result is null || result.StatusCode is null)
+        if (result is null)
             throw new InvalidOperationException("Result cannot be null.");
 
         Result<M> mappedResult = result.MapTo(mapper);
 
-        int statusCode = (int)mappedResult.StatusCode!;
+        int statusCode = (int)mappedResult.StatusCode;
 
         if (mappedResult.IsSuccess)
             return StatusCode(statusCode, mappedResult.Data);
@@ -61,12 +61,12 @@ public class BaseController : ControllerBase
     /// <exception cref="InvalidOperationException"></exception>
     protected ActionResult HandleResult<T, M>(PaginatedResult<T> result, Func<T, M> mapper)
     {
-        if (result is null || result.StatusCode is null)
+        if (result is null)
             throw new InvalidOperationException("Result cannot be null.");
 
         PaginatedResult<M> mappedResult = result.MapTo(mapper);
 
-        int statusCode = (int)mappedResult.StatusCode!;
+        int statusCode = (int)mappedResult.StatusCode;
 
         if (result.IsSuccess)
             return StatusCode(statusCode, result);

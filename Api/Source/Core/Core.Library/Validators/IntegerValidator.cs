@@ -65,7 +65,9 @@ public static class IntegerValidator
                 message: $"{fieldName} validation failed",
                 errorDetails: ErrorDetails.Create(validationErrors),
                 statusCode: HttpStatusCode.UnprocessableEntity)
-            : Result.Success("Validation successful");
+            : Result.Success(
+                message: "Validation successful",
+                statusCode: HttpStatusCode.OK);
     }
 
     public static Result Validate(
@@ -111,6 +113,8 @@ public static class IntegerValidator
                 message: $"{fieldName} validation failed",
                 errorDetails: ErrorDetails.Create(validationErrors),
                 statusCode: HttpStatusCode.UnprocessableEntity)
-            : Result.Success("Validation successful");
+            : Result.Success(
+                message: "Validation successful",
+                statusCode: HttpStatusCode.OK);
     }
 }

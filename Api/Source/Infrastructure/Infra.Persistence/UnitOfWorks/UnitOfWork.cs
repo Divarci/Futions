@@ -125,6 +125,8 @@ internal sealed class UnitOfWork(AppDbContext context) : ITransactionalUnitOfWor
 
         await dbContext.AddRangeAsync(outboxMessageResults.Select(x => x.Data)!);
 
-        return Result.Success("Outbox messages created successfully");
+        return Result.Success(
+            message: "Outbox messages created successfully",
+            statusCode: HttpStatusCode.OK);
     }
 }

@@ -28,10 +28,12 @@ public class CacheService(ConnectionMultiplexer redis) : ICacheProvider, ICacheI
     {
         try
         {
-            await foreach (RedisKey key in _server.KeysAsync(pattern: "collection_*"))
-            {
-                await _db.KeyDeleteAsync(key);
-            }
+            RedisKey[] keys = await _server
+                .KeysAsync(pattern: "collection_*")
+                .ToArrayAsync();
+
+            if (keys.Length > 0)
+                await _db.KeyDeleteAsync(keys); 
         }
         catch (RedisException)
         {
@@ -92,7 +94,7 @@ public class CacheService(ConnectionMultiplexer redis) : ICacheProvider, ICacheI
             return dataResult;
 
         if (cacheExpiration.TotalSeconds > 0 && !string.IsNullOrWhiteSpace(cacheKey))
-            await SetAsync(cacheKey, dataResult.Data, cacheExpiration);
+            await SetAsync(cacheKey, dataResult, cacheExpiration);
 
         return PaginatedResult<TDto[]>.Success(
             message: "List retrieved from database",
@@ -123,10 +125,8 @@ public class CacheService(ConnectionMultiplexer redis) : ICacheProvider, ICacheI
     {
         try
         {
-            string cacheKey = $"collection_{key}";
-
             string serialisedData = JsonSerializer.Serialize(value, _jsonOptions);
-            await _db.StringSetAsync(cacheKey, serialisedData, slidingExpiration);
+            await _db.StringSetAsync(key, serialisedData, slidingExpiration);
         }
         catch (RedisException)
         {

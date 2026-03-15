@@ -1,5 +1,6 @@
 ﻿using Core.Library.Abstractions;
 using Core.Library.ResultPattern;
+using System.Net;
 
 namespace Core.Domain.Entities.System.OutboxMessages;
 
@@ -45,7 +46,8 @@ public partial class OutboxMessage : BaseEntity
 
         return Result<OutboxMessage>.Success(
             message: "Outbox message created successfully",
-            data: message);
+            data: message,
+            statusCode: HttpStatusCode.OK);
     }
 
     public Result Update(string? exception)
@@ -61,6 +63,8 @@ public partial class OutboxMessage : BaseEntity
                 errorDetails: validationResult.ErrorDetails!,
                 statusCode: validationResult.StatusCode);
 
-        return Result.Success("Outbox message updated successfully");
+        return Result.Success(
+            message: "Outbox message updated successfully",
+            statusCode: HttpStatusCode.OK);
     }
 }

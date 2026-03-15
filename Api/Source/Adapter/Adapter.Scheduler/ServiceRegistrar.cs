@@ -8,7 +8,7 @@ public static class ServiceRegistrar
 {
     public static IServiceCollection RegisterSchedulerLayer(this IServiceCollection services, IConfiguration configuration)
     {
-        services.Configure<OutboxOptions>(configuration.GetSection(nameof(OutboxOptions)));
+        services.Configure<OutboxOptions>(configuration.GetSection(OutboxOptions.SectionKey));
         services.AddBackgroundServices(configuration);
 
         return services;
@@ -17,7 +17,7 @@ public static class ServiceRegistrar
     private static IServiceCollection AddBackgroundServices(this IServiceCollection services, IConfiguration configuration)
     {
         OutboxOptions outboxOptions = configuration
-            .GetSection(nameof(OutboxOptions))
+            .GetSection(OutboxOptions.SectionKey)
             .Get<OutboxOptions>() ?? new OutboxOptions();
 
         services.AddQuartz(q =>

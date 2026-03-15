@@ -1,6 +1,7 @@
 ﻿using Adapter.RestApi.AspNetCore.Extensions;
 using Adapter.RestApi.Controllers.Shared.Models;
 using Adapter.RestApi.Controllers.VersionOne.Organisations.Companies.Models.Requests;
+using Adapter.RestApi.Controllers.VersionOne.Organisations.Companies.Models.Responses;
 using Adapter.RestApi.Controllers.VersionOne.System.AuditLogs;
 using Asp.Versioning;
 using Core.Domain.Entities.Organisations.Companies;
@@ -41,6 +42,12 @@ public class CompanyController(
     }
 
     [HttpGet("{companyId}")]
+    [ProducesResponseType<PaginatedResult<CompanyResponse[]>>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status404NotFound)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetCompanyAsync(
         Guid tenantId,
         Guid companyId,
@@ -57,6 +64,12 @@ public class CompanyController(
     }
 
     [HttpPost]
+    [ProducesResponseType<Result<CompanyResponse>>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status422UnprocessableEntity)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> CreateCompanyAsync(
         Guid tenantId,
         CreateCompanyRequest request,
@@ -64,8 +77,8 @@ public class CompanyController(
     {
         CompanyCreateModel companyCreateModel = CompanyMapper.ToCreateModel(request, tenantId);
         AuditStampCreateModel auditLogCreateModel = AuditLogMapper.ToCreateModel(
-            HttpContext.GetRequiredUserId(),
-            HttpContext.GetRequiredUserEmail(),
+            Guid.NewGuid(),
+            "asd@asd.dasd",
             tenantId);
 
         Result<Company> createdCompany = await _companyUseCase.CreateAsync(
@@ -79,6 +92,12 @@ public class CompanyController(
     }
 
     [HttpPatch("{companyId}")]
+    [ProducesResponseType<Result<CompanyResponse>>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status422UnprocessableEntity)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> UpdateCompanyAsync(
         Guid tenantId,
         Guid companyId,
@@ -87,8 +106,8 @@ public class CompanyController(
     {
         CompanyUpdateModel companyUpdateModel = CompanyMapper.ToUpdateModel(request, companyId);
         AuditStampCreateModel auditStampCreateModel = AuditLogMapper.ToCreateModel(
-            HttpContext.GetRequiredUserId(),
-            HttpContext.GetRequiredUserEmail(),
+            Guid.NewGuid(),
+            "asd@asd.dasd",
             tenantId);
 
         Result updatedCompany = await _companyUseCase.UpdateAsync(
@@ -101,14 +120,19 @@ public class CompanyController(
     }
 
     [HttpDelete("{companyId}")]
+    [ProducesResponseType<Result<CompanyResponse>>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> DeleteCompanyAsync(
         Guid tenantId,
         Guid companyId,
         CancellationToken cancellationToken = default)
     {
         AuditStampCreateModel auditStampCreateModel = AuditLogMapper.ToCreateModel(
-            HttpContext.GetRequiredUserId(),
-            HttpContext.GetRequiredUserEmail(),
+            Guid.NewGuid(),
+            "asd@asd.dasd",
             tenantId);
 
         Result deletedCompany = await _companyUseCase.DeleteAsync(

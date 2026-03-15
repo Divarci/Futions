@@ -41,6 +41,7 @@ public sealed partial record AuditStamp
 
         return Result<AuditStamp>.Success(
             message: "Audit stamp created successfully",
-            data: auditStamp);
+            data: auditStamp,
+            statusCode: HttpStatusCode.OK);
     }
 }

@@ -3,6 +3,7 @@ using Core.Domain.Entities.System.OutboxMessages.Interfaces;
 using Core.Library.Contracts.UnitOfWorks;
 using Core.Library.ResultPattern;
 using Microsoft.Extensions.DependencyInjection;
+using System.Net;
 using System.Text.Json;
 
 namespace App.UseCases.Processors;
@@ -50,7 +51,9 @@ internal partial class OutboxProcessor(
                 return await UpdateAsync(_outboxMessageService, outboxMessage, exception);
             }
 
-            return Result.Success("Outbox messages processed successfully.");
+            return Result.Success(
+                message: "Outbox messages processed successfully.",
+                statusCode: HttpStatusCode.OK);
         }, cancellationToken);
     }
 }

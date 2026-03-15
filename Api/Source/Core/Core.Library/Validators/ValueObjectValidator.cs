@@ -27,6 +27,8 @@ public static class ValueObjectValidator
                 errorDetails: ErrorDetails.Create([$"{fieldName} cannot be null"]),
                 statusCode: HttpStatusCode.UnprocessableEntity);
 
-        return Result.Success("Validation successful");
+        return Result.Success(
+                message: "Validation successful",
+                statusCode: HttpStatusCode.OK);
     }
 }

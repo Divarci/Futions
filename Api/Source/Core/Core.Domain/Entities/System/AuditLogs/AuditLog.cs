@@ -58,6 +58,7 @@ public partial class AuditLog : BaseEntity, IHaveTenant
 
         return Result<AuditLog>.Success(
             message: "Audit log created successfully",
-            data: auditLog);
+            data: auditLog,
+            statusCode: HttpStatusCode.OK);
     }   
 }

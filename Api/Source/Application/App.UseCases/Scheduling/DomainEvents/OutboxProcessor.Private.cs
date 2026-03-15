@@ -5,6 +5,7 @@ using Core.Library.Contracts.DomainEvents.Publish;
 using Core.Library.ResultPattern;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Concurrent;
+using System.Net;
 using System.Text.Json;
 
 namespace App.UseCases.Processors;
@@ -72,6 +73,8 @@ internal partial class OutboxProcessor
 
         messageResult.Data.Update(exception?.ToString());
 
-        return Result.Success("Outbox updated successfully");
+        return Result.Success(
+            message: "Outbox updated successfully",
+            statusCode: HttpStatusCode.OK);
     }
 }

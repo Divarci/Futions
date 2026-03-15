@@ -10,7 +10,7 @@ namespace Core.Library.ResultPattern;
 /// </summary>
 public class Result
 {
-    protected Result(HttpStatusCode? statusCode,
+    protected Result(HttpStatusCode statusCode,
         bool isFailure, string message, ErrorDetails? errorDetails)
     {
         StatusCode = statusCode;
@@ -20,7 +20,7 @@ public class Result
     }
 
     [JsonIgnore]
-    public HttpStatusCode? StatusCode { get; set; }
+    public HttpStatusCode StatusCode { get; set; }
 
     [JsonIgnore]
     public bool IsFailure { get; set; }
@@ -28,7 +28,7 @@ public class Result
     [JsonIgnore]
     public bool IsSuccess => !IsFailure;
 
-    public string Message { get; set; }
+    public string Message { get; set; } = default!;
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public ErrorDetails? ErrorDetails { get; set; }
@@ -36,37 +36,33 @@ public class Result
     /// <summary>
     /// Creates a successful result with the specified status code and message.
     /// </summary>
-    public static Result Success(string message, HttpStatusCode? statusCode = null)
+    public static Result Success(string message, HttpStatusCode statusCode)
         => new(statusCode, false, message, null);
 
     /// <summary>
     /// Creates a failure result with the specified status code and message.
     /// </summary>
-    public static Result Failure(string message, HttpStatusCode? statusCode = null)
+    public static Result Failure(string message, HttpStatusCode statusCode)
         => new(statusCode, true, message, null);
 
     /// <summary>
     /// Creates a failure result with the specified status code, message, and error details.
     /// </summary>
     public static Result Failure(string message, ErrorDetails errorDetails,
-        HttpStatusCode? statusCode = null)
+        HttpStatusCode statusCode)
         => new(statusCode, true, message, errorDetails);
 
     /// <summary>
     /// Combines multiple validation results into a single <see cref="Result"/>.
-    /// Returns success if all pass, otherwise aggregates all errors into one failure.
-    /// </summary>
-    /// <param name="results">The list of validation results to combine.</param>
-    /// <returns>
-    /// A success result if all validations pass; otherwise, a failure result
-    /// with all error details and a <see cref="HttpStatusCode.UnprocessableEntity"/> status code.
-    /// </returns>
+    /// Returns success if all pass, otherwise aggregates all errors into one failure.   
     public static Result CombineValidationErrors(List<Result> results)
     {
         List<Result> failures = [.. results.Where(r => r.IsFailure)];
 
         if (!(failures.Count > 0))
-            return Success("Validation succeeded.");
+            return Success(
+                message: "Validation succeeded.",
+                statusCode: HttpStatusCode.OK);
 
         List<string> errors = [.. failures.SelectMany(r => r.ErrorDetails?.Errors ?? [])];
 
@@ -84,7 +80,7 @@ public class Result
 /// <typeparam name="T">The type of the data returned by the operation. Must be a reference type.</typeparam>
 public class Result<T> : Result
 {
-    protected Result(HttpStatusCode? statusCode,
+    protected Result(HttpStatusCode statusCode,
         bool isFailure, string message, ErrorDetails? errorDetails, T? data)
         : base(statusCode, isFailure, message, errorDetails)
     {
@@ -101,20 +97,20 @@ public class Result<T> : Result
     /// <summary>
     /// Creates a successful result with the specified data, message, and status code.
     /// </summary>      
-    public static Result<T> Success(string message, T data, HttpStatusCode? statusCode = null)
+    public static Result<T> Success(string message, T data, HttpStatusCode statusCode)
         => new(statusCode, false, message, null, data);
 
     /// <summary>
     /// Creates a failure result with the specified status code and message.
     /// </summary>
-    public static new Result<T> Failure(string message, HttpStatusCode? statusCode = null)
+    public static new Result<T> Failure(string message, HttpStatusCode statusCode)
         => new(statusCode, true, message, null, default);
 
     /// <summary>
     /// Creates a failure result with the specified status code, message, and error details.
     /// </summary>
     public static new Result<T> Failure(string message, ErrorDetails errorDetails,
-        HttpStatusCode? statusCode = null)
+        HttpStatusCode statusCode)
         => new(statusCode, true, message, errorDetails, default);
 }
 
@@ -125,7 +121,7 @@ public class Result<T> : Result
 /// <typeparam name="T">The type of the data returned by the operation. Must be a reference type.</typeparam>
 public class PaginatedResult<T> : Result<T>
 {
-    private PaginatedResult(HttpStatusCode? statusCode, bool isFailure,
+    private PaginatedResult(HttpStatusCode statusCode, bool isFailure,
         string message, ErrorDetails? errorDetails, T? data, Metadata? metadata)
         : base(statusCode, isFailure, message, errorDetails, data)
     {
@@ -147,6 +143,6 @@ public class PaginatedResult<T> : Result<T>
     /// <summary>
     /// Creates a failed paginated result with the specified error message and optional HTTP status code.
     /// </summary>   
-    public static new PaginatedResult<T> Failure(string message, HttpStatusCode? statusCode = null)
+    public static new PaginatedResult<T> Failure(string message, HttpStatusCode statusCode)
         => new(statusCode, true, message, null, default, null);
 }

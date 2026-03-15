@@ -38,7 +38,9 @@ public static class ServiceRegistrar
                 Ssl = config.Ssl,
                 ConnectTimeout = config.Timeout,
                 SyncTimeout = config.Timeout,
+                AsyncTimeout = config.Timeout,
                 AbortOnConnectFail = false,
+                AllowAdmin = true,
                 Password = config.AccessKey
             });
         });

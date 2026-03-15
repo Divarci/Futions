@@ -5,6 +5,7 @@ using Core.Library.Abstractions;
 using Core.Library.Abstractions.Interfaces;
 using Core.Library.ResultPattern;
 using System.Net;
+using System.Text.Json.Serialization;
 
 namespace Core.Domain.Entities.Organisations.People;
 
@@ -13,6 +14,7 @@ public partial class Person : BaseEntity, IHaveSoftDelete, IHaveTenant
     // Constructors
     private Person() { }
 
+    [JsonConstructor]
     private Person(Guid tenantId, Fullname fullname, string email)
     {
         TenantId = tenantId;
@@ -55,7 +57,8 @@ public partial class Person : BaseEntity, IHaveSoftDelete, IHaveTenant
 
         return Result<Person>.Success(
             message: "Person created successfully",
-            data: person);
+            data: person,
+            statusCode: HttpStatusCode.OK);
     }
 
     public Result SoftDelete()
@@ -70,7 +73,8 @@ public partial class Person : BaseEntity, IHaveSoftDelete, IHaveTenant
         Raise(new PersonDeletedDomainEvent(Id));
 
         return Result.Success(
-            message: "Person deleted successfully");
+            message: "Person deleted successfully",
+            statusCode: HttpStatusCode.OK);
     }
 
     public Result UpdateFullname(FullnameModel fullnameModel)
@@ -95,7 +99,8 @@ public partial class Person : BaseEntity, IHaveSoftDelete, IHaveTenant
         Raise(new PersonFullnameUpdatedDomainEvent(Id));
 
         return Result.Success(
-            message: "Person fullname updated successfully");
+            message: "Person fullname updated successfully",
+            statusCode: HttpStatusCode.OK);
     }
 
     public Result UpdateEmail(string email)
@@ -115,6 +120,7 @@ public partial class Person : BaseEntity, IHaveSoftDelete, IHaveTenant
         Raise(new PersonEmailUpdatedDomainEvent(Id));
 
         return Result.Success(
-            message: "Person email updated successfully");
+            message: "Person email updated successfully",
+            statusCode: HttpStatusCode.OK);
     }
 }

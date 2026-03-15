@@ -6,6 +6,7 @@ using Core.Library.Abstractions;
 using Core.Library.Abstractions.Interfaces;
 using Core.Library.ResultPattern;
 using System.Net;
+using System.Text.Json.Serialization;
 
 namespace Core.Domain.Entities.Organisations.Companies;
 
@@ -64,7 +65,8 @@ public partial class Company : BaseEntity, IHaveSoftDelete, IHaveTenant
 
         return Result<Company>.Success(
             message: "Company created successfully",
-            data: company);
+            data: company,
+            statusCode: HttpStatusCode.OK);
     }
 
     public Result SoftDelete()
@@ -78,7 +80,9 @@ public partial class Company : BaseEntity, IHaveSoftDelete, IHaveTenant
 
         Raise(new CompanyDeletedDomainEvent(Id));
 
-        return Result.Success("Company deleted successfully");
+        return Result.Success(
+            message: "Company deleted successfully",
+            statusCode: HttpStatusCode.OK);
     }
 
     public Result UpdateName(string name)
@@ -97,7 +101,9 @@ public partial class Company : BaseEntity, IHaveSoftDelete, IHaveTenant
 
         Raise(new CompanyNameUpdatedDomainEvent(Id));
 
-        return Result.Success("Company name updated successfully");
+        return Result.Success(
+            message: "Company name updated successfully",
+            statusCode: HttpStatusCode.OK);
     }
 
     public Result UpdateAddress(AddressModel addressModel)
@@ -121,6 +127,8 @@ public partial class Company : BaseEntity, IHaveSoftDelete, IHaveTenant
 
         Raise(new CompanyAddressUpdatedDomainEvent(Id));
 
-        return Result.Success("Company address updated successfully");
+        return Result.Success(
+            message: "Company address updated successfully",
+            statusCode: HttpStatusCode.OK);
     }
 }

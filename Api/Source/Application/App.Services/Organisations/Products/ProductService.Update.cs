@@ -1,6 +1,7 @@
 ﻿using Core.Domain.Entities.Organisations.Products;
 using Core.Domain.Entities.Organisations.Products.Models;
 using Core.Library.ResultPattern;
+using System.Net;
 
 namespace App.Services.Features.Organisations.Companies;
 
@@ -49,6 +50,7 @@ internal sealed partial class ProductService
 
         return Result<Product>.Success(
             message: "Product updated successfully.",
-            data: product);
+            data: product,
+            statusCode: HttpStatusCode.OK);
     }
 }

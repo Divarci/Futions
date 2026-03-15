@@ -12,13 +12,13 @@ public static class ApiResultHelper
     /// </summary>
     public static ProblemDetails Problem(Result result)
     {
-        if (result.IsSuccess || result.StatusCode is null)
+        if (result.IsSuccess)
             throw new InvalidOperationException("Problem can only be built from a failed result with a status code.");
 
         ProblemDetails problemDetails = new()
         {
             Title = result.Message,
-            Type = GetRfcType(result.StatusCode.Value),
+            Type = GetRfcType(result.StatusCode),
             Status = (int)result.StatusCode
         };
 

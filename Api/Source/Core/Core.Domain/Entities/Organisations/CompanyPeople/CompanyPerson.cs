@@ -4,6 +4,7 @@ using Core.Domain.Entities.Organisations.CompanyPeople.Models;
 using Core.Domain.Entities.Organisations.People;
 using Core.Library.Abstractions;
 using Core.Library.ResultPattern;
+using System.Net;
 
 namespace Core.Domain.Entities.Organisations.CompanyPeople;
 
@@ -45,7 +46,8 @@ public sealed partial class CompanyPerson : BaseEntity
 
         return Result<CompanyPerson>.Success(
             message: "Company person created successfully",
-            data: companyPerson);
+            data: companyPerson,
+            statusCode: HttpStatusCode.OK);
     }
 
     public Result Delete()
@@ -53,7 +55,8 @@ public sealed partial class CompanyPerson : BaseEntity
         Raise(new CompanyPersonDeletedDomainEvent(Id));
 
         return Result.Success(
-            message: "Company person deleted successfully");
+            message: "Company person deleted successfully",
+            statusCode: HttpStatusCode.OK);
     }
 
     public Result UpdateTitle(string title)
@@ -68,6 +71,7 @@ public sealed partial class CompanyPerson : BaseEntity
         Raise(new CompanyPersonTitleUpdatedDomainEvent(Id));
 
         return Result.Success(
-            message: "Company person title updated successfully");
+            message: "Company person title updated successfully",
+            statusCode: HttpStatusCode.OK);
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace Core.Library.ResultPattern;
+﻿using System.Net;
+
+namespace Core.Library.ResultPattern;
 
 public static class ResultExtension
 {
@@ -25,5 +27,5 @@ public static class ResultExtension
             pageSize: result.Metadata?.PageSize ?? 0,
             totalCount: result.Metadata?.TotalCount ?? 0,
             pageCount: result.Metadata?.PageCount ?? 0);
-    }
+    }   
 }

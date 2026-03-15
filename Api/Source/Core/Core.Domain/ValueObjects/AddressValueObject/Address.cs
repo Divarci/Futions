@@ -48,6 +48,7 @@ public sealed partial record Address
 
         return Result<Address>.Success(
             message: "Address created successfully",
-            data: adress);
-    }  
+            data: adress,
+            statusCode: HttpStatusCode.OK);
+    }
 }
