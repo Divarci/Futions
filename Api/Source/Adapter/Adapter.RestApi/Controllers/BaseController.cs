@@ -1,6 +1,7 @@
 ﻿using Adapter.RestApi.AspNetCore.Helpers;
 using Core.Library.ResultPattern;
 using Microsoft.AspNetCore.Mvc;
+using static StackExchange.Redis.Role;
 
 namespace Adapter.RestApi.Controllers;
 
@@ -16,12 +17,10 @@ public class BaseController : ControllerBase
         if (result is null)
             throw new InvalidOperationException("Result cannot be null.");
 
-        int statusCode = (int)result.StatusCode;
+        if (result.IsFailure)
+            return StatusCode((int)result.StatusCode, ApiResultHelper.Problem(result));
 
-        if (result.IsSuccess)
-            return StatusCode(statusCode, result);
-
-        return StatusCode(statusCode, ApiResultHelper.Problem(result));
+        return StatusCode((int)result.StatusCode, result);
     }
 
     /// <summary>
@@ -39,14 +38,12 @@ public class BaseController : ControllerBase
         if (result is null)
             throw new InvalidOperationException("Result cannot be null.");
 
+        if (result.IsFailure)
+            return StatusCode((int)result.StatusCode, ApiResultHelper.Problem(result));
+
         Result<M> mappedResult = result.MapTo(mapper);
 
-        int statusCode = (int)mappedResult.StatusCode;
-
-        if (mappedResult.IsSuccess)
-            return StatusCode(statusCode, mappedResult.Data);
-
-        return StatusCode(statusCode, ApiResultHelper.Problem(result));
+        return StatusCode((int)result.StatusCode, mappedResult);
     }
 
     /// <summary>
@@ -64,14 +61,12 @@ public class BaseController : ControllerBase
         if (result is null)
             throw new InvalidOperationException("Result cannot be null.");
 
+        if (result.IsFailure)
+            return StatusCode((int)result.StatusCode, ApiResultHelper.Problem(result));
+
         PaginatedResult<M> mappedResult = result.MapTo(mapper);
 
-        int statusCode = (int)mappedResult.StatusCode;
-
-        if (result.IsSuccess)
-            return StatusCode(statusCode, result);
-
-        return StatusCode(statusCode, ApiResultHelper.Problem(result));
+        return StatusCode((int)result.StatusCode, mappedResult);
     }
 }
 

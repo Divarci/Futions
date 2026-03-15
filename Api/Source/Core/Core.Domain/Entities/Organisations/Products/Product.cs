@@ -5,7 +5,6 @@ using Core.Library.Abstractions;
 using Core.Library.Abstractions.Interfaces;
 using Core.Library.ResultPattern;
 using System.Net;
-using System.Text.Json.Serialization;
 
 namespace Core.Domain.Entities.Organisations.Products;
 
@@ -14,7 +13,6 @@ public partial class Product : BaseEntity, IHaveSoftDelete, IHaveTenant
     // Constructors
     private Product() { }
 
-    [JsonConstructor]
     private Product(Guid tenantId, string name, decimal price, Guid companyId)
     {
         TenantId = tenantId;

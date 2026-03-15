@@ -5,7 +5,6 @@ using Core.Library.Abstractions;
 using Core.Library.Abstractions.Interfaces;
 using Core.Library.ResultPattern;
 using System.Net;
-using System.Text.Json.Serialization;
 
 namespace Core.Domain.Entities.Organisations.People;
 
@@ -14,7 +13,6 @@ public partial class Person : BaseEntity, IHaveSoftDelete, IHaveTenant
     // Constructors
     private Person() { }
 
-    [JsonConstructor]
     private Person(Guid tenantId, Fullname fullname, string email)
     {
         TenantId = tenantId;
