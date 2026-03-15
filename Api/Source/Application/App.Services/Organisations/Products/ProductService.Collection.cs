@@ -7,6 +7,7 @@ internal sealed partial class ProductService
 {
     public async Task<PaginatedResult<TDto[]>> GetPaginatedAsync<TDto>(
         Guid tenantId,
+        Guid companyId,
         int page,
         int pageSize,
         string sortBy,
@@ -17,7 +18,7 @@ internal sealed partial class ProductService
     {
         // Get paginated list of products for the specified tenant
         Result<Product[]> entityResult = await _repository
-            .GetPaginatedAsync(tenantId, page, pageSize, sortBy, isAscending, filterQuery, cancellationToken);
+            .GetPaginatedAsync(tenantId, companyId, page, pageSize, sortBy, isAscending, filterQuery, cancellationToken);
 
         if (entityResult.IsFailure)
             return PaginatedResult<TDto[]>.Failure(

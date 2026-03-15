@@ -8,6 +8,7 @@ internal sealed partial class ProductUseCase
 {
     public async Task<PaginatedResult<TDto[]>> GetPaginatedAsync<TDto>(
         Guid tenantId,
+        Guid companyId,
         int? pageQuery,
         int? pageSizeQuery,
         string? sortByQuery,
@@ -34,7 +35,7 @@ internal sealed partial class ProductUseCase
             cacheKey: cacheKey,
             useCache: true,
             serviceCall: async () => await _productService.GetPaginatedAsync(
-                tenantId, page, size, sortBy, ascending,
+                tenantId, companyId, page, size, sortBy, ascending,
                 filterQuery, mapper, cancellationToken),
             _timeout);
 

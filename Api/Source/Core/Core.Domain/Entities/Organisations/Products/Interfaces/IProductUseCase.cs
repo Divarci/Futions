@@ -10,6 +10,7 @@ public interface IProductUseCase
     /// Retrieves a paginated collection of products based on the provided parameters.
     /// </summary>
     /// <param name="tenantId">The tenant ID.</param>
+    /// <param name="companyId">The company ID.</param>
     /// <param name="pageQuery">The page number.</param>
     /// <param name="pageSizeQuery">The page size.</param>
     /// <param name="sortByQuery">The field to sort by.</param>
@@ -19,6 +20,7 @@ public interface IProductUseCase
     /// <returns>A paginated result containing the product entities.</returns>
     Task<PaginatedResult<TDto[]>> GetPaginatedAsync<TDto>(
         Guid tenantId,
+        Guid companyId,
         int? pageQuery,
         int? pageSizeQuery,
         string? sortByQuery,

@@ -10,6 +10,7 @@ internal sealed partial class ProductRepository
 {
     public async Task<Result<Product[]>> GetPaginatedAsync(
         Guid tenantId,
+        Guid companyId,
         int page,
         int pageSize,
         string sortBy,
@@ -19,7 +20,7 @@ internal sealed partial class ProductRepository
     {
         var query = _context.Set<Product>()
             .AsNoTracking()
-            .Where(x => x.TenantId == tenantId && !x.IsDeleted)
+            .Where(x => x.TenantId == tenantId && x.CompanyId == companyId && !x.IsDeleted)
             .WhereIf(!string.IsNullOrWhiteSpace(filter), x => EF.Functions.Like(x.Name, $"%{filter}%"))
             .OrderByIf(isAscending, sortBy);
 
