@@ -44,7 +44,7 @@ public class CacheService(ConnectionMultiplexer redis) : ICacheProvider, ICacheI
         Func<Task<Result<TEntity>>> serviceMethod,
         bool useCache,
         string cacheKey,
-        TimeSpan cacheExpiration) where TEntity : BaseEntity
+        TimeSpan cacheExpiration) where TEntity : class
     {
         if (useCache && await GetAsync<TEntity>(cacheKey) is { } cachedModel)
         {

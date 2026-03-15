@@ -17,14 +17,15 @@ public interface IPersonUseCase
     /// <param name="filterQuery">The filter criteria.</param>
     /// <param name="cancellationToken">A token to cancel the operation.</param>
     /// <returns>A paginated result containing the person entities.</returns>
-    Task<PaginatedResult<Person[]>> GetPaginatedAsync(
+    Task<PaginatedResult<TDto[]>> GetPaginatedAsync<TDto>(
         Guid tenantId,
         int? pageQuery,
         int? pageSizeQuery,
         string? sortByQuery,
         bool? isAscendingQuery,
         string? filterQuery,
-        CancellationToken cancellationToken = default);
+        Func<Person[], TDto[]> mapper,
+        CancellationToken cancellationToken = default) where TDto : class;
 
     /// <summary>
     /// Retrieves a person by its ID.
@@ -33,10 +34,11 @@ public interface IPersonUseCase
     /// <param name="id">The person ID.</param>
     /// <param name="cancellationToken">A token to cancel the operation.</param>
     /// <returns>A result containing the person if found, or an error if not.</returns>
-    Task<Result<Person>> GetByIdAsync(
+    Task<Result<TDto>> GetByIdAsync<TDto>(
         Guid tenantId,
         Guid id,
-        CancellationToken cancellationToken = default);
+        Func<Person, TDto> mapper,
+        CancellationToken cancellationToken = default) where TDto : class;
 
     /// <summary>
     /// Creates a new person entity.

@@ -27,18 +27,17 @@ public class CompanyController(
         [FromQuery] PaginationFilterModel filter,
         CancellationToken cancellationToken)
     {
-        PaginatedResult<Company[]> paginatedCompanies = await _companyUseCase.GetPaginatedAsync(
+        PaginatedResult<CompanyResponse[]> paginatedCompanies = await _companyUseCase.GetPaginatedAsync(
             tenantId,
             filter.Page,
             filter.PageSize,
             filter.SortBy,
             filter.IsAscending,
             filter.Filter,
+            CompanyMapper.ToArrayResponse,
             cancellationToken);
 
-        return HandleResult(
-            result: paginatedCompanies,
-            mapper: CompanyMapper.ToArrayResponse);
+        return HandleResult(paginatedCompanies);
     }
 
     [HttpGet("{companyId}")]
@@ -53,14 +52,13 @@ public class CompanyController(
         Guid companyId,
         CancellationToken cancellationToken)
     {
-        Result<Company> company = await _companyUseCase.GetByIdAsync(
+        Result<CompanyResponse> company = await _companyUseCase.GetByIdAsync(
             tenantId,
             companyId,
+            CompanyMapper.ToResponse,
             cancellationToken);
 
-        return HandleResult(
-            result: company,
-            mapper: CompanyMapper.ToResponse);
+        return HandleResult(company);
     }
 
     [HttpPost]

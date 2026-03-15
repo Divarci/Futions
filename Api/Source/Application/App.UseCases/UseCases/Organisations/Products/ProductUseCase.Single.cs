@@ -5,18 +5,19 @@ namespace App.UseCases.UseCases.Organisations.Products;
 
 internal sealed partial class ProductUseCase
 {
-    public async Task<Result<Product>> GetByIdAsync(
+    public async Task<Result<TDto>> GetByIdAsync<TDto>(
         Guid tenantId,
         Guid id,
-        CancellationToken cancellationToken = default)
+        Func<Product, TDto> mapper,
+        CancellationToken cancellationToken = default) where TDto : class
     {
         // Create a unique cache key for the product based on tenant ID and product ID.
         string cacheKey = $"{nameof(Product)}:tenant({tenantId}):id({id})";
 
         // Attempt to retrieve the product from the cache. If it's not present, fetch it from the service and cache the result.
-        Result<Product> productResult = await _cacheProvider.GetSingleAsync(
+        Result<TDto> productResult = await _cacheProvider.GetSingleAsync(
             serviceMethod: async () => await _productService.GetByIdAsync(
-                tenantId, id, cancellationToken),
+                tenantId, id, mapper, cancellationToken),
             useCache: true,
             cacheKey: cacheKey,
             _timeout);

@@ -17,14 +17,15 @@ public interface IAuditLogService
     /// <param name="filterQuery">Optional filter string.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A result containing the paginated array of audit logs.</returns>
-    Task<PaginatedResult<AuditLog[]>> GetPaginatedAsync(
+    Task<PaginatedResult<TDto[]>> GetPaginatedAsync<TDto>(
         Guid tenantId,
         int page,
         int pageSize,
         string sortBy,
         bool isAscending,
         string? filterQuery,
-        CancellationToken cancellationToken = default);
+        Func<AuditLog[], TDto[]> mapper,
+        CancellationToken cancellationToken = default) where TDto : class;
 
     /// <summary>
     /// Retrieves an audit log by its unique identifier.
@@ -33,10 +34,11 @@ public interface IAuditLogService
     /// <param name="id">The audit log ID.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A result containing the audit log if found.</returns>
-    Task<Result<AuditLog>> GetByIdAsync(
+    Task<Result<TDto>> GetByIdAsync<TDto>(
         Guid tenantId,
         Guid id,
-        CancellationToken cancellationToken = default);
+        Func<AuditLog, TDto> mapper,
+        CancellationToken cancellationToken = default) where TDto : class;
 
     /// <summary>
     /// Creates a new audit log entity with the given created stamp.

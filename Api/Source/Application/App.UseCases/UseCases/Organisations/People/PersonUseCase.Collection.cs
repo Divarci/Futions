@@ -6,14 +6,15 @@ namespace App.UseCases.UseCases.Organisations.People;
 
 internal sealed partial class PersonUseCase
 {
-    public async Task<PaginatedResult<Person[]>> GetPaginatedAsync(
+    public async Task<PaginatedResult<TDto[]>> GetPaginatedAsync<TDto>(
         Guid tenantId,
         int? pageQuery,
         int? pageSizeQuery,
         string? sortByQuery,
         bool? isAscendingQuery,
         string? filterQuery,
-        CancellationToken cancellationToken = default)
+        Func<Person[], TDto[]> mapper,
+        CancellationToken cancellationToken = default) where TDto : class
     {
         // Validate and set default values for pagination and sorting parameters.
         int page = pageQuery < 1 || pageQuery is null ? 1 : pageQuery.Value;
@@ -29,12 +30,12 @@ internal sealed partial class PersonUseCase
             [tenantId, page, size, sortBy, ascending, filterQuery ?? string.Empty]);
 
         // Attempt to retrieve the paginated collection from the cache, or call the service method if not cached.
-        PaginatedResult<Person[]> retrievalResult = await _cacheProvider.GetPaginatedCollection(
+        PaginatedResult<TDto[]> retrievalResult = await _cacheProvider.GetPaginatedCollection(
             cacheKey: cacheKey,
             useCache: true,
             serviceCall: async () => await _personService.GetPaginatedAsync(
                 tenantId, page, size, sortBy, ascending,
-                filterQuery, cancellationToken),
+                filterQuery, mapper, cancellationToken),
             _timeout);
 
         if (retrievalResult.IsFailureAndNoData)

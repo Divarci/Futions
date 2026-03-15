@@ -17,14 +17,15 @@ public interface ICompanyUseCase
     /// <param name="filterQuery">The filter criteria.</param>
     /// <param name="cancellationToken">A token to cancel the operation.</param>
     /// <returns>A paginated result containing the company entities.</returns>
-    Task<PaginatedResult<Company[]>> GetPaginatedAsync(
+    Task<PaginatedResult<TDto[]>> GetPaginatedAsync<TDto>(
         Guid tenantId,
         int? pageQuery,
         int? pageSizeQuery,
         string? sortByQuery,
         bool? isAscendingQuery,
         string? filterQuery,
-        CancellationToken cancellationToken = default);
+        Func<Company[], TDto[]> mapper,
+        CancellationToken cancellationToken = default) where TDto : class;
       
     /// <summary>
     /// Retrieves a company by its ID.
@@ -33,10 +34,11 @@ public interface ICompanyUseCase
     /// <param name="id">The company ID.</param>
     /// <param name="cancellationToken">A token to cancel the operation.</param>
     /// <returns>A result containing the company if found, or an error if not.</returns>
-    Task<Result<Company>> GetByIdAsync(
+    Task<Result<TDto>> GetByIdAsync<TDto>(
         Guid tenantId,
         Guid id,
-        CancellationToken cancellationToken = default);
+        Func<Company, TDto> mapper,
+        CancellationToken cancellationToken = default) where TDto : class;
     
     /// <summary>
     /// Creates a new company entity.

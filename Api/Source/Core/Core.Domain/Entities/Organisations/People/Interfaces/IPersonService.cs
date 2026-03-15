@@ -16,14 +16,15 @@ public interface IPersonService
     /// <param name="filterQuery">Optional filter string.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A result containing the paginated array of people.</returns>
-    Task<PaginatedResult<Person[]>> GetPaginatedAsync(
+    Task<PaginatedResult<TDto[]>> GetPaginatedAsync<TDto>(
         Guid tenantId,
         int page,
         int pageSize,
         string sortBy,
         bool isAscending,
         string? filterQuery,
-        CancellationToken cancellationToken = default);
+        Func<Person[], TDto[]> mapper,
+        CancellationToken cancellationToken = default) where TDto : class;
 
     /// <summary>
     /// Retrieves a person by its unique identifier.
@@ -32,10 +33,11 @@ public interface IPersonService
     /// <param name="id">The person ID.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A result containing the person if found.</returns>
-    Task<Result<Person>> GetByIdAsync(
+    Task<Result<TDto>> GetByIdAsync<TDto>(
         Guid tenantId,
         Guid id,
-        CancellationToken cancellationToken = default);
+        Func<Person, TDto> mapper,
+        CancellationToken cancellationToken = default) where TDto : class;
 
     /// <summary>
     /// Creates a new person entity.

@@ -17,14 +17,15 @@ public interface IProductUseCase
     /// <param name="filterQuery">The filter criteria.</param>
     /// <param name="cancellationToken">A token to cancel the operation.</param>
     /// <returns>A paginated result containing the product entities.</returns>
-    Task<PaginatedResult<Product[]>> GetPaginatedAsync(
+    Task<PaginatedResult<TDto[]>> GetPaginatedAsync<TDto>(
         Guid tenantId,
         int? pageQuery,
         int? pageSizeQuery,
         string? sortByQuery,
         bool? isAscendingQuery,
         string? filterQuery,
-        CancellationToken cancellationToken = default);
+        Func<Product[], TDto[]> mapper,
+        CancellationToken cancellationToken = default) where TDto : class;
 
     /// <summary>
     /// Retrieves a product by its ID.
@@ -33,10 +34,11 @@ public interface IProductUseCase
     /// <param name="id">The product ID.</param>
     /// <param name="cancellationToken">A token to cancel the operation.</param>
     /// <returns>A result containing the product if found, or an error if not.</returns>
-    Task<Result<Product>> GetByIdAsync(
+    Task<Result<TDto>> GetByIdAsync<TDto>(
         Guid tenantId,
         Guid id,
-        CancellationToken cancellationToken = default);
+        Func<Product, TDto> mapper,
+        CancellationToken cancellationToken = default) where TDto : class;
 
     /// <summary>
     /// Creates a new product entity.

@@ -21,6 +21,24 @@ public class BaseController : ControllerBase
             return StatusCode((int)result.StatusCode, ApiResultHelper.Problem(result));
 
         return StatusCode((int)result.StatusCode, result);
+    }   
+
+    /// <summary>
+    /// Handles a <see cref="Result{T}"/> that is already mapped and ready to return.
+    /// Returns the entity data on success, or a ProblemDetails response on failure.
+    /// </summary>
+    /// <typeparam name="T">The type of the data in the result.</typeparam>
+    /// <param name="result">The already-mapped result.</param>
+    /// <returns>An ActionResult containing the data or a ProblemDetails response.</returns>
+    protected ActionResult HandleResult<T>(Result<T> result)
+    {
+        if (result is null)
+            throw new InvalidOperationException("Result cannot be null.");
+
+        if (result.IsFailure)
+            return StatusCode((int)result.StatusCode, ApiResultHelper.Problem(result));
+
+        return StatusCode((int)result.StatusCode, result);
     }
 
     /// <summary>
@@ -47,16 +65,13 @@ public class BaseController : ControllerBase
     }
 
     /// <summary>
-    /// Handles a <see cref="PaginatedResult{T}"/> that carries a paginated collection.
+    /// Handles a <see cref="PaginatedResult{T}"/> that is already mapped and ready to return.
     /// Returns the full paginated result (data + metadata) on success, or a ProblemDetails response on failure.
     /// </summary>
-    /// <typeparam name="T">The type of the data returned by the operation.</typeparam>
-    /// <typeparam name="M">The type of the mapped data.</typeparam>
-    /// <param name="result">The result of the operation.</param>
-    /// <param name="mapper">A function to map the data from type T to type M.</param>
-    /// <returns>An ActionResult containing the mapped data or a ProblemDetails response.</returns>
-    /// <exception cref="InvalidOperationException"></exception>
-    protected ActionResult HandleResult<T, M>(PaginatedResult<T> result, Func<T, M> mapper)
+    /// <typeparam name="T">The type of the data in the paginated result.</typeparam>
+    /// <param name="result">The already-mapped paginated result.</param>
+    /// <returns>An ActionResult containing the paginated data or a ProblemDetails response.</returns>
+    protected ActionResult HandleResult<T>(PaginatedResult<T> result)
     {
         if (result is null)
             throw new InvalidOperationException("Result cannot be null.");
@@ -64,9 +79,7 @@ public class BaseController : ControllerBase
         if (result.IsFailure)
             return StatusCode((int)result.StatusCode, ApiResultHelper.Problem(result));
 
-        PaginatedResult<M> mappedResult = result.MapTo(mapper);
-
-        return StatusCode((int)result.StatusCode, mappedResult);
+        return StatusCode((int)result.StatusCode, result);
     }
 }
 

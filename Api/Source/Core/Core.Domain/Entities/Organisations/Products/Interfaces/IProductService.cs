@@ -16,14 +16,15 @@ public interface IProductService
     /// <param name="filterQuery">Optional filter string.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A result containing the paginated array of products.</returns>
-    Task<PaginatedResult<Product[]>> GetPaginatedAsync(
+    Task<PaginatedResult<TDto[]>> GetPaginatedAsync<TDto>(
         Guid tenantId,
         int page,
         int pageSize,
         string sortBy,
         bool isAscending,
         string? filterQuery,
-        CancellationToken cancellationToken = default);
+        Func<Product[], TDto[]> mapper,
+        CancellationToken cancellationToken = default) where TDto : class;
 
     /// <summary>
     /// Retrieves a product by its unique identifier.
@@ -32,10 +33,11 @@ public interface IProductService
     /// <param name="id">The product ID.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A result containing the product if found.</returns>
-    Task<Result<Product>> GetByIdAsync(
+    Task<Result<TDto>> GetByIdAsync<TDto>(
         Guid tenantId,
         Guid id,
-        CancellationToken cancellationToken = default);
+        Func<Product, TDto> mapper,
+        CancellationToken cancellationToken = default) where TDto : class;
 
     /// <summary>
     /// Creates a new product entity.

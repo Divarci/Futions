@@ -16,14 +16,15 @@ public interface IAuditLogUseCase
     /// <param name="filterQuery">The filter criteria.</param>
     /// <param name="cancellationToken">A token to cancel the operation.</param>
     /// <returns>A paginated result containing the audit log entities.</returns>
-    Task<PaginatedResult<AuditLog[]>> GetPaginatedAsync(
+    Task<PaginatedResult<TDto[]>> GetPaginatedAsync<TDto>(
         Guid tenantId,
         int? pageQuery,
         int? pageSizeQuery,
         string? sortByQuery,
         bool? isAscendingQuery,
         string? filterQuery,
-        CancellationToken cancellationToken = default);
+        Func<AuditLog[], TDto[]> mapper,
+        CancellationToken cancellationToken = default) where TDto : class;
 
     /// <summary>
     /// Retrieves an audit log by its ID.
@@ -32,9 +33,10 @@ public interface IAuditLogUseCase
     /// <param name="id">The audit log ID.</param>
     /// <param name="cancellationToken">A token to cancel the operation.</param>
     /// <returns>A result containing the audit log if found, or an error if not.</returns>
-    Task<Result<AuditLog>> GetByIdAsync(
+    Task<Result<TDto>> GetByIdAsync<TDto>(
         Guid tenantId,
         Guid id,
-        CancellationToken cancellationToken = default);
+        Func<AuditLog, TDto> mapper,
+        CancellationToken cancellationToken = default) where TDto : class;
 
 }

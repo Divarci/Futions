@@ -21,7 +21,7 @@ public interface ICacheProvider
         Func<Task<Result<TEntity>>> serviceMethod,
         bool useCache,
         string cacheKey,
-        TimeSpan cacheExpiration) where TEntity : BaseEntity;
+        TimeSpan cacheExpiration) where TEntity : class;
 
     /// <summary>
     /// Gets a paginated collection of items with caching

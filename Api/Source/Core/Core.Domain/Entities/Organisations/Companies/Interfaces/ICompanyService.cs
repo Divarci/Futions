@@ -16,14 +16,15 @@ public interface ICompanyService
     /// <param name="filterQuery">Optional filter string.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A result containing the paginated array of companies.</returns>
-    Task<PaginatedResult<Company[]>> GetPaginatedAsync(
+    Task<PaginatedResult<TDto[]>> GetPaginatedAsync<TDto>(
         Guid tenantId,
         int page,
         int pageSize,
         string sortBy,
         bool isAscending,
         string? filterQuery,
-        CancellationToken cancellationToken = default);
+        Func<Company[], TDto[]> mapper,
+        CancellationToken cancellationToken = default) where TDto : class;
 
     /// <summary>
     /// Retrieves a company by its unique identifier.
@@ -32,10 +33,11 @@ public interface ICompanyService
     /// <param name="id">The company ID.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A result containing the company if found.</returns>
-    Task<Result<Company>> GetByIdAsync(
+    Task<Result<TDto>> GetByIdAsync<TDto>(
         Guid tenantId,
         Guid id,
-        CancellationToken cancellationToken = default);
+        Func<Company, TDto> mapper,
+        CancellationToken cancellationToken = default) where TDto : class;
 
     /// <summary>
     /// Creates a new company entity.
