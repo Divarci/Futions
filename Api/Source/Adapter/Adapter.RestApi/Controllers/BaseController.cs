@@ -1,4 +1,5 @@
 ﻿using Adapter.RestApi.AspNetCore.Helpers;
+using Core.Library.Exceptions;
 using Core.Library.ResultPattern;
 using Microsoft.AspNetCore.Mvc;
 using static StackExchange.Redis.Role;
@@ -15,13 +16,17 @@ public class BaseController : ControllerBase
     protected ActionResult HandleResult(Result result)
     {
         if (result is null)
-            throw new InvalidOperationException("Result cannot be null.");
+            throw new FutionsException(
+                assemblyName: "Adapter.RestApi",
+                className: nameof(BaseController),
+                methodName: nameof(HandleResult),
+                message: "Result cannot be null.");
 
         if (result.IsFailure)
             return StatusCode((int)result.StatusCode, ApiResultHelper.Problem(result));
 
         return StatusCode((int)result.StatusCode, result);
-    }   
+    }
 
     /// <summary>
     /// Handles a <see cref="Result{T}"/> that is already mapped and ready to return.
@@ -33,7 +38,11 @@ public class BaseController : ControllerBase
     protected ActionResult HandleResult<T>(Result<T> result)
     {
         if (result is null)
-            throw new InvalidOperationException("Result cannot be null.");
+            throw new FutionsException(
+                assemblyName: "Adapter.RestApi",
+                className: nameof(BaseController),
+                methodName: nameof(HandleResult),
+                message: "Result cannot be null.");
 
         if (result.IsFailure)
             return StatusCode((int)result.StatusCode, ApiResultHelper.Problem(result));
@@ -54,7 +63,11 @@ public class BaseController : ControllerBase
     protected ActionResult HandleResult<T, M>(Result<T> result, Func<T, M> mapper)
     {
         if (result is null)
-            throw new InvalidOperationException("Result cannot be null.");
+            throw new FutionsException(
+                assemblyName: "Adapter.RestApi",
+                className: nameof(BaseController),
+                methodName: nameof(HandleResult),
+                message: "Result cannot be null.");
 
         if (result.IsFailure)
             return StatusCode((int)result.StatusCode, ApiResultHelper.Problem(result));
@@ -74,7 +87,11 @@ public class BaseController : ControllerBase
     protected ActionResult HandleResult<T>(PaginatedResult<T> result)
     {
         if (result is null)
-            throw new InvalidOperationException("Result cannot be null.");
+            throw new FutionsException(
+                assemblyName: "Adapter.RestApi",
+                className: nameof(BaseController),
+                methodName: nameof(HandleResult),
+                message: "Result cannot be null.");
 
         if (result.IsFailure)
             return StatusCode((int)result.StatusCode, ApiResultHelper.Problem(result));

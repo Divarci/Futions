@@ -1,5 +1,6 @@
 ﻿using Adapter.Scheduler.Configuration;
 using Core.Domain.Entities.System.OutboxMessages.Interfaces;
+using Core.Library.Exceptions;
 using Core.Library.ResultPattern;
 using Microsoft.Extensions.Options;
 using Quartz;
@@ -20,6 +21,10 @@ internal sealed class ProcessOutboxJob(
             .ProcessOutboxMessagesAsync(outboxOptions.BatchSize, SerializerOptions.Instance);
 
         if (processResult.IsFailure)
-            throw new Exception($"An error occurred while processing outbox messages. Details: {processResult.Message}");
+            throw new FutionsException(
+                assemblyName: "Adapter.Scheduler",
+                className: nameof(ProcessOutboxJob),
+                methodName: nameof(Execute),
+                message: $"An error occurred while processing outbox messages. Details: {processResult.Message}");
     }
 }

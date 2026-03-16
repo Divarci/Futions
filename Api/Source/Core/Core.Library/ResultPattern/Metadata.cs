@@ -17,7 +17,11 @@ public class Metadata
     public Metadata(int pageNumber, int pageSize, int totalCount, int pageCount)
     {
         if (pageSize <= 0)
-            throw new ValidationException(nameof(pageSize), "PageSize must be greater than zero.");
+            throw new FutionsException(
+                assemblyName: "Core.Library",
+                className: nameof(Metadata),
+                methodName: ".ctor",
+                message: "PageSize must be greater than zero.");
 
         PageNumber = pageNumber;
         PageSize = pageSize;

@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using Core.Library.Exceptions;
+using System.Security.Claims;
 
 namespace Adapter.RestApi.AspNetCore.Extensions;
 
@@ -33,8 +34,11 @@ public static class HttpContextExtensions
     public static Guid GetRequiredTenantId(this HttpContext httpContext)
     {
         return httpContext.GetTenantId()
-            ?? throw new InvalidOperationException(
-                "TenantId claim is missing or invalid. Ensure the endpoint is protected with [Authorize].");
+            ?? throw new FutionsException(
+                assemblyName: "Adapter.RestApi",
+                className: nameof(HttpContextExtensions),
+                methodName: nameof(GetRequiredTenantId),
+                message: "TenantId claim is missing or invalid. Ensure the endpoint is protected with [Authorize].");
     }
 
     /// <summary>
@@ -66,8 +70,11 @@ public static class HttpContextExtensions
     public static Guid GetRequiredUserId(this HttpContext httpContext)
     {
         return httpContext.GetUserId()
-            ?? throw new InvalidOperationException(
-                "UserId claim is missing or invalid. Ensure the endpoint is protected with [Authorize].");
+            ?? throw new FutionsException(
+                assemblyName: "Adapter.RestApi",
+                className: nameof(HttpContextExtensions),
+                methodName: nameof(GetRequiredUserId),
+                message: "UserId claim is missing or invalid. Ensure the endpoint is protected with [Authorize].");
     }
 
     /// <summary>
@@ -92,8 +99,11 @@ public static class HttpContextExtensions
     public static string GetRequiredUserEmail(this HttpContext httpContext)
     {
         return httpContext.GetUserEmail()
-            ?? throw new InvalidOperationException(
-                "Email claim is missing. Ensure the endpoint is protected with [Authorize].");
+            ?? throw new FutionsException(
+                assemblyName: "Adapter.RestApi",
+                className: nameof(HttpContextExtensions),
+                methodName: nameof(GetRequiredUserEmail),
+                message: "Email claim is missing. Ensure the endpoint is protected with [Authorize].");
     }
 
     /// <summary>
