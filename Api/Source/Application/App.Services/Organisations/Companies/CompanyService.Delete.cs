@@ -9,6 +9,7 @@ internal sealed partial class CompanyService
     public async Task<Result> DeleteCompanyAsync(
         Guid tenantId,
         Guid companyId,
+        Func<string, (string Label, object Value)[], string> cacheKeyBuilder,
         CancellationToken cancellationToken = default)
     {
         // Check if the company exists
@@ -33,10 +34,8 @@ internal sealed partial class CompanyService
         // Soft delete the company
         _companyRepository.Delete(companyResult.Data);
 
-        // Create cache key
-        string cacheKey = $"{nameof(Company)}:tenant({tenantId}):company({companyId})";
-
         // Invalidate the cache for the newly created company and the collections that may include it.
+        string cacheKey = cacheKeyBuilder(nameof(Company), [("tenant", tenantId), ("company", companyId)]);
         await _cacheInvalidationService.InvalidateEntity(cacheKey);
         await _cacheInvalidationService.InvalidateCollections();
 

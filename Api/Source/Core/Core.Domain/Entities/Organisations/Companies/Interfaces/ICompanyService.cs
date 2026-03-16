@@ -45,20 +45,24 @@ public interface ICompanyService
     /// Creates a new company entity.
     /// </summary>
     /// <param name="createModel">The company create model.</param>
+    /// <param name="cacheKeyBuilder">A function that builds the cache key for the affected entity.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A result containing the created company.</returns>
     Task<Result<Company>> CreateCompanyAsync(
         CompanyCreateModel createModel,
+        Func<string, (string Label, object Value)[], string> cacheKeyBuilder,
         CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Updates an existing company entity.
     /// </summary>
     /// <param name="updateModel">The company update model.</param>
+    /// <param name="cacheKeyBuilder">A function that builds the cache key for the affected entity.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A result indicating the outcome of the update operation.</returns>
     Task<Result> UpdateCompanyAsync(
         CompanyUpdateModel updateModel,
+        Func<string, (string Label, object Value)[], string> cacheKeyBuilder,
         CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -66,10 +70,12 @@ public interface ICompanyService
     /// </summary>
     /// <param name="tenantId">The tenant ID.</param>
     /// <param name="companyId">The company ID.</param>
+    /// <param name="cacheKeyBuilder">A function that builds the cache key for the affected entity.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A result indicating the outcome of the delete operation.</returns>
     Task<Result> DeleteCompanyAsync(
         Guid tenantId,
         Guid companyId,
-        CancellationToken cancellationToken = default);      
+        Func<string, (string Label, object Value)[], string> cacheKeyBuilder,
+        CancellationToken cancellationToken = default);
 }

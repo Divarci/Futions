@@ -1,4 +1,5 @@
-﻿using Core.Domain.Entities.Auditing.AuditLogs;
+﻿using App.UseCases.Helpers;
+using Core.Domain.Entities.Auditing.AuditLogs;
 using Core.Domain.Entities.Organisations.Companies.Models;
 using Core.Domain.ValueObjects.AuditStampValueObject;
 using Core.Library.ResultPattern;
@@ -16,7 +17,7 @@ internal sealed partial class CompanyUseCase
             {
                 // Update company
                 Result companyUpdateResult = await _companyService
-                    .UpdateCompanyAsync(updateModel, cancellationToken);
+                    .UpdateCompanyAsync(updateModel, CacheKeyHelper.Single, cancellationToken);
     
                 if (companyUpdateResult.IsFailure)
                     return companyUpdateResult;

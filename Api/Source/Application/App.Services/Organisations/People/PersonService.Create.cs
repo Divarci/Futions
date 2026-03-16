@@ -8,6 +8,7 @@ internal sealed partial class PersonService
 {
     public async Task<Result<Person>> CreatePersonAsync(
         PersonCreateModel createModel,
+        Func<string, (string Label, object Value)[], string> cacheKeyBuilder,
         CancellationToken cancellationToken = default)
     {
         // Create Person entity from the create model.
@@ -19,10 +20,8 @@ internal sealed partial class PersonService
         // Persist the new Person entity to the database.
         await _personRepository.CreateAsync(personCreateResult.Data!, cancellationToken);
 
-        // Create cache key
-        string cacheKey = $"{nameof(Person)}:tenant({createModel.TenantId}):person({personCreateResult.Data.Id})";
-
         // Invalidate the cache for the newly created person and the collections that may include it.
+        string cacheKey = cacheKeyBuilder(nameof(Person), [("tenant", createModel.TenantId), ("person", personCreateResult.Data.Id)]);
         await _cacheInvalidationService.InvalidateEntity(cacheKey);
         await _cacheInvalidationService.InvalidateCollections();
 

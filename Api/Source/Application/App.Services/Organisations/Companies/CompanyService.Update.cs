@@ -9,6 +9,7 @@ internal sealed partial class CompanyService
 {
     public async Task<Result> UpdateCompanyAsync(
         CompanyUpdateModel updateModel,
+        Func<string, (string Label, object Value)[], string> cacheKeyBuilder,
         CancellationToken cancellationToken = default)
     {
         // Retrieve the company to update
@@ -44,10 +45,8 @@ internal sealed partial class CompanyService
         // Persist the updated company entity
         _companyRepository.Update(company);
 
-        // Create cache key
-        string cacheKey = $"{nameof(Company)}:tenant({updateModel.TenantId}):company({updateModel.CompanyId})";
-
         // Invalidate the cache for the newly created company and the collections that may include it.
+        string cacheKey = cacheKeyBuilder(nameof(Company), [("tenant", updateModel.TenantId), ("company", updateModel.CompanyId)]);
         await _cacheInvalidationService.InvalidateEntity(cacheKey);
         await _cacheInvalidationService.InvalidateCollections();
 

@@ -1,4 +1,5 @@
-﻿using Core.Domain.Entities.Auditing.AuditLogs;
+﻿using App.UseCases.Helpers;
+using Core.Domain.Entities.Auditing.AuditLogs;
 using Core.Domain.Entities.Organisations.Companies;
 using Core.Domain.Entities.Organisations.Companies.Models;
 using Core.Domain.ValueObjects.AuditStampValueObject;
@@ -17,7 +18,7 @@ internal sealed partial class CompanyUseCase
         {
             // Create company
             Result<Company> companyCreateResult = await _companyService
-                .CreateCompanyAsync(createModel, cancellationToken);
+                .CreateCompanyAsync(createModel, CacheKeyHelper.Single, cancellationToken);
 
             if (companyCreateResult.IsFailureAndNoData)
                 return companyCreateResult;

@@ -10,13 +10,13 @@ public interface ICompanyPersonService
     /// </summary>
     /// <param name="tenantId">The tenant ID.</param>
     /// <param name="companyId">The company ID.</param>
-    /// <param name="pageQuery">The page number.</param>
-    /// <param name="pageSizeQuery">The page size.</param>
+    /// <param name="pageQuery">The page number (1-based).</param>
+    /// <param name="pageSizeQuery">The number of items per page.</param>
     /// <param name="sortByQuery">The field to sort by.</param>
-    /// <param name="isAscendingQuery">Indicates whether the sorting should be in ascending order.</param>
-    /// <param name="filterQuery">The filter criteria.</param>
-    /// <param name="mapper">Mapper function</param>
-    /// <param name="cancellationToken">A token to cancel the operation.</param>
+    /// <param name="isAscendingQuery">Sort direction: true for ascending, false for descending.</param>
+    /// <param name="filterQuery">Optional filter string.</param>
+    /// <param name="mapper">A function to map the company person entities to the desired DTO type.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A paginated result containing the company person entities.</returns>
     Task<PaginatedResult<TDto[]>> GetPaginatedCompanyPeopleAsync<TDto>(
         Guid tenantId,
@@ -35,8 +35,8 @@ public interface ICompanyPersonService
     /// <param name="tenantId">The tenant ID.</param>
     /// <param name="companyId">The company ID.</param>
     /// <param name="companyPersonId">The company person ID.</param>
-    /// <param name="mapper">Mapper function</param>
-    /// <param name="cancellationToken">A token to cancel the operation.</param>
+    /// <param name="mapper">A function to map the company person entity to the desired DTO type.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A result containing the company person if found, or an error if not.</returns>
     Task<Result<TDto>> GetCompanyPersonByIdAsync<TDto>(
         Guid tenantId,
@@ -50,11 +50,13 @@ public interface ICompanyPersonService
     /// </summary>
     /// <param name="tenantId">The tenant ID.</param>
     /// <param name="createModel">The company person create model.</param>
+    /// <param name="cacheKeyBuilder">A function that builds the cache key for the affected entity.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A result containing the created company person.</returns>
     Task<Result<CompanyPerson>> CreateCompanyPersonAsync(
         Guid tenantId,
         CompanyPersonCreateModel createModel,
+        Func<string, (string Label, object Value)[], string> cacheKeyBuilder,
         CancellationToken cancellationToken = default);
 
     /// <summary>

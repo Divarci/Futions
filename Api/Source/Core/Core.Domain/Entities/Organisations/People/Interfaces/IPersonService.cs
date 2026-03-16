@@ -45,20 +45,24 @@ public interface IPersonService
     /// Creates a new person entity.
     /// </summary>
     /// <param name="createModel">The person create model.</param>
+    /// <param name="cacheKeyBuilder">A function that builds the cache key for the affected entity.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A result containing the created person.</returns>
     Task<Result<Person>> CreatePersonAsync(
         PersonCreateModel createModel,
+        Func<string, (string Label, object Value)[], string> cacheKeyBuilder,
         CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Updates an existing person entity.
     /// </summary>
     /// <param name="updateModel">The person update model.</param>
+    /// <param name="cacheKeyBuilder">A function that builds the cache key for the affected entity.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A result indicating the outcome of the update operation.</returns>
     Task<Result> UpdatePersonAsync(
         PersonUpdateModel updateModel,
+        Func<string, (string Label, object Value)[], string> cacheKeyBuilder,
         CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -66,10 +70,12 @@ public interface IPersonService
     /// </summary>
     /// <param name="tenantId">The tenant ID.</param>
     /// <param name="personId">The person ID.</param>
+    /// <param name="cacheKeyBuilder">A function that builds the cache key for the affected entity.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A result indicating the outcome of the delete operation.</returns>
     Task<Result> DeletePersonAsync(
         Guid tenantId,
         Guid personId,
+        Func<string, (string Label, object Value)[], string> cacheKeyBuilder,
         CancellationToken cancellationToken = default);
 }

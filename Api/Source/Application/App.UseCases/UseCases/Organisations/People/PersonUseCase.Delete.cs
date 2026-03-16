@@ -1,3 +1,4 @@
+using App.UseCases.Helpers;
 using Core.Domain.Entities.Auditing.AuditLogs;
 using Core.Domain.ValueObjects.AuditStampValueObject;
 using Core.Library.ResultPattern;
@@ -16,7 +17,7 @@ internal sealed partial class PersonUseCase
         {
             // Delete person
             Result personDeleteResult = await _personService
-                .DeletePersonAsync(tenantId, personId, cancellationToken);
+                .DeletePersonAsync(tenantId, personId, CacheKeyHelper.Single, cancellationToken);
 
             if (personDeleteResult.IsFailure)
                 return personDeleteResult;

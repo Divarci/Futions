@@ -1,4 +1,5 @@
-﻿using Core.Domain.Entities.Auditing.AuditLogs;
+﻿using App.UseCases.Helpers;
+using Core.Domain.Entities.Auditing.AuditLogs;
 using Core.Domain.ValueObjects.AuditStampValueObject;
 using Core.Library.ResultPattern;
 
@@ -16,7 +17,7 @@ internal sealed partial class CompanyUseCase
         {
             // Delete company
             Result companyDeleteResult = await _companyService
-                .DeleteCompanyAsync(tenantId, companyId, cancellationToken);
+                .DeleteCompanyAsync(tenantId, companyId, CacheKeyHelper.Single, cancellationToken);
 
             if (companyDeleteResult.IsFailure)
                 return companyDeleteResult;

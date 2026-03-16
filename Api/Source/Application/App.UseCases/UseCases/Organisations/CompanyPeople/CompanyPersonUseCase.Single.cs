@@ -1,3 +1,4 @@
+using App.UseCases.Helpers;
 using Core.Domain.Entities.Organisations.CompanyPeople;
 using Core.Library.ResultPattern;
 
@@ -13,7 +14,11 @@ internal sealed partial class CompanyPersonUseCase
         CancellationToken cancellationToken = default) where TDto : class
     {
         // Create a unique cache key for the company person based on tenant ID and company person ID.
-        string cacheKey = $"{nameof(CompanyPerson)}:tenant({tenantId}):company({companyId}):companyPerson({companyPersonId})";
+        string cacheKey = CacheKeyHelper.Single(
+            nameof(CompanyPerson),
+            ("tenant", tenantId),
+            ("company", companyId),
+            ("companyPerson", companyPersonId));
 
         // Attempt to retrieve the company person from the cache. If it's not present, fetch it from the service and cache the result.
         Result<TDto> companyPersonResult = await _cacheProvider.GetSingleAsync(

@@ -1,3 +1,4 @@
+using App.UseCases.Helpers;
 using Core.Domain.Entities.Auditing.AuditLogs;
 using Core.Domain.Entities.Organisations.CompanyPeople;
 using Core.Domain.Entities.Organisations.CompanyPeople.Models;
@@ -17,7 +18,7 @@ internal sealed partial class CompanyPersonUseCase
         {
             // Create company person.
             Result<CompanyPerson> companyPersonCreateResult = await _companyPersonService
-                .CreateCompanyPersonAsync(auditStampCreateModel.TenantId, createModel, cancellationToken);
+                .CreateCompanyPersonAsync(auditStampCreateModel.TenantId, createModel, CacheKeyHelper.Single, cancellationToken);
 
             if (companyPersonCreateResult.IsFailureAndNoData)
                 return companyPersonCreateResult;

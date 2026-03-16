@@ -9,6 +9,7 @@ internal sealed partial class PersonService
     public async Task<Result> DeletePersonAsync(
         Guid tenantId,
         Guid personId,
+        Func<string, (string Label, object Value)[], string> cacheKeyBuilder,
         CancellationToken cancellationToken = default)
     {
         // Check if the person exists
@@ -27,10 +28,8 @@ internal sealed partial class PersonService
 
         _personRepository.Delete(personResult.Data!);
 
-        // Create cache key
-        string cacheKey = $"{nameof(Person)}:tenant({tenantId}):person({personId})";
-
         // Invalidate the cache for the deleted person and the collections that may include it.
+        string cacheKey = cacheKeyBuilder(nameof(Person), [("tenant", tenantId), ("person", personId)]);
         await _cacheInvalidationService.InvalidateEntity(cacheKey);
         await _cacheInvalidationService.InvalidateCollections();
 

@@ -1,3 +1,4 @@
+using App.UseCases.Helpers;
 using Core.Domain.Entities.Auditing.AuditLogs;
 using Core.Domain.Entities.Organisations.People.Models;
 using Core.Domain.ValueObjects.AuditStampValueObject;
@@ -16,7 +17,7 @@ internal sealed partial class PersonUseCase
         {
             // Update person
             Result personUpdateResult = await _personService
-                .UpdatePersonAsync(updateModel, cancellationToken);
+                .UpdatePersonAsync(updateModel, CacheKeyHelper.Single, cancellationToken);
 
             if (personUpdateResult.IsFailure)
                 return personUpdateResult;

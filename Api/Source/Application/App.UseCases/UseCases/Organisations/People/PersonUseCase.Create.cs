@@ -1,3 +1,4 @@
+using App.UseCases.Helpers;
 using Core.Domain.Entities.Auditing.AuditLogs;
 using Core.Domain.Entities.Organisations.People;
 using Core.Domain.Entities.Organisations.People.Models;
@@ -16,7 +17,7 @@ internal sealed partial class PersonUseCase
         return await _unitOfWork.ExecuteTransactionAsync(async () =>
         {
             Result<Person> personCreateResult = await _personService
-                .CreatePersonAsync(createModel, cancellationToken);
+                .CreatePersonAsync(createModel, CacheKeyHelper.Single, cancellationToken);
 
             if (personCreateResult.IsFailureAndNoData)
                 return personCreateResult;

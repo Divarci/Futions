@@ -9,6 +9,7 @@ internal sealed partial class PersonService
 {
     public async Task<Result> UpdatePersonAsync(
         PersonUpdateModel updateModel,
+        Func<string, (string Label, object Value)[], string> cacheKeyBuilder,
         CancellationToken cancellationToken = default)
     {
         // Get the person by id and tenant id
@@ -44,10 +45,8 @@ internal sealed partial class PersonService
         // Persist the updated person entity
         _personRepository.Update(person);
 
-        // Create cache key
-        string cacheKey = $"{nameof(Person)}:tenant({updateModel.TenantId}):person({updateModel.PersonId})";
-
         // Invalidate the cache for the updated person and the collections that may include it.
+        string cacheKey = cacheKeyBuilder(nameof(Person), [("tenant", updateModel.TenantId), ("person", updateModel.PersonId)]);
         await _cacheInvalidationService.InvalidateEntity(cacheKey);
         await _cacheInvalidationService.InvalidateCollections();
 
