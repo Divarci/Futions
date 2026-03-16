@@ -1,4 +1,3 @@
 - logging
 - Custom exception
-- validation
 - fail error details

@@ -10,6 +10,6 @@ public class UpdatePersonRequest
     public UpdateFullnameRequest? Fullname { get; init; }
 
     [JsonPropertyName("email")]
-    [MaxLength(200)]
+    [MaxLength(100), EmailAddress]
     public string? Email { get; init; }
 }
