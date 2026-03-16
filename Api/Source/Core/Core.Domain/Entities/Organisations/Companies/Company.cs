@@ -1,6 +1,5 @@
 ﻿using Core.Domain.Entities.Organisations.Companies.DomainEvents;
 using Core.Domain.Entities.Organisations.Companies.Models;
-using Core.Domain.Entities.Organisations.Products;
 using Core.Domain.ValueObjects.AddressValueObject;
 using Core.Library.Abstractions;
 using Core.Library.Abstractions.Interfaces;
@@ -24,9 +23,6 @@ public partial class Company : BaseEntity, IHaveSoftDelete, IHaveTenant
     // Properties
     public string Name { get; private set; } = default!;
     public Address? Address { get; private set; }
-
-    // Navigation Properties
-    public ICollection<Product> Products { get; private set; } = [];
 
     // IHaveSoftDelete Properties
     public bool IsDeleted { get; private set; }

@@ -24,13 +24,13 @@ public sealed partial record Address
                     maxLength: 100),
                 address.LineTwo.Validate(
                     fieldName: nameof(address.LineTwo),
-                    maxLength: 100),
+                    maxLength: 100, isRequired: false),
                 address.LineThree.Validate(
                     fieldName: nameof(address.LineThree),
-                    maxLength: 100),
+                    maxLength: 100, isRequired: false),
                 address.LineFour.Validate(
                     fieldName: nameof(address.LineFour),
-                    maxLength: 100),
+                    maxLength: 100, isRequired: false),
                 address.Postcode.Validate(
                     fieldName: nameof(address.Postcode),
                     maxLength: 20),

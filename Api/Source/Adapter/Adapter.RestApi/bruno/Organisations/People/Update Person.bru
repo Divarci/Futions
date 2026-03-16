@@ -1,0 +1,21 @@
+meta {
+  name: Update Person
+  type: http
+  seq: 4
+}
+
+patch {
+  url: {{baseUrl}}/api/v1/tenants/{{tenantId}}/people/{{personId}}
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "fullname": {
+      "firstName": "Jane",
+      "lastName": "Doe"
+    },
+    "email": "jane.doe@example.com"
+  }
+}

@@ -91,4 +91,16 @@ public interface ICompanyPersonRepository : IGlobalRepository<CompanyPerson>
         Guid companyId,
         CancellationToken cancellationToken = default);
 
+    /// <summary>
+    /// Checks if a company person exists for the given company and person.
+    /// </summary>
+    /// <param name="companyId">The company ID.</param>
+    /// <param name="personId">The person ID.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>A result indicating whether the company person exists.</returns>
+    Task<Result<bool>> HasCompanyPersonAsync(
+        Guid companyId, 
+        Guid personId, 
+        CancellationToken cancellationToken = default);
+
 }

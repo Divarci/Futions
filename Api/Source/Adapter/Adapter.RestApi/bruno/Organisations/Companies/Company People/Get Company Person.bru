@@ -1,0 +1,11 @@
+meta {
+  name: Get Company Person
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/api/v1/tenants/{{tenantId}}/companies/{{companyId}}/company-people/{{companyPersonId}}
+  body: none
+  auth: none
+}

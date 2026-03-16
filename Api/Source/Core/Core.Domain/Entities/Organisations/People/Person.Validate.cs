@@ -22,7 +22,8 @@ public partial class Person
                 person.Email.Validate(
                     fieldName: nameof(person.Email),
                     maxLength: 100,
-                    isEmail: true),
+                    isEmail: true,
+                    isRequired: false),
                 person.TenantId.Validate(
                     fieldName: nameof(person.TenantId),
                     allowEmpty: false)
@@ -30,10 +31,10 @@ public partial class Person
 
     private static void ValidateBusiness(List<Result> results, Person person)
     {
-        if (person.Email.StartsWith("X"))
+        if (!string.IsNullOrWhiteSpace(person.Email) && person.Email.StartsWith("@"))
             results.Add(Result.Failure(
                 message: "Validation failed",
-                errorDetails: ErrorDetails.Create(["Person email cannot start with X."]),
+                errorDetails: ErrorDetails.Create(["Person email cannot start with @."]),
                 statusCode: HttpStatusCode.UnprocessableContent));
     }
 }

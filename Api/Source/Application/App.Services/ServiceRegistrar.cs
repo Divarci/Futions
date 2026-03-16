@@ -3,7 +3,6 @@ using App.Services.Features.Organisations.People;
 using Core.Domain.Entities.Organisations.Companies.Interfaces;
 using Core.Domain.Entities.Organisations.CompanyPeople.Interfaces;
 using Core.Domain.Entities.Organisations.People.Interfaces;
-using Core.Domain.Entities.Organisations.Products.Interfaces;
 using Core.Domain.Entities.System.AuditLogs.Interfaces;
 using Core.Domain.Entities.System.OutboxMessages.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,7 +22,6 @@ public static class ServiceRegistrar
     {
         services.AddScoped<ICompanyService, CompanyService>();
         services.AddScoped<IPersonService, PersonService>();
-        services.AddScoped<IProductService, ProductService>();
         services.AddScoped<ICompanyPersonService, CompanyPersonService>();
         services.AddScoped<IAuditLogService, AuditLogService>();
         services.AddScoped<IOutboxMessageService, OutboxMessageService>();

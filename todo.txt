@@ -4,3 +4,4 @@
 - Domain event handler
 - a.log mesaj
 - fail error details
+- get by id succes mesajlari cache'de ve db'de cok farkli

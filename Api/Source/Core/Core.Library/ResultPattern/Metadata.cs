@@ -1,4 +1,5 @@
 ﻿using Core.Library.Exceptions;
+using System.Text.Json.Serialization;
 
 namespace Core.Library.ResultPattern;
 
@@ -12,6 +13,7 @@ public class Metadata
     /// Initializes a new instance of the <see cref="Metadata"/> class.
     /// Automatically calculates <see cref="TotalPages"/> from <paramref name="totalCount"/> and <paramref name="pageSize"/>.
     /// </summary>
+    [JsonConstructor]
     public Metadata(int pageNumber, int pageSize, int totalCount, int pageCount)
     {
         if (pageSize <= 0)

@@ -73,4 +73,26 @@ internal sealed partial class CompanyPersonRepository
             data: belongsToTenant,
             statusCode: HttpStatusCode.OK);
     }
+
+    public async Task<Result<bool>> HasCompanyPersonAsync(
+        Guid companyId,
+        Guid personId,
+        CancellationToken cancellation = default)
+    {
+        bool hasCompanyPerson = await _context.Set<CompanyPerson>()
+            .AsNoTracking()
+            .AnyAsync(x =>
+                x.CompanyId == companyId &&
+                x.PersonId == personId &&
+                !x.Company.IsDeleted &&
+                !x.Person.IsDeleted,
+                cancellation);
+
+        return Result<bool>.Success(
+            message: hasCompanyPerson
+                ? "Company person exists."
+                : "Company person does not exist.",
+            data: hasCompanyPerson,
+            statusCode: HttpStatusCode.OK);
+    }
 }

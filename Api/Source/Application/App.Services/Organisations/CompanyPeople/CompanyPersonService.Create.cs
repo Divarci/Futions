@@ -30,6 +30,15 @@ internal sealed partial class CompanyPersonService
                 message: "Person does not exist.",
                 statusCode: HttpStatusCode.NotFound);
 
+        // Check if a CompanyPerson entity already exists for the given CompanyId and PersonId.
+        Result<bool> companyPersonExistsResult = await _companyPersonRepository
+            .HasCompanyPersonAsync(createModel.CompanyId, createModel.PersonId, cancellationToken);
+
+        if(companyPersonExistsResult.IsSuccess)
+            return Result<CompanyPerson>.Failure(
+                message: "Company person already exists for the given Company and Person.",
+                statusCode: HttpStatusCode.BadRequest);
+
         // Create CompanyPerson entity from the create model.
         Result<CompanyPerson> companyPersonCreateResult = CompanyPerson.Create(createModel);
 

@@ -9,8 +9,7 @@ public class PersonConfig : IEntityTypeConfiguration<Person>
     public void Configure(EntityTypeBuilder<Person> builder)
     {
         builder.Property(p => p.Email)
-            .HasMaxLength(100)
-            .IsRequired();
+            .HasMaxLength(100);
 
         builder.Property(p => p.TenantId)
             .IsRequired();

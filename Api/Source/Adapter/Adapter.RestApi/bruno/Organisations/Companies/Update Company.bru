@@ -1,0 +1,24 @@
+meta {
+  name: Update Company
+  type: http
+  seq: 4
+}
+
+patch {
+  url: {{baseUrl}}/api/v1/tenants/{{tenantId}}/companies/{{companyId}}
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "Updated Company Name",
+    "address": {
+      "addressLineOne": "123 Main Street",
+      "addressLineTwo": "",
+      "addressLineThree": "",
+      "addressLineFour": "",
+      "postcode": "SW1A 1AA"
+    }
+  }
+}

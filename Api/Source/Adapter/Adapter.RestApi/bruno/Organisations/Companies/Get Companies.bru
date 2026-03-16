@@ -1,0 +1,19 @@
+meta {
+  name: Get Companies
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/v1/tenants/{{tenantId}}/companies
+  body: none
+  auth: none
+}
+
+params:query {
+  ~page: 1
+  ~pageSize: 25
+  ~sortBy: Id
+  ~isAscending: true
+  ~filter: 
+}

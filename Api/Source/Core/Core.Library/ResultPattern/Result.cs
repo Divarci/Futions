@@ -121,6 +121,7 @@ public class Result<T> : Result
 /// <typeparam name="T">The type of the data returned by the operation. Must be a reference type.</typeparam>
 public class PaginatedResult<T> : Result<T>
 {
+    [JsonConstructor]
     private PaginatedResult(HttpStatusCode statusCode, bool isFailure,
         string message, ErrorDetails? errorDetails, T? data, Metadata? metadata)
         : base(statusCode, isFailure, message, errorDetails, data)

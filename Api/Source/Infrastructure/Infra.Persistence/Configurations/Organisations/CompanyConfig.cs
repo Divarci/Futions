@@ -20,8 +20,7 @@ public class CompanyConfig : IEntityTypeConfiguration<Company>
         builder.OwnsOne(c => c.Address, address =>
         {
             address.Property(a => a.LineOne)
-                .HasMaxLength(100)
-                .IsRequired();
+                .HasMaxLength(100);
 
             address.Property(a => a.LineTwo)
                 .HasMaxLength(100);
@@ -33,8 +32,7 @@ public class CompanyConfig : IEntityTypeConfiguration<Company>
                 .HasMaxLength(100);
 
             address.Property(a => a.Postcode)
-                .HasMaxLength(20)
-                .IsRequired();
+                .HasMaxLength(20);
         });
 
         builder.Property(c => c.IsDeleted)
