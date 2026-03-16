@@ -97,7 +97,7 @@ public class CacheService(ConnectionMultiplexer redis) : ICacheProvider, ICacheI
             await SetAsync(cacheKey, dataResult, cacheExpiration);
 
         return PaginatedResult<TDto[]>.Success(
-            message: "List retrieved from database",
+            message: dataResult.Message,
             data: dataResult.Data ?? [],
             pageNumber: dataResult.Metadata?.PageNumber ?? 0,
             pageSize: dataResult.Metadata?.PageSize ?? 0,

@@ -45,8 +45,10 @@ internal partial class OutboxProcessor
         IServiceScopeFactory serviceScopeFactory,
         CancellationToken cancellationToken = default)
     {
-        IDomainEvent domainEvent = JsonSerializer.Deserialize<IDomainEvent>(
-            outboxMessage.Content, jsonSerializerOptions)!;
+        Type domainEventType = Type.GetType(outboxMessage.Type)!;
+
+        IDomainEvent domainEvent = (IDomainEvent)JsonSerializer.Deserialize(
+            outboxMessage.Content, domainEventType, jsonSerializerOptions)!;
 
         using IServiceScope scope = serviceScopeFactory.CreateScope();
 

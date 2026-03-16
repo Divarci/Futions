@@ -114,7 +114,7 @@ internal sealed class UnitOfWork(AppDbContext context) : ITransactionalUnitOfWor
             })
             .Select(domainEvent => OutboxMessage.Create(
                 Guid.NewGuid(),
-                domainEvent.GetType().Name,
+                domainEvent.GetType().AssemblyQualifiedName!,
                 JsonSerializer.Serialize(domainEvent, SerializerOptions.Instance),
                 DateTime.UtcNow))];
 

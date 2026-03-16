@@ -1,4 +1,3 @@
-using Core.Domain.Entities.System.AuditLogs.DomainEvents;
 using Core.Domain.ValueObjects.AuditStampValueObject;
 using Core.Library.Abstractions;
 using Core.Library.Abstractions.Interfaces;
@@ -53,8 +52,6 @@ public partial class AuditLog : BaseEntity, IHaveTenant
                 message: validationResult.Message,
                 errorDetails: validationResult.ErrorDetails!,
                 statusCode: validationResult.StatusCode);
-
-        auditLog.Raise(new AuditLogCreatedDomainEvent(auditLog.Id));
 
         return Result<AuditLog>.Success(
             message: "Audit log created successfully",

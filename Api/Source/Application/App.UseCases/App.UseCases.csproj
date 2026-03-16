@@ -7,20 +7,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Scheduling\DomainEvents\Organisations\Products\**" />
+    <Compile Remove="Scheduling\DomainEvents\System\**" />
+    <EmbeddedResource Remove="Scheduling\DomainEvents\Organisations\Products\**" />
+    <EmbeddedResource Remove="Scheduling\DomainEvents\System\**" />
+    <None Remove="Scheduling\DomainEvents\Organisations\Products\**" />
+    <None Remove="Scheduling\DomainEvents\System\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.5" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.Domain\Core.Domain.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Scheduling\DomainEvents\Organisations\Companies\" />
-    <Folder Include="Scheduling\DomainEvents\Organisations\CompanyPeople\" />
-    <Folder Include="Scheduling\DomainEvents\Organisations\People\" />
-    <Folder Include="Scheduling\DomainEvents\Organisations\Products\" />
-    <Folder Include="Scheduling\DomainEvents\System\AuditLogs\" />
-    <Folder Include="Scheduling\DomainEvents\System\OutboxMessages\" />
   </ItemGroup>
 
 </Project>
