@@ -1,9 +1,9 @@
 services:  
-  crm.backend:
+  backend:
     build:
         context: .
         dockerfile: Api/Source/Adapter/Adapter.RestApi/Dockerfile
-    image: ${DOCKER_REGISTRY-}futionscrmapirestful   
+    image: ${DOCKER_REGISTRY-}futionsapirestful   
     container_name: Futions-Api
     environment:
       ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
@@ -21,11 +21,11 @@ services:
     networks:
       - futions-network                     
 
-  crm.scheduler:
+  scheduler:
     build:
       context: .
       dockerfile: Api/Source/Adapter/Adapter.Scheduler/Dockerfile
-    image: ${DOCKER_REGISTRY-}futionscrmscheduler
+    image: ${DOCKER_REGISTRY-}futionsscheduler
     container_name: Futions-Scheduler
     environment:
       DOTNET_ENVIRONMENT: ${DOTNET_ENVIRONMENT}

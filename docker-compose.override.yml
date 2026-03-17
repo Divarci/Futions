@@ -1,5 +1,5 @@
 services:  
-  crm.backend:  
+  backend:  
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_URLS: http://+:8080
@@ -17,7 +17,7 @@ services:
       - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
       
-  crm.scheduler: 
+  scheduler: 
     environment:
       DOTNET_ENVIRONMENT: Development
       ConnectionStrings__Sql: Server=sqlserver,1433;Database=Futions;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;Encrypt=False;
