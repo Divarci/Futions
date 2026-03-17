@@ -1,13 +1,13 @@
-﻿using Core.Library.Abstractions;
-using Core.Library.Contracts.Caching;
+﻿using Core.Library.Contracts.Caching;
 using Core.Library.ResultPattern;
+using Microsoft.Extensions.Logging;
 using StackExchange.Redis;
 using System.Net;
 using System.Text.Json;
 
 namespace Infra.Caching.Services;
 
-public class CacheService(ConnectionMultiplexer redis) : ICacheProvider, ICacheInvalidationService
+public class CacheService(ConnectionMultiplexer redis, ILogger<CacheService> logger) : ICacheProvider, ICacheInvalidationService
 {
     private readonly IDatabase _db = redis.GetDatabase();
     private readonly IServer _server = redis.GetServer(redis.GetEndPoints().First());
@@ -18,9 +18,12 @@ public class CacheService(ConnectionMultiplexer redis) : ICacheProvider, ICacheI
         try
         {
             await _db.KeyDeleteAsync(new RedisKey(cacheKey));
+
+            logger.LogDebug("Cached data removed with cache key: '{CacheKey}'.", cacheKey);
         }
-        catch (RedisException)
+        catch (RedisException ex)
         {
+            logger.LogWarning(ex, "Cache invalidation failed for key '{CacheKey}'.", cacheKey);
         }
     }
 
@@ -33,10 +36,13 @@ public class CacheService(ConnectionMultiplexer redis) : ICacheProvider, ICacheI
                 .ToArrayAsync();
 
             if (keys.Length > 0)
-                await _db.KeyDeleteAsync(keys); 
+                await _db.KeyDeleteAsync(keys);
+
+            logger.LogDebug("Cached data collections removed");
         }
-        catch (RedisException)
+        catch (RedisException ex)
         {
+            logger.LogWarning(ex, "Cache collection invalidation failed.");
         }
     }
 
@@ -48,6 +54,8 @@ public class CacheService(ConnectionMultiplexer redis) : ICacheProvider, ICacheI
     {
         if (useCache && await GetAsync<TEntity>(cacheKey) is { } cachedModel)
         {
+            logger.LogDebug("Cache hit for key '{CacheKey}'.", cacheKey);
+
             return Result<TEntity>.Success(
                 message: "Retrieved from cache",
                 data: cachedModel,
@@ -55,6 +63,8 @@ public class CacheService(ConnectionMultiplexer redis) : ICacheProvider, ICacheI
         }
 
         Result<TEntity> result = await serviceMethod();
+
+        logger.LogDebug("Cache miss for key '{CacheKey}'. Fetching from service.", cacheKey);
 
         if (result.IsFailureAndNoData)
             return Result<TEntity>.Failure(
@@ -79,6 +89,8 @@ public class CacheService(ConnectionMultiplexer redis) : ICacheProvider, ICacheI
     {
         if (useCache && await GetAsync<PaginatedResult<TDto[]>>(cacheKey) is { } cachedData)
         {
+            logger.LogDebug("Cache hit for key '{CacheKey}'.", cacheKey);
+
             return PaginatedResult<TDto[]>.Success(
                 message: "List retrieved from cache",
                 data: cachedData.Data ?? [],
@@ -89,6 +101,8 @@ public class CacheService(ConnectionMultiplexer redis) : ICacheProvider, ICacheI
         }
 
         PaginatedResult<TDto[]> dataResult = await serviceCall();
+
+        logger.LogDebug("Cache miss for key '{CacheKey}'. Fetching from service.", cacheKey);
 
         if (dataResult.IsFailureAndNoData)
             return dataResult;
@@ -115,8 +129,9 @@ public class CacheService(ConnectionMultiplexer redis) : ICacheProvider, ICacheI
 
             return JsonSerializer.Deserialize<T>(cachedData, _jsonOptions);
         }
-        catch (RedisException)
+        catch (RedisException ex)
         {
+            logger.LogWarning(ex, "Cache read failed for key '{Key}'.", key);
             return default;
         }
     }
@@ -127,9 +142,12 @@ public class CacheService(ConnectionMultiplexer redis) : ICacheProvider, ICacheI
         {
             string serialisedData = JsonSerializer.Serialize(value, _jsonOptions);
             await _db.StringSetAsync(key, serialisedData, slidingExpiration);
+
+            logger.LogDebug("Cache data stored for key '{Key}'.", key);
         }
-        catch (RedisException)
+        catch (RedisException ex)
         {
+            logger.LogWarning(ex, "Cache write failed for key '{Key}'.", key);
         }
     }
 }

@@ -1,10 +1,11 @@
 ﻿using Core.Library.Exceptions;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace Adapter.RestApi.AspNetCore.Diagnostics;
 
-public sealed partial class GlobalExceptionHandler : IExceptionHandler
+public sealed partial class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) : IExceptionHandler
 {
     public async ValueTask<bool> TryHandleAsync(
         HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
@@ -32,16 +33,25 @@ public sealed partial class GlobalExceptionHandler : IExceptionHandler
             }
         };
 
-    private static void LogException(Exception exception, string traceId)
+    private void LogException(Exception exception, string traceId)
     {
         switch (exception)
         {
             case FutionsException futionsEx:
-                // Logging will be implemented soon
+                logger.LogError(
+                    "TraceId: {TraceId} | Assembly: {Assembly} | Class: {Class} | Method: {Method}: {Message}",
+                    traceId,
+                    futionsEx.AssemblyName,
+                    futionsEx.ClassName,
+                    futionsEx.MethodName,
+                    futionsEx.Message);
                 break;
 
             default:
-                // Logging will be implemented soon
+                logger.LogError(
+                    exception,
+                    "Unhandled exception. TraceId: {TraceId}",
+                    traceId);
                 break;
         }
     }

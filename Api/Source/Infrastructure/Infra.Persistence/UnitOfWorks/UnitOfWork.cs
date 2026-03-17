@@ -4,12 +4,13 @@ using Core.Library.Contracts.UnitOfWorks;
 using Core.Library.ResultPattern;
 using Infra.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System.Net;
 using System.Text.Json;
 
 namespace Infra.Persistence.UnitOfWorks;
 
-internal sealed class UnitOfWork(AppDbContext context) : ITransactionalUnitOfWork
+internal sealed class UnitOfWork(AppDbContext context, ILogger<UnitOfWork> logger) : ITransactionalUnitOfWork
 { 
     public async Task<Result> ExecuteTransactionAsync(
         Func<Task<Result>> operation,
@@ -20,11 +21,17 @@ internal sealed class UnitOfWork(AppDbContext context) : ITransactionalUnitOfWor
 
         try
         {
+            logger.LogDebug("Transaction started.");
+
             Result result = await operation();
 
             if (result.IsFailure)
             {
                 await transaction.RollbackAsync(cancellationToken);
+
+                logger.LogWarning(
+                    "Transaction rolled back. Operation returned a failure result. {Message}",
+                    result.Message);
 
                 return result;
             }
@@ -35,6 +42,10 @@ internal sealed class UnitOfWork(AppDbContext context) : ITransactionalUnitOfWor
             {
                 await transaction.RollbackAsync(cancellationToken);
 
+                logger.LogError(
+                    "Transaction rolled back. Failed to register domain events. {Message}",
+                    domainEventsRegisterResult.Message);
+
                 return domainEventsRegisterResult;
             }
 
@@ -42,11 +53,15 @@ internal sealed class UnitOfWork(AppDbContext context) : ITransactionalUnitOfWor
 
             await transaction.CommitAsync(cancellationToken);
 
+            logger.LogDebug("Transaction committed successfully.");
+
             return result;
         }
         catch (Exception ex)
         {
             await transaction.RollbackAsync(cancellationToken);
+
+            logger.LogError(ex, "Transaction rolled back due to an unhandled exception.");
 
             return Result.Failure
                 (message: ex.Message,
@@ -63,11 +78,17 @@ internal sealed class UnitOfWork(AppDbContext context) : ITransactionalUnitOfWor
 
         try
         {
+            logger.LogDebug("Transaction started.");
+
             Result<T> result = await operation();
 
             if (result.IsFailureAndNoData)
             {
                 await transaction.RollbackAsync(cancellationToken);
+
+                logger.LogWarning(
+                    "Transaction rolled back. Operation returned a failure result. {Message}",
+                    result.Message);
 
                 return result;
             }
@@ -78,6 +99,10 @@ internal sealed class UnitOfWork(AppDbContext context) : ITransactionalUnitOfWor
             {
                 await transaction.RollbackAsync(cancellationToken);
 
+                logger.LogError(
+                    "Transaction rolled back. Failed to register domain events. {Message}",
+                    domainEventsRegisterResult.Message);
+
                 return Result<T>.Failure(
                     message: domainEventsRegisterResult.Message,
                     statusCode: domainEventsRegisterResult.StatusCode);
@@ -87,11 +112,15 @@ internal sealed class UnitOfWork(AppDbContext context) : ITransactionalUnitOfWor
 
             await transaction.CommitAsync(cancellationToken);
 
+            logger.LogDebug("Transaction committed successfully.");
+
             return result;
         }
         catch (Exception ex)
         {
             await transaction.RollbackAsync(cancellationToken);
+
+            logger.LogError(ex, "Transaction rolled back due to an unhandled exception.");
 
             return Result<T>.Failure(
                 message: ex.Message,
