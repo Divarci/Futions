@@ -60,7 +60,7 @@ services:
     image: datalust/seq:latest
     container_name: Futions-Serilog
     environment:
-      - SEQ_FIRSTRUN_ADMINPASSWORD=admin123
+      - SEQ_FIRSTRUN_ADMINPASSWORD=${SERILOG_ADMIN_PASSWORD}
       - ACCEPT_EULA=Y
     ports:
       - 5341:5341

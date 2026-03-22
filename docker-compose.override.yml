@@ -44,5 +44,9 @@ services:
     networks:
       - futions-network 
 
+  serilog:  
+    environment:
+      - SEQ_FIRSTRUN_ADMINPASSWORD=admin123
+
 volumes:
   sqlserver-data:  
