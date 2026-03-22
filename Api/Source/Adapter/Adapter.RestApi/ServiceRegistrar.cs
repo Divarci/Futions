@@ -3,6 +3,7 @@ using Adapter.RestApi.AspNetCore.Diagnostics;
 using Adapter.RestApi.AspNetCore.Filters;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.RateLimiting;
 
 namespace Adapter.RestApi;
 
@@ -17,6 +18,7 @@ public static class ServiceRegistrar
         services.AddProblemDetails();
         services.AddApiVersioning();
         services.AddAuthenticationInternal();
+        services.AddRateLimiting();
 
         return services;
     }
@@ -53,5 +55,40 @@ public static class ServiceRegistrar
         return services;
     }
 
-    //private static IServiceCollection AddSerilog
+    private static IServiceCollection AddRateLimiting(this IServiceCollection services)
+    {
+        services.AddRateLimiter(options =>
+        {
+            options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(httpContext =>
+                RateLimitPartition.GetFixedWindowLimiter(
+                    partitionKey: httpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown",
+                    factory: _ => new FixedWindowRateLimiterOptions
+                    {
+                        Window = TimeSpan.FromSeconds(10),
+                        PermitLimit = 10,
+                        QueueLimit = 0,
+                    }));
+
+            options.OnRejected = async (context, token) =>
+            {
+                string traceId = Guid.NewGuid().ToString();
+
+                context.HttpContext.Response.StatusCode = StatusCodes.Status429TooManyRequests;
+                await context.HttpContext.Response.WriteAsJsonAsync(
+                    new ProblemDetails
+                    {
+                        Title = "Too Many Requests",
+                        Detail = "You have exceeded the allowed request limit. Please try again later.",
+                        Type = "https://tools.ietf.org/html/rfc6585#section-4",
+                        Status = StatusCodes.Status429TooManyRequests,
+                        Extensions =
+                        {
+                            ["traceId"] = traceId,
+                        }
+                    }, token);
+            };
+        });
+
+        return services;
+    }
 }

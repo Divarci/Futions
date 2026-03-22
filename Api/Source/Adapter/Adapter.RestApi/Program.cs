@@ -28,6 +28,8 @@ app.UseSerilogRequestLogging();
 
 app.UseExceptionHandler();
 
+app.UseRateLimiter();
+
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
