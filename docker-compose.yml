@@ -65,6 +65,8 @@ services:
     ports:
       - 5341:5341
       - 9090:80    
+    volumes:
+      - seq-data:/data
     networks:
       - futions-network
 
@@ -74,3 +76,4 @@ networks:
 
 volumes:
   redis-data:
+  seq-data: 
