@@ -23,7 +23,8 @@ public sealed class CacheService(ConnectionMultiplexer redis, ILogger<CacheServi
         }
         catch (RedisException ex)
         {
-            logger.LogWarning(ex, "Cache invalidation failed for key '{CacheKey}'.", cacheKey);
+            string traceId = Guid.NewGuid().ToString();
+            logger.LogWarning(ex, "Cache invalidation failed for key '{CacheKey}'. TraceId: {TraceId}", cacheKey, traceId);
         }
     }
 
@@ -42,7 +43,8 @@ public sealed class CacheService(ConnectionMultiplexer redis, ILogger<CacheServi
         }
         catch (RedisException ex)
         {
-            logger.LogWarning(ex, "Cache collection invalidation failed.");
+            string traceId = Guid.NewGuid().ToString();
+            logger.LogWarning(ex, "Cache collection invalidation failed. TraceId: {TraceId}", traceId);
         }
     }
 
@@ -131,7 +133,8 @@ public sealed class CacheService(ConnectionMultiplexer redis, ILogger<CacheServi
         }
         catch (RedisException ex)
         {
-            logger.LogWarning(ex, "Cache read failed for key '{Key}'.", key);
+            string traceId = Guid.NewGuid().ToString();
+            logger.LogWarning(ex, "Cache read failed for key '{Key}'. TraceId: {TraceId}", key, traceId);
             return default;
         }
     }
@@ -147,7 +150,8 @@ public sealed class CacheService(ConnectionMultiplexer redis, ILogger<CacheServi
         }
         catch (RedisException ex)
         {
-            logger.LogWarning(ex, "Cache write failed for key '{Key}'.", key);
+            string traceId = Guid.NewGuid().ToString();
+            logger.LogWarning(ex, "Cache write failed for key '{Key}'. TraceId: {TraceId}", key, traceId);
         }
     }
 }

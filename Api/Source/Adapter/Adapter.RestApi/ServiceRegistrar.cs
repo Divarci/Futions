@@ -52,4 +52,6 @@ public static class ServiceRegistrar
 
         return services;
     }
+
+    //private static IServiceCollection AddSerilog
 }

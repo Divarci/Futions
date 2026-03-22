@@ -56,6 +56,18 @@ services:
     volumes:
       - redis-data:/data
 
+  serilog:
+    image: datalust/seq:latest
+    container_name: Futions-Serilog
+    environment:
+      - SEQ_FIRSTRUN_ADMINPASSWORD=admin123
+      - ACCEPT_EULA=Y
+    ports:
+      - 5341:5341
+      - 9090:80    
+    networks:
+      - futions-network
+
 networks:
   futions-network:
     driver: bridge

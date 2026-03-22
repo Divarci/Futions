@@ -32,11 +32,15 @@ internal sealed partial class CompanyUseCase
                     auditStampCreateModel, 
                     cancellationToken);
 
-            if (auditLogCreateResult.IsFailureAndNoData)            
+            if (auditLogCreateResult.IsFailureAndNoData)
+            {
+                string traceId = Guid.NewGuid().ToString();
                 _logger.LogWarning(
-                    "Audit log creation failed for company {CompanyId}. {Message}",
+                    "Audit log creation failed for company {CompanyId}. {Message} | TraceId: {TraceId}",
                     companyCreateResult.Data.Id,
-                    auditLogCreateResult.Message);            
+                    auditLogCreateResult.Message,
+                    traceId);
+            }
 
             return companyCreateResult;
         }, cancellationToken);

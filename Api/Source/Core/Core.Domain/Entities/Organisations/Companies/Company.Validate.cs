@@ -21,7 +21,7 @@ public partial class Company
             [
                 company.Name.Validate(
                     fieldName: nameof(company.Name),
-                    maxLength: 100),
+                    maxLength: 1),
                 company.TenantId.Validate(
                     fieldName: nameof(company.TenantId),
                     allowEmpty: false)

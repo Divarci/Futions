@@ -25,6 +25,8 @@ internal partial class OutboxProcessor(
     {
         return await _unitOfWork.ExecuteTransactionAsync(async () =>
         {
+            string traceId = Guid.NewGuid().ToString();
+
             _logger.LogDebug("Outbox processing started. BatchSize: {BatchSize}.", batchSize);
 
             Result<IReadOnlyList<OutboxMessage>> outboxMessagesResult = await _outboxMessageService
@@ -33,8 +35,9 @@ internal partial class OutboxProcessor(
             if (outboxMessagesResult.IsFailureAndNoData)
             {
                 _logger.LogWarning(
-                    "Failed to retrieve unprocessed outbox messages. {Message}",
-                    outboxMessagesResult.Message);
+                    "Failed to retrieve unprocessed outbox messages. {Message} | TraceId: {TraceId}",
+                    outboxMessagesResult.Message,
+                    traceId);
 
                 return Result.Failure(
                     message: outboxMessagesResult.Message,
@@ -59,8 +62,9 @@ internal partial class OutboxProcessor(
                 {
                     _logger.LogError(
                         caughtException,
-                        "Domain event handler failed for outbox message {MessageId}.",
-                        outboxMessage.Id);
+                        "Domain event handler failed for outbox message {MessageId}. | TraceId: {TraceId}",
+                        outboxMessage.Id,
+                        traceId);
 
                     exception = caughtException;
                 }

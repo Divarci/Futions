@@ -20,6 +20,8 @@ internal sealed class UnitOfWork(AppDbContext context, ILogger<UnitOfWork> logge
         await using var transaction = await context.Database
             .BeginTransactionAsync(cancellationToken);
 
+        string traceId = Guid.NewGuid().ToString();
+
         try
         {
             logger.LogDebug("Transaction started.");
@@ -31,8 +33,9 @@ internal sealed class UnitOfWork(AppDbContext context, ILogger<UnitOfWork> logge
                 await transaction.RollbackAsync(cancellationToken);
 
                 logger.LogWarning(
-                    "Transaction rolled back. Operation returned a failure result. {Message}",
-                    result.Message);
+                    "Transaction rolled back. Operation returned a failure result. {Message} | TraceId: {TraceId}",
+                    result.Message,
+                    traceId);
 
                 return result;
             }
@@ -48,7 +51,7 @@ internal sealed class UnitOfWork(AppDbContext context, ILogger<UnitOfWork> logge
         {
             await transaction.RollbackAsync(cancellationToken);
 
-            logger.LogError(ex, "Transaction rolled back due to an unhandled exception.");
+            logger.LogError(ex, "Transaction rolled back due to an unhandled exception. TraceId: {TraceId}.", traceId);
 
             return Result.Failure(
                 message: ex.Message,
@@ -63,6 +66,8 @@ internal sealed class UnitOfWork(AppDbContext context, ILogger<UnitOfWork> logge
         await using var transaction = await context.Database
             .BeginTransactionAsync(cancellationToken);
 
+        string traceId = Guid.NewGuid().ToString();
+
         try
         {
             logger.LogDebug("Transaction started.");
@@ -74,8 +79,9 @@ internal sealed class UnitOfWork(AppDbContext context, ILogger<UnitOfWork> logge
                 await transaction.RollbackAsync(cancellationToken);
 
                 logger.LogWarning(
-                    "Transaction rolled back. Operation returned a failure result. {Message}",
-                    result.Message);
+                    "Transaction rolled back. Operation returned a failure result. {Message} | TraceId: {TraceId}",
+                    result.Message,
+                    traceId);
 
                 return result;
             }
@@ -93,7 +99,7 @@ internal sealed class UnitOfWork(AppDbContext context, ILogger<UnitOfWork> logge
         {
             await transaction.RollbackAsync(cancellationToken);
 
-            logger.LogError(ex, "Transaction rolled back due to an unhandled exception.");
+            logger.LogError(ex, "Transaction rolled back due to an unhandled exception. TraceId: {TraceId}.", traceId);
 
             return Result<T>.Failure(
                 message: ex.Message,
@@ -105,6 +111,8 @@ internal sealed class UnitOfWork(AppDbContext context, ILogger<UnitOfWork> logge
         IDbContextTransaction transaction,
         CancellationToken cancellationToken)
     {
+        string traceId = Guid.NewGuid().ToString();
+
         Result domainEventsRegisterResult = await AddDomainEventsAsOutboxMessages(context);
 
         if (domainEventsRegisterResult.IsFailure)
@@ -112,8 +120,9 @@ internal sealed class UnitOfWork(AppDbContext context, ILogger<UnitOfWork> logge
             await transaction.RollbackAsync(cancellationToken);
 
             logger.LogError(
-                "Transaction rolled back. Failed to register domain events. {Message}",
-                domainEventsRegisterResult.Message);
+                "Transaction rolled back. Failed to register domain events. {Message} | TraceId: {TraceId}",
+                domainEventsRegisterResult.Message,
+                traceId);
 
             return domainEventsRegisterResult;
         }
