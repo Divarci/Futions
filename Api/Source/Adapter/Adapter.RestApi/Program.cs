@@ -19,11 +19,11 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
-app.MapGet("/health", () => Results.Ok(new { status = "healthy", env = app.Environment.EnvironmentName }));
-
+app.UseExceptionHandler();
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
