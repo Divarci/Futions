@@ -1,3 +1,5 @@
+using Adapter.RestApi.AspNetCore.Authentication;
+using Adapter.RestApi.AspNetCore.Filters;
 using Adapter.RestApi.Controllers.Shared.Mappers;
 using Adapter.RestApi.Controllers.Shared.Models;
 using Adapter.RestApi.Controllers.VersionOne.Organisations.People.Models.Requests;
@@ -8,6 +10,7 @@ using Core.Domain.Entities.Organisations.People.Interfaces;
 using Core.Domain.Entities.Organisations.People.Models;
 using Core.Domain.ValueObjects.AuditStampValueObject;
 using Core.Library.ResultPattern;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Adapter.RestApi.Controllers.VersionOne.Organisations.People;
@@ -15,12 +18,19 @@ namespace Adapter.RestApi.Controllers.VersionOne.Organisations.People;
 [ApiVersion(ApiVersion.V1)]
 [Route("api/v{version:apiVersion}/tenants/{tenantId:guid}/people")]
 [ApiController]
+[Authorize(Policy = PolicyNames.AllRoles)]
+[TenantAuthorization]
 public class PersonController(
     IPersonUseCase personUseCase) : BaseController
 {
     private readonly IPersonUseCase _personUseCase = personUseCase;
 
     [HttpGet]
+    [ProducesResponseType<PaginatedResult<PersonResponse[]>>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetPeopleAsync(
         Guid tenantId,
         [FromQuery] PaginationFilterModel filter,
@@ -60,6 +70,7 @@ public class PersonController(
         return HandleResult(person);
     }
 
+    [Authorize(Policy = PolicyNames.AdminOrSystemAdmin)]
     [HttpPost]
     [ProducesResponseType<Result<PersonResponse>>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status401Unauthorized)]
@@ -69,13 +80,13 @@ public class PersonController(
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> CreatePersonAsync(
         Guid tenantId,
-        CreatePersonRequest request,
+        [FromBody] CreatePersonRequest request,
         CancellationToken cancellationToken = default)
     {
         PersonCreateModel personCreateModel = PersonMapper.ToCreateModel(request, tenantId);
         AuditStampCreateModel auditLogCreateModel = AuditLogMapper.ToCreateModel(
-            Guid.NewGuid(),
-            "asd@asd.dasd",
+            GetCurrentUserId(),
+            GetCurrentUsername(),
             tenantId);
 
         Result<Person> createdPerson = await _personUseCase.CreatePersonAsync(
@@ -88,6 +99,7 @@ public class PersonController(
             mapper: PersonMapper.ToResponse);
     }
 
+    [Authorize(Policy = PolicyNames.AdminOrSystemAdmin)]
     [HttpPatch("{personId}")]
     [ProducesResponseType<Result<PersonResponse>>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status401Unauthorized)]
@@ -98,13 +110,13 @@ public class PersonController(
     public async Task<IActionResult> UpdatePersonAsync(
         Guid tenantId,
         Guid personId,
-        UpdatePersonRequest request,
+        [FromBody] UpdatePersonRequest request,
         CancellationToken cancellationToken = default)
     {
         PersonUpdateModel personUpdateModel = PersonMapper.ToUpdateModel(request, tenantId, personId);
         AuditStampCreateModel auditStampCreateModel = AuditLogMapper.ToCreateModel(
-            Guid.NewGuid(),
-            "asd@asd.dasd",
+            GetCurrentUserId(),
+            GetCurrentUsername(),
             tenantId);
 
         Result updatedPerson = await _personUseCase.UpdatePersonAsync(
@@ -115,6 +127,7 @@ public class PersonController(
         return HandleResult(result: updatedPerson);
     }
 
+    [Authorize(Policy = PolicyNames.AdminOrSystemAdmin)]
     [HttpDelete("{personId}")]
     [ProducesResponseType<Result<PersonResponse>>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status401Unauthorized)]
@@ -127,8 +140,8 @@ public class PersonController(
         CancellationToken cancellationToken = default)
     {
         AuditStampCreateModel auditStampCreateModel = AuditLogMapper.ToCreateModel(
-            Guid.NewGuid(),
-            "asd@asd.dasd",
+            GetCurrentUserId(),
+            GetCurrentUsername(),
             tenantId);
 
         Result deletedPerson = await _personUseCase.DeletePersonAsync(

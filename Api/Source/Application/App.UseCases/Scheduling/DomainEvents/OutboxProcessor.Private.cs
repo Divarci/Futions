@@ -2,6 +2,7 @@
 using Core.Domain.Entities.System.OutboxMessages.Interfaces;
 using Core.Library.Contracts.DomainEvents.Handle;
 using Core.Library.Contracts.DomainEvents.Publish;
+using Core.Library.Exceptions;
 using Core.Library.ResultPattern;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Concurrent;
@@ -45,7 +46,12 @@ internal partial class OutboxProcessor
         IServiceScopeFactory serviceScopeFactory,
         CancellationToken cancellationToken = default)
     {
-        Type domainEventType = Type.GetType(outboxMessage.Type)!;
+        Type? domainEventType = Type.GetType(outboxMessage.Type) ??
+            throw new FutionsException(
+                assemblyName: "App.UseCases",
+                className: nameof(OutboxProcessor),
+                methodName: nameof(InitialiseHandlersAsync),
+                message: $"Unable to resolve type: {outboxMessage.Type}");
 
         IDomainEvent domainEvent = (IDomainEvent)JsonSerializer.Deserialize(
             outboxMessage.Content, domainEventType, jsonSerializerOptions)!;

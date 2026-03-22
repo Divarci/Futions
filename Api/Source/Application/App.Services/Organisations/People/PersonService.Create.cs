@@ -18,7 +18,10 @@ internal sealed partial class PersonService
             return personCreateResult;
 
         // Persist the new Person entity to the database.
-        await _personRepository.CreateAsync(personCreateResult.Data!, cancellationToken);
+        Result<Person> persistResult = await _personRepository.CreateAsync(personCreateResult.Data!, cancellationToken);
+
+        if (persistResult.IsFailureAndNoData)
+            return persistResult;
 
         // Invalidate the cache for the newly created person and the collections that may include it.
         string cacheKey = cacheKeyBuilder(nameof(Person), [("tenant", createModel.TenantId), ("person", personCreateResult.Data.Id)]);

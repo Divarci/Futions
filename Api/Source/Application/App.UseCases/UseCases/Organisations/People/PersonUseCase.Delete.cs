@@ -2,6 +2,7 @@ using App.UseCases.Helpers;
 using Core.Domain.Entities.Auditing.AuditLogs;
 using Core.Domain.ValueObjects.AuditStampValueObject;
 using Core.Library.ResultPattern;
+using Microsoft.Extensions.Logging;
 
 namespace App.UseCases.UseCases.Organisations.People;
 
@@ -30,10 +31,11 @@ internal sealed partial class PersonUseCase
                     auditStampCreateModel,
                     cancellationToken);
 
-            if (auditLogCreateResult.IsFailureAndNoData)
-            {
-                // Just we need logging here
-            }
+            if (auditLogCreateResult.IsFailureAndNoData)            
+                _logger.LogWarning(
+                    "Audit log creation failed for person {PersonId}. {Message}",
+                    personId,
+                    auditLogCreateResult.Message);            
 
             return personDeleteResult;
         }, cancellationToken);

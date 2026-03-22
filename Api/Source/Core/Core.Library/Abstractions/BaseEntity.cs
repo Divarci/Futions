@@ -12,7 +12,7 @@ public abstract class BaseEntity
 
     protected BaseEntity() { }
 
-    public IReadOnlyCollection<IDomainEvent> DomainEvents => _domainEvents.ToList();
+    public IReadOnlyCollection<IDomainEvent> DomainEvents => _domainEvents.AsReadOnly();
     public Guid Id { get; init; }
 
     /// <summary>

@@ -47,7 +47,10 @@ internal sealed partial class CompanyPersonService
             return companyPersonCreateResult;
 
         // Persist the new CompanyPerson entity to the database.
-        await _companyPersonRepository.CreateAsync(companyPersonCreateResult.Data!, cancellationToken);
+        Result<CompanyPerson> persistResult = await _companyPersonRepository.CreateAsync(companyPersonCreateResult.Data!, cancellationToken);
+
+        if (persistResult.IsFailureAndNoData)
+            return persistResult;
 
         // Invalidate the cache for the newly created company person and the collections that may include it.
         string cacheKey = cacheKeyBuilder(nameof(CompanyPerson), [("tenant", tenantId), ("company", createModel.CompanyId), ("companyPerson", companyPersonCreateResult.Data!.Id)]);

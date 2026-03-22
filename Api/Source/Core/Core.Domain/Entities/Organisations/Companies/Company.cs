@@ -3,6 +3,7 @@ using Core.Domain.Entities.Organisations.Companies.Models;
 using Core.Domain.ValueObjects.AddressValueObject;
 using Core.Library.Abstractions;
 using Core.Library.Abstractions.Interfaces;
+using Core.Library.Exceptions;
 using Core.Library.ResultPattern;
 using System.Net;
 using System.Text.Json.Serialization;
@@ -28,15 +29,17 @@ public partial class Company : BaseEntity, IHaveSoftDelete, IHaveTenant
     public bool IsDeleted { get; private set; }
 
     // IHaveTenant Properties
-    public Guid TenantId { get; private set; } = default;
+    public Guid TenantId { get; private set; }
 
     // Methods
     public static Result<Company> Create(CompanyCreateModel model)
     {
         if (model is null)
-            return Result<Company>.Failure(
-                message: "Model can not be null",
-                statusCode: HttpStatusCode.InternalServerError);
+            throw new FutionsException(
+                assemblyName: "Core.Domain",
+                className: nameof(Company),
+                methodName: nameof(Create),
+                message: "Create model cannot be null.");
 
         Company company = new(model.TenantId, model.Name);
 

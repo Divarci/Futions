@@ -13,6 +13,15 @@ services:
       CacheConfig__AccessKey: ${CACHE_CONFIG_ACCESS_KEY}
       CacheConfig__Ssl: ${CACHE_CONFIG_SSL}
       CacheConfig__Timeout: ${CACHE_CONFIG_TIMEOUT}
+      Authentication__Audience: ${AUTH_AUDIENCE}
+      Authentication__MetadataAddress: ${AUTH_METADATA_ADDRESS}
+      Authentication__RequireHttpsMetadata: ${AUTH_REQUIRE_HTTPS_METADATA}
+      Authentication__TokenValidationParameters__ValidateLifetime: "true"
+      Authentication__TokenValidationParameters__ValidateAudience: "true"
+      Authentication__TokenValidationParameters__ValidateIssuer: "true"
+      Authentication__TokenValidationParameters__ClockSkew: "00:00:00"
+      Authentication__TokenValidationParameters__ValidIssuers__0: ${AUTH_VALID_ISSUER_0}
+      Authentication__TokenValidationParameters__ValidIssuers__1: ${AUTH_VALID_ISSUER_1}
     depends_on:
       - redis
     ports:

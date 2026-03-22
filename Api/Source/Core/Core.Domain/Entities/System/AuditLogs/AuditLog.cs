@@ -1,6 +1,7 @@
 using Core.Domain.ValueObjects.AuditStampValueObject;
 using Core.Library.Abstractions;
 using Core.Library.Abstractions.Interfaces;
+using Core.Library.Exceptions;
 using Core.Library.ResultPattern;
 using System.Net;
 
@@ -31,9 +32,11 @@ public partial class AuditLog : BaseEntity, IHaveTenant
     public static Result<AuditLog> Create(AuditStampCreateModel model, Guid entityId, string description)
     {
         if (model is null)
-            return Result<AuditLog>.Failure(
-                message: "Model can not be null",
-                statusCode: HttpStatusCode.InternalServerError);
+            throw new FutionsException(
+                assemblyName: "Core.Domain",
+                className: nameof(AuditLog),
+                methodName: nameof(Create),
+                message: "Create model cannot be null.");
 
         Result<AuditStamp> stampResult = AuditStamp.Create(model);
 

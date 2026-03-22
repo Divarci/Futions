@@ -1,3 +1,5 @@
+using Adapter.RestApi.AspNetCore.Authentication;
+using Adapter.RestApi.AspNetCore.Filters;
 using Adapter.RestApi.Controllers.Shared.Mappers;
 using Adapter.RestApi.Controllers.Shared.Models;
 using Adapter.RestApi.Controllers.VersionOne.Organisations.Companies.Core.Models.Requests;
@@ -8,6 +10,7 @@ using Core.Domain.Entities.Organisations.Companies.Interfaces;
 using Core.Domain.Entities.Organisations.Companies.Models;
 using Core.Domain.ValueObjects.AuditStampValueObject;
 using Core.Library.ResultPattern;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Adapter.RestApi.Controllers.VersionOne.Organisations.Companies.Core;
@@ -15,12 +18,19 @@ namespace Adapter.RestApi.Controllers.VersionOne.Organisations.Companies.Core;
 [ApiVersion(ApiVersion.V1)]
 [Route("api/v{version:apiVersion}/tenants/{tenantId:guid}/companies")]
 [ApiController]
+[Authorize(Policy = PolicyNames.AllRoles)]
+[TenantAuthorization]
 public class CompanyController(
     ICompanyUseCase companyUseCase) : BaseController
 {
     private readonly ICompanyUseCase _companyUseCase = companyUseCase;
 
     [HttpGet]
+    [ProducesResponseType<PaginatedResult<CompanyResponse[]>>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetCompaniesAsync(
         Guid tenantId,
         [FromQuery] PaginationFilterModel filter,
@@ -60,6 +70,7 @@ public class CompanyController(
         return HandleResult(company);
     }
 
+    [Authorize(Policy = PolicyNames.AdminOrSystemAdmin)]
     [HttpPost]
     [ProducesResponseType<Result<CompanyResponse>>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status401Unauthorized)]
@@ -69,13 +80,13 @@ public class CompanyController(
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> CreateCompanyAsync(
         Guid tenantId,
-        CreateCompanyRequest request,
+        [FromBody] CreateCompanyRequest request,
         CancellationToken cancellationToken = default)
     {
         CompanyCreateModel companyCreateModel = CompanyMapper.ToCreateModel(request, tenantId);
         AuditStampCreateModel auditLogCreateModel = AuditLogMapper.ToCreateModel(
-            Guid.NewGuid(),
-            "asd@asd.dasd",
+            GetCurrentUserId(),
+            GetCurrentUsername(),
             tenantId);
 
         Result<Company> createdCompany = await _companyUseCase.CreateCompanyAsync(
@@ -88,6 +99,7 @@ public class CompanyController(
             mapper: CompanyMapper.ToResponse);
     }
 
+    [Authorize(Policy = PolicyNames.AdminOrSystemAdmin)]
     [HttpPatch("{companyId}")]
     [ProducesResponseType<Result<CompanyResponse>>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status401Unauthorized)]
@@ -98,13 +110,13 @@ public class CompanyController(
     public async Task<IActionResult> UpdateCompanyAsync(
         Guid tenantId,
         Guid companyId,
-        UpdateCompanyRequest request,
+        [FromBody] UpdateCompanyRequest request,
         CancellationToken cancellationToken = default)
     {
         CompanyUpdateModel companyUpdateModel = CompanyMapper.ToUpdateModel(request, tenantId, companyId);
         AuditStampCreateModel auditStampCreateModel = AuditLogMapper.ToCreateModel(
-            Guid.NewGuid(),
-            "asd@asd.dasd",
+            GetCurrentUserId(),
+            GetCurrentUsername(),
             tenantId);
 
         Result updatedCompany = await _companyUseCase.UpdateCompanyAsync(
@@ -115,6 +127,7 @@ public class CompanyController(
         return HandleResult(result: updatedCompany);
     }
 
+    [Authorize(Policy = PolicyNames.AdminOrSystemAdmin)]
     [HttpDelete("{companyId}")]
     [ProducesResponseType<Result<CompanyResponse>>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status401Unauthorized)]
@@ -127,8 +140,8 @@ public class CompanyController(
         CancellationToken cancellationToken = default)
     {
         AuditStampCreateModel auditStampCreateModel = AuditLogMapper.ToCreateModel(
-            Guid.NewGuid(),
-            "asd@asd.dasd",
+            GetCurrentUserId(),
+            GetCurrentUsername(),
             tenantId);
 
         Result deletedCompany = await _companyUseCase.DeleteCompanyAsync(

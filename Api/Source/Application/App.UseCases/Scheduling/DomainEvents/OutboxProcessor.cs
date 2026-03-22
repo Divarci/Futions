@@ -65,7 +65,7 @@ internal partial class OutboxProcessor(
                     exception = caughtException;
                 }
 
-                return await UpdateAsync(_outboxMessageService, outboxMessage, exception);
+                await UpdateAsync(_outboxMessageService, outboxMessage, exception);
             }
 
             _logger.LogDebug("No unprocessed outbox messages found in this batch.");

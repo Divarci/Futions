@@ -1,3 +1,5 @@
+using Adapter.RestApi.AspNetCore.Authentication;
+using Adapter.RestApi.AspNetCore.Filters;
 using Adapter.RestApi.Controllers.Shared.Mappers;
 using Adapter.RestApi.Controllers.Shared.Models;
 using Adapter.RestApi.Controllers.VersionOne.Organisations.Companies.CompanyPeople.Models.Requests;
@@ -8,6 +10,7 @@ using Core.Domain.Entities.Organisations.CompanyPeople.Interfaces;
 using Core.Domain.Entities.Organisations.CompanyPeople.Models;
 using Core.Domain.ValueObjects.AuditStampValueObject;
 using Core.Library.ResultPattern;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Adapter.RestApi.Controllers.VersionOne.Organisations.Companies.CompanyPeople;
@@ -15,6 +18,8 @@ namespace Adapter.RestApi.Controllers.VersionOne.Organisations.Companies.Company
 [ApiVersion(ApiVersion.V1)]
 [Route("api/v{version:apiVersion}/tenants/{tenantId:guid}/companies/{companyId:guid}/company-people")]
 [ApiController]
+[Authorize(Policy = PolicyNames.AllRoles)]
+[TenantAuthorization]
 public class CompanyPersonController(
     ICompanyPersonUseCase companyPersonUseCase) : BaseController
 {
@@ -70,6 +75,7 @@ public class CompanyPersonController(
         return HandleResult(companyPerson);
     }
 
+    [Authorize(Policy = PolicyNames.AdminOrSystemAdmin)]
     [HttpPost]
     [ProducesResponseType<Result<CompanyPersonResponse>>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status401Unauthorized)]
@@ -80,13 +86,13 @@ public class CompanyPersonController(
     public async Task<IActionResult> CreateCompanyPersonAsync(  
         Guid tenantId,
         Guid companyId,
-        CreateCompanyPersonRequest request,
+        [FromBody] CreateCompanyPersonRequest request,
         CancellationToken cancellationToken = default)
     {
         CompanyPersonCreateModel companyPersonCreateModel = CompanyPersonMapper.ToCreateModel(request, companyId);
         AuditStampCreateModel auditLogCreateModel = AuditLogMapper.ToCreateModel(
-            Guid.NewGuid(),
-            "asd@asd.dasd",
+            GetCurrentUserId(),
+            GetCurrentUsername(),
             tenantId);
 
         Result<CompanyPerson> createdCompanyPerson = await _companyPersonUseCase.CreateCompanyPersonAsync(
@@ -99,6 +105,7 @@ public class CompanyPersonController(
             mapper: CompanyPersonMapper.ToResponse);
     }
 
+    [Authorize(Policy = PolicyNames.AdminOrSystemAdmin)]
     [HttpPatch("{companyPersonId}")]
     [ProducesResponseType<Result<CompanyPersonResponse>>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status401Unauthorized)]
@@ -110,15 +117,15 @@ public class CompanyPersonController(
         Guid tenantId,
         Guid companyId,
         Guid companyPersonId,
-        UpdateCompanyPersonRequest request,
+        [FromBody] UpdateCompanyPersonRequest request,
         CancellationToken cancellationToken = default)
     {
         CompanyPersonUpdateModel companyPersonUpdateModel = CompanyPersonMapper.ToUpdateModel(
             request, tenantId, companyId, companyPersonId);
 
         AuditStampCreateModel auditStampCreateModel = AuditLogMapper.ToCreateModel(
-            Guid.NewGuid(),
-            "asd@asd.dasd",
+            GetCurrentUserId(),
+            GetCurrentUsername(),
             tenantId);
 
         Result updatedCompanyPerson = await _companyPersonUseCase.UpdateCompanyPersonAsync(
@@ -129,6 +136,7 @@ public class CompanyPersonController(
         return HandleResult(result: updatedCompanyPerson);
     }
 
+    [Authorize(Policy = PolicyNames.AdminOrSystemAdmin)]
     [HttpDelete("{companyPersonId}")]
     [ProducesResponseType<Result<CompanyPersonResponse>>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status401Unauthorized)]
@@ -142,8 +150,8 @@ public class CompanyPersonController(
         CancellationToken cancellationToken = default)
     {
         AuditStampCreateModel auditStampCreateModel = AuditLogMapper.ToCreateModel(
-            Guid.NewGuid(),
-            "asd@asd.dasd",
+            GetCurrentUserId(),
+            GetCurrentUsername(),
             tenantId);
 
         Result deletedCompanyPerson = await _companyPersonUseCase.DeleteCompanyPersonAsync(

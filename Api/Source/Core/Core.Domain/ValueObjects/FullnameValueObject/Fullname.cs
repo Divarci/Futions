@@ -1,3 +1,4 @@
+using Core.Library.Exceptions;
 using Core.Library.ResultPattern;
 using System.Net;
 
@@ -13,16 +14,18 @@ public sealed partial record Fullname
     }
 
     // Properties
-    public string FirstName { get; private set; }
-    public string LastName { get; private set; }
+    public string FirstName { get; init; }
+    public string LastName { get; init; }
 
     // Methods
     public static Result<Fullname> Create(FullnameModel model)
     {
         if (model is null)
-            return Result<Fullname>.Failure(
-                message: "Model can not be null",
-                statusCode: HttpStatusCode.InternalServerError);
+            throw new FutionsException(
+                assemblyName: "Core.Domain",
+                className: nameof(Fullname),
+                methodName: nameof(Create),
+                message: "Create model cannot be null.");
 
         Fullname fullname = new(
             model.FirstName!,

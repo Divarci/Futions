@@ -7,7 +7,7 @@ using System.Text.Json;
 
 namespace Infra.Caching.Services;
 
-public class CacheService(ConnectionMultiplexer redis, ILogger<CacheService> logger) : ICacheProvider, ICacheInvalidationService
+public sealed class CacheService(ConnectionMultiplexer redis, ILogger<CacheService> logger) : ICacheProvider, ICacheInvalidationService
 {
     private readonly IDatabase _db = redis.GetDatabase();
     private readonly IServer _server = redis.GetServer(redis.GetEndPoints().First());
@@ -62,9 +62,9 @@ public class CacheService(ConnectionMultiplexer redis, ILogger<CacheService> log
                 statusCode: HttpStatusCode.OK);
         }
 
-        Result<TEntity> result = await serviceMethod();
-
         logger.LogDebug("Cache miss for key '{CacheKey}'. Fetching from service.", cacheKey);
+
+        Result<TEntity> result = await serviceMethod();
 
         if (result.IsFailureAndNoData)
             return Result<TEntity>.Failure(
@@ -100,9 +100,9 @@ public class CacheService(ConnectionMultiplexer redis, ILogger<CacheService> log
                 pageCount: cachedData.Metadata?.PageCount ?? 0);
         }
 
-        PaginatedResult<TDto[]> dataResult = await serviceCall();
-
         logger.LogDebug("Cache miss for key '{CacheKey}'. Fetching from service.", cacheKey);
+
+        PaginatedResult<TDto[]> dataResult = await serviceCall();
 
         if (dataResult.IsFailureAndNoData)
             return dataResult;

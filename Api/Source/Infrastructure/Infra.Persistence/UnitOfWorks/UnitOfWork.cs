@@ -4,6 +4,7 @@ using Core.Library.Contracts.UnitOfWorks;
 using Core.Library.ResultPattern;
 using Infra.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
 using System.Net;
 using System.Text.Json;
@@ -36,24 +37,10 @@ internal sealed class UnitOfWork(AppDbContext context, ILogger<UnitOfWork> logge
                 return result;
             }
 
-            Result domainEventsRegisterResult = await AddDomainEventsAsOutboxMessages(context);
+            Result commitResult = await CommitAsync(transaction, cancellationToken);
 
-            if (domainEventsRegisterResult.IsFailure)
-            {
-                await transaction.RollbackAsync(cancellationToken);
-
-                logger.LogError(
-                    "Transaction rolled back. Failed to register domain events. {Message}",
-                    domainEventsRegisterResult.Message);
-
-                return domainEventsRegisterResult;
-            }
-
-            await context.SaveChangesAsync(cancellationToken);
-
-            await transaction.CommitAsync(cancellationToken);
-
-            logger.LogDebug("Transaction committed successfully.");
+            if (commitResult.IsFailure)
+                return commitResult;
 
             return result;
         }
@@ -63,8 +50,8 @@ internal sealed class UnitOfWork(AppDbContext context, ILogger<UnitOfWork> logge
 
             logger.LogError(ex, "Transaction rolled back due to an unhandled exception.");
 
-            return Result.Failure
-                (message: ex.Message,
+            return Result.Failure(
+                message: ex.Message,
                 statusCode: HttpStatusCode.InternalServerError);
         }
     }
@@ -93,26 +80,12 @@ internal sealed class UnitOfWork(AppDbContext context, ILogger<UnitOfWork> logge
                 return result;
             }
 
-            Result domainEventsRegisterResult = await AddDomainEventsAsOutboxMessages(context);
+            Result commitResult = await CommitAsync(transaction, cancellationToken);
 
-            if (domainEventsRegisterResult.IsFailure)
-            {
-                await transaction.RollbackAsync(cancellationToken);
-
-                logger.LogError(
-                    "Transaction rolled back. Failed to register domain events. {Message}",
-                    domainEventsRegisterResult.Message);
-
+            if (commitResult.IsFailure)
                 return Result<T>.Failure(
-                    message: domainEventsRegisterResult.Message,
-                    statusCode: domainEventsRegisterResult.StatusCode);
-            }
-
-            await context.SaveChangesAsync(cancellationToken);
-
-            await transaction.CommitAsync(cancellationToken);
-
-            logger.LogDebug("Transaction committed successfully.");
+                    message: commitResult.Message,
+                    statusCode: commitResult.StatusCode);
 
             return result;
         }
@@ -126,6 +99,34 @@ internal sealed class UnitOfWork(AppDbContext context, ILogger<UnitOfWork> logge
                 message: ex.Message,
                 statusCode: HttpStatusCode.InternalServerError);
         }
+    }
+
+    private async Task<Result> CommitAsync(
+        IDbContextTransaction transaction,
+        CancellationToken cancellationToken)
+    {
+        Result domainEventsRegisterResult = await AddDomainEventsAsOutboxMessages(context);
+
+        if (domainEventsRegisterResult.IsFailure)
+        {
+            await transaction.RollbackAsync(cancellationToken);
+
+            logger.LogError(
+                "Transaction rolled back. Failed to register domain events. {Message}",
+                domainEventsRegisterResult.Message);
+
+            return domainEventsRegisterResult;
+        }
+
+        await context.SaveChangesAsync(cancellationToken);
+
+        await transaction.CommitAsync(cancellationToken);
+
+        logger.LogDebug("Transaction committed successfully.");
+
+        return Result.Success(
+            message: "Transaction committed.",
+            statusCode: HttpStatusCode.OK);
     }
 
     private async static Task<Result> AddDomainEventsAsOutboxMessages(DbContext dbContext)

@@ -1,8 +1,8 @@
-﻿using Adapter.RestApi.AspNetCore.Helpers;
+﻿using Adapter.RestApi.AspNetCore.Extensions;
+using Adapter.RestApi.AspNetCore.Helpers;
 using Core.Library.Exceptions;
 using Core.Library.ResultPattern;
 using Microsoft.AspNetCore.Mvc;
-using static StackExchange.Redis.Role;
 
 namespace Adapter.RestApi.Controllers;
 
@@ -98,5 +98,8 @@ public class BaseController : ControllerBase
 
         return StatusCode((int)result.StatusCode, result);
     }
+
+    protected Guid GetCurrentUserId() => HttpContext.GetRequiredUserId();
+    protected string GetCurrentUsername() => HttpContext.GetRequiredUserEmail();
 }
 

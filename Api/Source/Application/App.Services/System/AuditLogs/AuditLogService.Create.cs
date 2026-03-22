@@ -18,7 +18,10 @@ internal sealed partial class AuditLogService
             return auditLogResult;
 
         // Persist the AuditLog entity to the database using the repository.
-        await _auditLogRepository.CreateAsync(auditLogResult.Data!, cancellationToken);
+        Result<AuditLog> persistResult = await _auditLogRepository.CreateAsync(auditLogResult.Data!, cancellationToken);
+
+        if (persistResult.IsFailureAndNoData)
+            return persistResult;
 
         // Create cache key
         string cacheKey = $"{nameof(AuditLog)}:tenant({createModel.TenantId}):id({auditLogResult.Data.Id})";

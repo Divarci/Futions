@@ -2,7 +2,7 @@
 
 internal static class CacheKeyHelper
 {
-    internal static string Collection(string entityName, string methodName, object[] parameters)
+    internal static string Collection(string entityName, string methodName, params object[] parameters)
         => $"collection_{entityName}:{methodName}_{string.Join("_", parameters)}".ToLower();
 
     internal static string Single(string entityName, params (string Label, object Value)[] segments)

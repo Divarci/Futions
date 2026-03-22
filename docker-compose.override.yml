@@ -8,6 +8,11 @@ services:
       CacheConfig__AccessKey: ""
       CacheConfig__Ssl: "false"
       CacheConfig__Timeout: "5000"
+      Authentication__Audience: account
+      Authentication__MetadataAddress: http://localhost:18080/realms/Futions/.well-known/openid-configuration
+      Authentication__RequireHttpsMetadata: "false"
+      Authentication__TokenValidationParameters__ValidIssuers__0: http://localhost:18080/realms/Futions
+      Authentication__TokenValidationParameters__ValidIssuers__1: http://crm.identity:8080/realms/Futions
     depends_on:
       - sqlserver  
       - redis

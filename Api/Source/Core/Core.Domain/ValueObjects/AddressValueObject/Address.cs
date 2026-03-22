@@ -1,3 +1,4 @@
+using Core.Library.Exceptions;
 using Core.Library.ResultPattern;
 using System.Net;
 
@@ -17,19 +18,21 @@ public sealed partial record Address
     }
 
     // Properties
-    public string LineOne { get; private set; }
-    public string? LineTwo { get; private set; }
-    public string? LineThree { get; private set; }
-    public string? LineFour { get; private set; }
-    public string Postcode { get; private set; }
+    public string LineOne { get; init; }
+    public string? LineTwo { get; init; }
+    public string? LineThree { get; init; }
+    public string? LineFour { get; init; }
+    public string Postcode { get; init; }
 
     // Methods
     public static Result<Address> Create(AddressModel model)
     {
         if (model is null)
-            return Result<Address>.Failure(
-                message: "Model can not be null",
-                statusCode: HttpStatusCode.InternalServerError);
+            throw new FutionsException(
+                assemblyName: "Core.Domain",
+                className: nameof(Address),
+                methodName: nameof(Create),
+                message: "Create model cannot be null.");
 
         Address adress = new(
             model.LineOne!,

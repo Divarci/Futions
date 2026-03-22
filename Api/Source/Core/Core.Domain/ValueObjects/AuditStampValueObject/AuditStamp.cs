@@ -1,3 +1,4 @@
+using Core.Library.Exceptions;
 using Core.Library.ResultPattern;
 using System.Net;
 
@@ -14,17 +15,19 @@ public sealed partial record AuditStamp
     }
 
     // Properties
-    public DateTime Timestamp { get; private set; }
-    public Guid UserId { get; private set; }
-    public string Username { get; private set; }
+    public DateTime Timestamp { get; init; }
+    public Guid UserId { get; init; }
+    public string Username { get; init; }
 
     // Methods
     public static Result<AuditStamp> Create(AuditStampCreateModel model)
     {
         if (model is null)
-            return Result<AuditStamp>.Failure(
-                message: "Model can not be null",
-                statusCode: HttpStatusCode.InternalServerError);
+            throw new FutionsException(
+                assemblyName: "Core.Domain",
+                className: nameof(AuditStamp),
+                methodName: nameof(Create),
+                message: "Create model cannot be null.");
 
         AuditStamp auditStamp = new(
             model.Timestamp,
