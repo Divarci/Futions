@@ -22,8 +22,6 @@
     <None Include="docs\project\backend\source\information\domain-driven-design.md" />
     <None Include="docs\project\backend\source\information\event-driven-design.md" />
     <None Include="docs\project\backend\source\information\information-index.md" />
-    <None Include="docs\project\backend\source\information\naming-conventions.md" />
-    <None Include="docs\project\backend\source\information\reference-flow.md" />
     <None Include="docs\project\backend\source\information\tech-stack.md" />
     <None Include="docs\project\backend\source\layers\adapter\adapter-index.md" />
     <None Include="docs\project\backend\source\layers\adapter\rest-api\api-structure.md" />
