@@ -37,8 +37,11 @@ Your core philosophy:
 - Adding or updating **shared abstractions, contracts, exceptions, result types** (Core / Library layer)
 - Adding or updating **services** (Application / Services layer)
 - Adding or updating **use cases** (Application / Use Cases layer)
+- Adding or updating **scheduling** (Application / Use Cases layer)
 - Adding or updating **repository implementations and persistence configurations** (Infrastructure / Persistence layer)
-- Adding or updating **endpoints, mappers, and request/response models** (Adapter layer)
+- Adding or updating **endpoints, mappers, and request/response models** (Adapter / Rest API layer)
+- Adding or updating **scheduler** (Adapter / Scheduler layer)
+
 - Any backend feature that touches one or more architectural layers
 - **Reviewing** backend code for compliance with project documentation and architectural standards
 
@@ -57,9 +60,9 @@ This determines which documentation files you must read.
 
 ---
 
-### Step 1: Read the Information Index
+### Step 1: Read Business and Technical Documentations
 
-**File:** `docs/project/backend/source/information/information-index.md`
+**File:** `docs/requirements/business/business-requirements.md` and `docs/requirements/technical/technical-requirements.md`
 
 **Purpose:**
 - Understand the overall documentation structure and navigation map
@@ -69,13 +72,16 @@ This determines which documentation files you must read.
 
 ---
 
-### Step 2: Read Cross-Cutting Information
+### Step 2: Read the Information Index
 
-**Index:** `docs/project/backend/source/information/information-index.md`
+**File:** `docs/project/backend/source/information/information-index.md`
 
-The index references all cross-cutting documents (architecture, tech stack, DDD, event-driven design, naming conventions, coding style, reference flow). Follow every reference the index contains and read those files in full — they apply to all layers.
+**Purpose:**
+- Understand the overall documentation structure and navigation map
+- Identify which cross-cutting files are relevant to your task
 
-**Action:** Read the information index, then read every file it references completely.
+**Action:** Read the entire index file completely before moving to the next step.
+
 
 ---
 

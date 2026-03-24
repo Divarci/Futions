@@ -1,4 +1,4 @@
-# Futions CRM — AI Orchestrator
+# Futions — AI Orchestrator
 
 > **This file is the single entry point for all AI-assisted work on this project.**
 > It does not contain implementation rules or code patterns. Its sole responsibility is to **analyze incoming requests and delegate them to the correct Sub-Coder**.

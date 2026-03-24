@@ -89,6 +89,8 @@
     <None Include="docs\project\backend\tests\service-tests\testing-setup.md" />
     <None Include="docs\project\backend\tests\service-tests\testing-structure.md" />
     <None Include="docs\project\backend\tests\service-tests\testing-tech-stack.md" />
+    <None Include="docs\source\business\business-requirements.md" />
+    <None Include="docs\source\technical\technical-requirements.md" />
     <None Include="todo.txt" />
   </ItemGroup>
   <ItemGroup>
