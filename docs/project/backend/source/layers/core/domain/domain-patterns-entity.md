@@ -40,16 +40,16 @@ using System.Net;
 
 public partial class {Entity} : BaseEntity, IHaveSoftDelete, IHaveTenant
 {
-    // ── Constructors ──────────────────────────────────────────────────────────
+    // Constructors
     private {Entity}() { }
 
     private {Entity}(Guid tenantId, string title)
     {
         TenantId = tenantId;
-        Title    = title;
+        Title = title;
     }
 
-    // ── Properties ────────────────────────────────────────────────────────────
+    // Properties
     public string Title { get; private set; } = default!;
 
     // IHaveSoftDelete
@@ -58,15 +58,15 @@ public partial class {Entity} : BaseEntity, IHaveSoftDelete, IHaveTenant
     // IHaveTenant
     public Guid TenantId { get; private set; }
 
-    // ── Factory ───────────────────────────────────────────────────────────────
+    // Methods
     public static Result<{Entity}> Create({Entity}CreateModel model)
     {
         if (model is null)
             throw new {Solution}Exception(
                 assemblyName: "Core.Domain",
-                className:    nameof({Entity}),
-                methodName:   nameof(Create),
-                message:      "{Entity} create model cannot be null.");
+                className: nameof({Entity}),
+                methodName: nameof(Create),
+                message: "{Entity} create model cannot be null.");
 
         {Entity} {Entity} = new(model.TenantId, model.Title);
 
@@ -74,24 +74,24 @@ public partial class {Entity} : BaseEntity, IHaveSoftDelete, IHaveTenant
 
         if (validationResult.IsFailure)
             return Result<{Entity}>.Failure(
-                message:      validationResult.Message,
+                message: validationResult.Message,
                 errorDetails: validationResult.ErrorDetails!,
-                statusCode:   validationResult.StatusCode);
+                statusCode: validationResult.StatusCode);
 
         {Entity}.Raise(new {Entity}CreatedDomainEvent({Entity}.Id));
 
         return Result<{Entity}>.Success(
-            message:    "{Entity} created successfully.",
-            data:       {Entity},
+            message: "{Entity} created successfully.",
+            data: {Entity},
             statusCode: HttpStatusCode.OK);
     }
 
-    // ── Business Methods ──────────────────────────────────────────────────────
+    // Business Methods
     public Result SoftDelete()
     {
         if (IsDeleted)
             return Result.Failure(
-                message:    "{Entity} is already deleted.",
+                message: "{Entity} is already deleted.",
                 statusCode: HttpStatusCode.BadRequest);
 
         IsDeleted = true;
@@ -99,7 +99,7 @@ public partial class {Entity} : BaseEntity, IHaveSoftDelete, IHaveTenant
         Raise(new {Entity}DeletedDomainEvent(Id));
 
         return Result.Success(
-            message:    "{Entity} deleted successfully.",
+            message: "{Entity} deleted successfully.",
             statusCode: HttpStatusCode.OK);
     }
 
@@ -107,7 +107,7 @@ public partial class {Entity} : BaseEntity, IHaveSoftDelete, IHaveTenant
     {
         if (IsDeleted)
             return Result.Failure(
-                message:    "Cannot update a deleted {entity}.",
+                message: "Cannot update a deleted {entity}.",
                 statusCode: HttpStatusCode.BadRequest);
 
         Title = title;
@@ -120,7 +120,7 @@ public partial class {Entity} : BaseEntity, IHaveSoftDelete, IHaveTenant
         Raise(new {Entity}TitleUpdatedDomainEvent(Id));
 
         return Result.Success(
-            message:    "{Entity} title updated successfully.",
+            message: "{Entity} title updated successfully.",
             statusCode: HttpStatusCode.OK);
     }
 }
@@ -205,15 +205,15 @@ instantiate the entity. `UpdateModel` carries identity fields plus nullable upda
 ```csharp
 public sealed record {Entity}CreateModel
 {
-    public required Guid   TenantId { get; init; }
-    public required string Title    { get; init; }
+    public required Guid TenantId { get; init; }
+    public required string Title { get; init; }
 }
 
 public sealed record {Entity}UpdateModel
 {
-    public required Guid    TenantId { get; init; }
-    public required Guid    EntityId  { get; init; }
-    public required string? Title    { get; init; }
+    public required Guid TenantId { get; init; }
+    public required Guid EntityId { get; init; }
+    public required string? Title { get; init; }
 }
 ```
 
@@ -263,31 +263,31 @@ using Core.Library.Attributes;
 
 public class {Entity}Status : BaseEntity, IHaveAutoSeedData
 {
-    // ── Constructors ──────────────────────────────────────────────────────────
+    // Constructors
     private {Entity}Status() { }
 
-    // ── Properties ────────────────────────────────────────────────────────────
+    // Properties
     public string Name { get; private set; } = default!;
 
-    // ── Seed Instances ────────────────────────────────────────────────────────
+    // Seed Instances
     [AutoSeedData]
     public static readonly {Entity}Status Draft = new()
     {
-        Id   = Guid.Parse("00000000-0000-0000-0000-000000000001"),
+        Id = Guid.Parse("00000000-0000-0000-0000-000000000001"),
         Name = "Draft"
     };
 
     [AutoSeedData]
     public static readonly {Entity}Status Confirmed = new()
     {
-        Id   = Guid.Parse("00000000-0000-0000-0000-000000000002"),
+        Id = Guid.Parse("00000000-0000-0000-0000-000000000002"),
         Name = "Confirmed"
     };
 
     [AutoSeedData]
     public static readonly {Entity}Status Cancelled = new()
     {
-        Id   = Guid.Parse("00000000-0000-0000-0000-000000000003"),
+        Id = Guid.Parse("00000000-0000-0000-0000-000000000003"),
         Name = "Cancelled"
     };
 }

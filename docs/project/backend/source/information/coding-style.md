@@ -94,7 +94,7 @@ Each injected dependency assignment occupies its own line with consistent indent
 
 ```csharp
 // CORRECT
-private readonly I{Entity}Repository    _{entity}Repository    = {entity}Repository;
+private readonly I{Entity}Repository _{entity}Repository = {entity}Repository;
 private readonly ICacheInvalidationService _cacheInvalidationService = cacheInvalidationService;
 
 // INCORRECT
