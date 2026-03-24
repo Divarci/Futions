@@ -17,6 +17,12 @@ ValueObjects/{ValueObject}ValueObject/
 └── {ValueObject}Model.cs
 ```
 
+> **Exception:** When a value object supports only one creation path and the model name
+> benefits from a lifecycle qualifier (e.g., create-only input), the file may be named
+> `{ValueObject}CreateModel.cs` instead of `{ValueObject}Model.cs`.
+> Example: `AuditStampCreateModel.cs` (the `AuditStamp` value object has no separate
+> update path, so the create qualifier is part of the name).
+
 ### {ValueObject}.cs
 
 ```csharp

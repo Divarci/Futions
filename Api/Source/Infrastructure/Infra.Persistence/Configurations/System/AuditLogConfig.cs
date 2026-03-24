@@ -1,4 +1,4 @@
-﻿using Core.Domain.Entities.Auditing.AuditLogs;
+﻿using Core.Domain.Entities.System.AuditLogs;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

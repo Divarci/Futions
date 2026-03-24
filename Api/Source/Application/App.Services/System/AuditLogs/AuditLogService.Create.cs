@@ -1,8 +1,8 @@
-﻿using Core.Domain.Entities.Auditing.AuditLogs;
+﻿using Core.Domain.Entities.System.AuditLogs;
 using Core.Domain.ValueObjects.AuditStampValueObject;
 using Core.Library.ResultPattern;
 
-namespace App.Services.Features.Organisations.Companies;
+namespace App.Services.Features.System.AuditLogs;
 
 internal sealed partial class AuditLogService
 {
@@ -10,6 +10,7 @@ internal sealed partial class AuditLogService
         Guid entityId,
         string description,
         AuditStampCreateModel createModel,
+        Func<string, (string Label, object Value)[], string> cacheKeyBuilder,
         CancellationToken cancellationToken = default)
     {
         // Create the AuditLog entity using the factory method.
@@ -23,8 +24,8 @@ internal sealed partial class AuditLogService
         if (persistResult.IsFailureAndNoData)
             return persistResult;
 
-        // Create cache key
-        string cacheKey = $"{nameof(AuditLog)}:tenant({createModel.TenantId}):id({auditLogResult.Data.Id})";
+        // Invalidate the cache for the newly created company and the collections that may include it.
+        string cacheKey = cacheKeyBuilder(nameof(AuditLog), [("tenant", createModel.TenantId), ("id", auditLogResult.Data.Id)]);
 
         // Invalidate the cache for the newly created company and the collections that may include it.
         await _cacheInvalidationService.InvalidateEntity(cacheKey);

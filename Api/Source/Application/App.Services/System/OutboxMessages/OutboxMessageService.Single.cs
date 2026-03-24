@@ -1,7 +1,7 @@
 ﻿using Core.Domain.Entities.System.OutboxMessages;
 using Core.Library.ResultPattern;
 
-namespace App.Services.Features.Organisations.Companies;
+namespace App.Services.Features.System.OutboxMessages;
 
 internal sealed partial class OutboxMessageService
 {

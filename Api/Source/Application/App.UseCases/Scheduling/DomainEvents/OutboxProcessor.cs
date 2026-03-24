@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 using System.Net;
 using System.Text.Json;
 
-namespace App.UseCases.Processors;
+namespace App.UseCases.Scheduling.DomainEvents;
 
 internal partial class OutboxProcessor(
     ITransactionalUnitOfWork unitOfWork,

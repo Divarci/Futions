@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace Adapter.RestApi.Controllers.VersionOne.Organisations.Companies.Core.Models.Requests;
 
-public class UpdateCompanyRequest
+public sealed record UpdateCompanyRequest
 {
     [JsonPropertyName("name")]
     [MaxLength(100)]

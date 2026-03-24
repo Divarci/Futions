@@ -1,4 +1,4 @@
-﻿using Core.Domain.Entities.Auditing.AuditLogs;
+﻿using Core.Domain.Entities.System.AuditLogs;
 using Core.Domain.Entities.System.AuditLogs.Interfaces;
 using Infra.Persistence.Context;
 using Infra.Persistence.Repositories.Generics;

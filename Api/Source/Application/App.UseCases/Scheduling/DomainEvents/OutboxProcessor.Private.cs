@@ -9,7 +9,7 @@ using System.Collections.Concurrent;
 using System.Net;
 using System.Text.Json;
 
-namespace App.UseCases.Processors;
+namespace App.UseCases.Scheduling.DomainEvents;
 
 internal partial class OutboxProcessor
 {

@@ -1,5 +1,5 @@
 ﻿using App.UseCases.Helpers;
-using Core.Domain.Entities.Auditing.AuditLogs;
+using Core.Domain.Entities.System.AuditLogs;
 using Core.Domain.ValueObjects.AuditStampValueObject;
 using Core.Library.ResultPattern;
 using Microsoft.Extensions.Logging;
@@ -28,7 +28,8 @@ internal sealed partial class CompanyUseCase
                 .CreateAsync(
                     companyId,
                     $"Company with ID {companyId} has been deleted by {auditStampCreateModel.Username}.",
-                    auditStampCreateModel, 
+                    auditStampCreateModel,
+                    CacheKeyHelper.Single,
                     cancellationToken);
 
             if (auditLogCreateResult.IsFailureAndNoData)

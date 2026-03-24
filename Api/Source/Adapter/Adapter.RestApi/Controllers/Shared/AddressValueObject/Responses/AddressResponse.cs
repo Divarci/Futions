@@ -2,7 +2,7 @@
 
 namespace Adapter.RestApi.Controllers.Shared.AddressValueObject.Responses;
 
-public record AddressResponse
+public sealed record AddressResponse
 {
     [JsonPropertyName("lineOne")]
     public required string LineOne { get; init; }

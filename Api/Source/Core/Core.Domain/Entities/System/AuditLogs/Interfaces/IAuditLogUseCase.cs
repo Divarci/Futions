@@ -1,4 +1,3 @@
-using Core.Domain.Entities.Auditing.AuditLogs;
 using Core.Library.ResultPattern;
 
 namespace Core.Domain.Entities.System.AuditLogs.Interfaces;

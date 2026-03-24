@@ -1,4 +1,5 @@
-using Core.Domain.Entities.Auditing.AuditLogs;
+using App.UseCases.Helpers;
+using Core.Domain.Entities.System.AuditLogs;
 using Core.Domain.ValueObjects.AuditStampValueObject;
 using Core.Library.ResultPattern;
 using Microsoft.Extensions.Logging;
@@ -29,6 +30,7 @@ internal sealed partial class CompanyPersonUseCase
                     companyPersonId,
                     $"Company person with ID {companyPersonId} has been deleted by {auditStampCreateModel.Username}.",
                     auditStampCreateModel,
+                    CacheKeyHelper.Single,
                     cancellationToken);
 
             if (auditLogCreateResult.IsFailureAndNoData)

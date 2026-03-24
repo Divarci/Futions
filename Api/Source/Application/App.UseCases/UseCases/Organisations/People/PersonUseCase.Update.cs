@@ -1,5 +1,5 @@
 using App.UseCases.Helpers;
-using Core.Domain.Entities.Auditing.AuditLogs;
+using Core.Domain.Entities.System.AuditLogs;
 using Core.Domain.Entities.Organisations.People.Models;
 using Core.Domain.ValueObjects.AuditStampValueObject;
 using Core.Library.ResultPattern;
@@ -29,6 +29,7 @@ internal sealed partial class PersonUseCase
                     updateModel.PersonId,
                     $"Person with ID {updateModel.PersonId} has been updated by {auditStampCreateModel.Username}.",
                     auditStampCreateModel,
+                    CacheKeyHelper.Single,
                     cancellationToken);
 
             if (auditLogCreateResult.IsFailureAndNoData)

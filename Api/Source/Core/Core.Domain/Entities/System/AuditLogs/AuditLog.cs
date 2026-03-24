@@ -5,7 +5,7 @@ using Core.Library.Exceptions;
 using Core.Library.ResultPattern;
 using System.Net;
 
-namespace Core.Domain.Entities.Auditing.AuditLogs;
+namespace Core.Domain.Entities.System.AuditLogs;
 
 public partial class AuditLog : BaseEntity, IHaveTenant
 {

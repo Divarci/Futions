@@ -1,4 +1,3 @@
-using Core.Domain.Entities.Auditing.AuditLogs;
 using Core.Domain.ValueObjects.AuditStampValueObject;
 using Core.Library.ResultPattern;
 
@@ -52,5 +51,6 @@ public interface IAuditLogService
         Guid entityId,
         string description,
         AuditStampCreateModel createModel,
-        CancellationToken cancellationToken = default);  
+        Func<string, (string Label, object Value)[], string> cacheKeyBuilder,
+        CancellationToken cancellationToken = default);
 }

@@ -1,4 +1,5 @@
-﻿using Core.Domain.Entities.Auditing.AuditLogs;
+﻿using App.UseCases.Helpers;
+using Core.Domain.Entities.System.AuditLogs;
 using Core.Library.ResultPattern;
 
 namespace App.UseCases.UseCases.System.AuditLogs;
@@ -12,7 +13,7 @@ internal sealed partial class AuditLogUseCase
         CancellationToken cancellationToken = default) where TDto : class
     {
         // Create a unique cache key for the audit log based on tenant ID and audit log ID
-        string cacheKey = $"{nameof(AuditLog)}:tenant({tenantId}):id({id})";
+        string cacheKey = CacheKeyHelper.Single(nameof(AuditLog), ("tenant", tenantId), ("id", id));
 
         // Attempt to retrieve the audit log from the cache. If it's not present, fetch it from the service and cache the result.
         Result<TDto> auditLogResult = await _cacheProvider.GetSingleAsync(

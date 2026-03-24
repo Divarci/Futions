@@ -21,10 +21,10 @@ internal sealed partial class PersonRepository
             .AsNoTracking()
             .Where(x => x.TenantId == tenantId && !x.IsDeleted);
 
-        if (!string.IsNullOrWhiteSpace(filter))
-            query = query.Where(x =>
-                EF.Functions.Like(x.Fullname.FirstName, $"%{filter}%") ||
-                EF.Functions.Like(x.Fullname.LastName, $"%{filter}%"));
+        query = query.WhereIf(
+            !string.IsNullOrWhiteSpace(filter),
+            x => EF.Functions.Like(x.Fullname.FirstName, $"%{filter}%") ||
+                 EF.Functions.Like(x.Fullname.LastName, $"%{filter}%"));
 
         query = query.OrderByIf(isAscending, sortBy);
 

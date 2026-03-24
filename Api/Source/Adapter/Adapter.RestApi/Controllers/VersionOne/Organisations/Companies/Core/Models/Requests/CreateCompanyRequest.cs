@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace Adapter.RestApi.Controllers.VersionOne.Organisations.Companies.Core.Models.Requests;
 
-public record CreateCompanyRequest
+public sealed record CreateCompanyRequest
 {
     [Required, JsonPropertyName("name")]
     [MaxLength(100)]

@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace Adapter.RestApi.Controllers.VersionOne.Organisations.People.Models.Requests;
 
-public record CreatePersonRequest
+public sealed record CreatePersonRequest
 {
     [Required, JsonPropertyName("fullname")]
     public UpdateFullnameRequest? Fullname { get; init; }

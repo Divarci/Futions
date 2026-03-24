@@ -1,7 +1,7 @@
-﻿using Core.Domain.Entities.Auditing.AuditLogs;
+﻿using Core.Domain.Entities.System.AuditLogs;
 using Core.Library.ResultPattern;
 
-namespace App.Services.Features.Organisations.Companies;
+namespace App.Services.Features.System.AuditLogs;
 
 internal sealed partial class AuditLogService
 {

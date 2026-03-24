@@ -1,5 +1,5 @@
 using App.UseCases.Helpers;
-using Core.Domain.Entities.Auditing.AuditLogs;
+using Core.Domain.Entities.System.AuditLogs;
 using Core.Library.ResultPattern;
 
 namespace App.UseCases.UseCases.System.AuditLogs;

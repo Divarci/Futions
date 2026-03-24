@@ -1,7 +1,7 @@
 using Core.Library.ResultPattern;
 using Core.Library.Validators;
 
-namespace Core.Domain.Entities.Auditing.AuditLogs;
+namespace Core.Domain.Entities.System.AuditLogs;
 
 public partial class AuditLog
 {

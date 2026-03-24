@@ -1,4 +1,4 @@
-﻿using App.UseCases.Processors;
+﻿using App.UseCases.Scheduling.DomainEvents;
 using App.UseCases.UseCases.Organisations.Companies;
 using App.UseCases.UseCases.Organisations.CompanyPeople;
 using App.UseCases.UseCases.Organisations.People;

@@ -56,6 +56,8 @@ public class {Entity}Config : IEntityTypeConfiguration<{Entity}>
         {
             address.Property(a => a.LineOne).HasMaxLength(100);
             address.Property(a => a.LineTwo).HasMaxLength(100);
+            address.Property(a => a.LineThree).HasMaxLength(100);
+            address.Property(a => a.LineFour).HasMaxLength(100);
             address.Property(a => a.Postcode).HasMaxLength(20);
         });
     }
@@ -169,4 +171,4 @@ public class {JoinEntity}Config : IEntityTypeConfiguration<{JoinEntity}>
   columns without an explicit length.
 - Primary keys (`Id`) are configured globally via `BaseEntity` conventions. Do not redefine
   them in individual config classes.
-- Config classes are `internal` and have no constructor parameters.
+- Config classes are `public` and have no constructor parameters.

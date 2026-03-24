@@ -1,5 +1,5 @@
 ﻿using App.UseCases.Helpers;
-using Core.Domain.Entities.Auditing.AuditLogs;
+using Core.Domain.Entities.System.AuditLogs;
 using Core.Domain.Entities.Organisations.Companies.Models;
 using Core.Domain.ValueObjects.AuditStampValueObject;
 using Core.Library.ResultPattern;
@@ -28,7 +28,8 @@ internal sealed partial class CompanyUseCase
                     .CreateAsync(
                         updateModel.CompanyId,
                         $"Company with ID {updateModel.CompanyId} has been updated by {auditStampCreateModel.Username}.",
-                        auditStampCreateModel, 
+                        auditStampCreateModel,
+                        CacheKeyHelper.Single,
                         cancellationToken);
     
                 if (auditLogCreateResult.IsFailureAndNoData)

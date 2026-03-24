@@ -1,5 +1,5 @@
 using App.UseCases.Helpers;
-using Core.Domain.Entities.Auditing.AuditLogs;
+using Core.Domain.Entities.System.AuditLogs;
 using Core.Domain.Entities.Organisations.CompanyPeople;
 using Core.Domain.Entities.Organisations.CompanyPeople.Models;
 using Core.Domain.ValueObjects.AuditStampValueObject;
@@ -30,6 +30,7 @@ internal sealed partial class CompanyPersonUseCase
                     companyPersonCreateResult.Data.Id,
                     $"Company person with ID {companyPersonCreateResult.Data.Id} has been created by {auditStampCreateModel.Username}.",
                     auditStampCreateModel,
+                    CacheKeyHelper.Single,
                     cancellationToken);
 
             if (auditLogCreateResult.IsFailureAndNoData)

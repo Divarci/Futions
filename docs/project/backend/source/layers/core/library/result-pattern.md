@@ -71,9 +71,9 @@ Carries PageNumber, PageSize, TotalCount, PageCount, and a computed TotalPages
 (calculated as Math.Ceiling(totalCount / pageSize)). Throws `{Solution}Exception` if
 pageSize is zero or negative — this is a programmer error, not a domain failure.
 
-### ResultExtensions
+### ResultExtension
 
-Source: ResultPattern/ResultExtensions.cs
+Source: ResultPattern/ResultExtension.cs
 
 Static class with MapTo extension methods. Converts Result<TEntity> to
 Result<TModel> and PaginatedResult<TEntity> to PaginatedResult<TModel> using a
@@ -90,7 +90,7 @@ closed. Do not add a fourth tier or a sibling class.
 If a new operation shape requires additional metadata on the response (e.g., cursor-based
 pagination), extend PaginatedResult<T> or introduce a new property on Metadata.
 
-If a new kind of mapping is needed in ResultExtensions, add a new extension method.
+If a new kind of mapping is needed in ResultExtension, add a new extension method.
 Do not add instance methods or non-extension helpers.
 
 ---
@@ -105,7 +105,7 @@ Do not add instance methods or non-extension helpers.
   in API responses — the adapter layer translates them into HTTP responses explicitly.
 - CombineValidationErrors is the only correct way to merge multiple validator results.
   Do not manually aggregate errors outside of this method.
-- ResultExtensions.MapTo must never be called on a failed result. Always check
+- ResultExtension.MapTo must never be called on a failed result. Always check
   IsSuccess before mapping.
 - Metadata enforces pageSize > 0. If this throws, the call site passed a zero-page-size
   — that is a programmer error, not a domain validation failure.

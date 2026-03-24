@@ -1,4 +1,4 @@
-﻿using Core.Domain.Entities.Auditing.AuditLogs;
+﻿using Core.Domain.Entities.System.AuditLogs;
 using Core.Library.ResultPattern;
 using Infra.Persistence.Extensions;
 using Microsoft.EntityFrameworkCore;

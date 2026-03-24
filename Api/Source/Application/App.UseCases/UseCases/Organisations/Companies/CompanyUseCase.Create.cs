@@ -1,5 +1,5 @@
 ﻿using App.UseCases.Helpers;
-using Core.Domain.Entities.Auditing.AuditLogs;
+using Core.Domain.Entities.System.AuditLogs;
 using Core.Domain.Entities.Organisations.Companies;
 using Core.Domain.Entities.Organisations.Companies.Models;
 using Core.Domain.ValueObjects.AuditStampValueObject;
@@ -29,7 +29,8 @@ internal sealed partial class CompanyUseCase
                 .CreateAsync(
                     companyCreateResult.Data.Id,
                     $"Company created with name: {companyCreateResult.Data.Name} by {auditStampCreateModel.Username}",
-                    auditStampCreateModel, 
+                    auditStampCreateModel,
+                    CacheKeyHelper.Single,
                     cancellationToken);
 
             if (auditLogCreateResult.IsFailureAndNoData)

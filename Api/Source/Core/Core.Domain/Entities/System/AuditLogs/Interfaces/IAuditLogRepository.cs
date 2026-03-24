@@ -1,4 +1,3 @@
-using Core.Domain.Entities.Auditing.AuditLogs;
 using Core.Library.Contracts.GenericRepositories;
 using Core.Library.ResultPattern;
 

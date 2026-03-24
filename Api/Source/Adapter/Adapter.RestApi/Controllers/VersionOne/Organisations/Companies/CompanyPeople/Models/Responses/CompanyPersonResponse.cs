@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace Adapter.RestApi.Controllers.VersionOne.Organisations.Companies.CompanyPeople.Models.Responses;
 
-public record CompanyPersonResponse
+public sealed record CompanyPersonResponse
 {
     [JsonPropertyName("id")]
     public required Guid Id { get; init; }

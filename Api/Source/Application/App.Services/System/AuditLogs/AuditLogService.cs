@@ -1,7 +1,7 @@
 ﻿using Core.Domain.Entities.System.AuditLogs.Interfaces;
 using Core.Library.Contracts.Caching;
 
-namespace App.Services.Features.Organisations.Companies;
+namespace App.Services.Features.System.AuditLogs;
 
 internal sealed partial class AuditLogService(
     IAuditLogRepository auditLogRepository,
