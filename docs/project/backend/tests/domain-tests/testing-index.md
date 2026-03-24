@@ -17,7 +17,6 @@
 
 ### Foundation & Philosophy
 - **[Testing Philosophy](./testing-philosophy.md)** — Core principles, what to test, testing mindset
-- **[Testing Setup](./testing-setup.md)** — Base class setup, helper methods for tests
 - **[Testing Tech Stack](./testing-tech-stack.md)** — XUnit, Fluent Assertions, .NET 10 versions
 
 ### Project Structure & Naming
@@ -41,8 +40,7 @@ Test patterns are organized by operation type with Success and Failure scenarios
 ## How to Use This Index
 
 1. Start with **[Testing Philosophy](./testing-philosophy.md)** to understand the testing mindset
-2. Review **[Testing Setup](./testing-setup.md)** for base test class templates
-3. Check **[Testing Structure](./testing-structure.md)** for file organization
-4. Read **[Naming Conventions](./testing-naming-conventions.md)** for test method names
-5. Study the **Test Patterns** — use the Entity, Value Object, and Validation pattern documents linked above to follow the recommended Success/Failure split, AAA pattern, and naming conventions
-6. Always check **[Testing Critical Rules](./testing-critical-rules.md)** before writing tests
+2. Check **[Testing Structure](./testing-structure.md)** for file organization
+3. Read **[Naming Conventions](./testing-naming-conventions.md)** for test method names
+4. Study the **Test Patterns** — use the Entity, Value Object, and Validation pattern documents linked above to follow the recommended Success/Failure split, AAA pattern, and naming conventions
+5. Always check **[Testing Critical Rules](./testing-critical-rules.md)** before writing tests

@@ -52,5 +52,5 @@ Test patterns are organized by operation type with Success and Failure scenarios
 3. Check **[Testing Structure](./testing-structure.md)** for file organization
 4. Read **[Naming Conventions](./testing-naming-conventions.md)** for test method names
 5. Study the **Test Patterns** ([Create](./testing-patterns-create.md), [Update](./testing-patterns-update.md), [Delete](./testing-patterns-delete.md), [Single](./testing-patterns-single.md), [Collection](./testing-patterns-collection.md))
-6. Reference **[Moq Patterns](./testing-patterns-moq.md)** for mocking examples
+6. Reference **[Moq Patterns](./testing-moq-patterns.md)** for mocking examples
 7. Always check **[Testing Critical Rules](./testing-critical-rules.md)** before writing tests
