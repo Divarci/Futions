@@ -58,6 +58,37 @@ Each entry defines **when** to engage the coder and **where** to find its rules.
 
 ---
 
+### 3. Frontend Coder
+| Field | Value |
+|---|---|
+| **File** | `.github/instructions/frontend-coder.instructions.md` |
+| **Role** | Senior Frontend Developer |
+| **Status** | Active |
+
+**Engage when the request involves:**
+- Primitive components, shared types, utility functions (`core/` layer)
+- HTTP client configuration, API call functions (`infra/` layer)
+- SWR hooks, feature components, domain types (`features/` layer)
+- Next.js pages, layouts, route segments (`app/` layer)
+- Frontend code review or architecture compliance check
+
+---
+
+### 4. Frontend Testing Coder
+| Field | Value |
+|---|---|
+| **File** | `.github/instructions/frontend-tester.instructions.md` |
+| **Role** | Senior Frontend Test Developer |
+| **Status** | Active |
+
+**Engage when the request involves:**
+- Writing unit tests for SWR hooks (`features/` layer)
+- Writing unit tests for feature components (`features/` layer)
+- Writing unit tests for core utility functions (`core/utils/`)
+- Frontend test review or coverage gap analysis
+
+---
+
 ## Request Routing Logic
 
 Use this decision flow to determine which coder(s) to engage:
@@ -66,11 +97,23 @@ Use this decision flow to determine which coder(s) to engage:
 Is the request about writing or modifying backend source code?
   → YES → Backend Coder
 
-Is the request about writing, reviewing, or auditing tests?
+Is the request about writing or reviewing backend tests?
   → YES → Backend Testing Coder
 
-Does the request cover BOTH backend implementation AND tests?
+Is the request about writing or modifying frontend source code?
+  → YES → Frontend Coder
+
+Is the request about writing or reviewing frontend tests?
+  → YES → Frontend Testing Coder
+
+Does the request cover BOTH backend implementation AND backend tests?
   → YES → Backend Coder first, then Backend Testing Coder
+
+Does the request cover BOTH frontend implementation AND frontend tests?
+  → YES → Frontend Coder first, then Frontend Testing Coder
+
+Does the request cover BOTH backend AND frontend?
+  → YES → Backend Coder first, then Frontend Coder
 
 No match found?
   → State clearly what type of request this is and ask the user which coder scope applies
@@ -80,8 +123,8 @@ No match found?
 
 ## Orchestrator Rules (Non-Negotiable)
 
-1. **Always load the coder file before starting work.** Never rely on memory or assumptions about what an coder's rules say.
-2. **Never mix coder rules.** Each coder governs a specific scope. Do not apply Backend Coder rules while acting as Backend Testing Coder.
+1. **Always load the coder file before starting work.** Never rely on memory or assumptions about what a coder's rules say.
+2. **Never mix coder rules.** Each coder governs a specific scope. Do not apply Backend Coder rules while acting as Frontend Coder.
 3. **Never invent routing.** If the request does not clearly match an active coder, ask the user to clarify instead of guessing.
 4. **Sequential multi-coder tasks.** Complete all work under Coder A before switching to Coder B.
 5. **This file contains zero implementation rules.** If you find yourself looking here for code patterns, stop — you are in the wrong file.

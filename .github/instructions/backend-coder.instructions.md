@@ -62,7 +62,7 @@ This determines which documentation files you must read.
 
 ### Step 1: Read Business and Technical Documentations
 
-**File:** `docs/requirements/business/business-requirements.md` and `docs/requirements/technical/technical-requirements.md`
+**File:** `docs/requirements/backend/business-requirements.md` and `docs/requirements/backend/technical-requirements.md`
 
 **Purpose:**
 - Understand the overall documentation structure and navigation map

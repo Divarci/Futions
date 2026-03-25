@@ -12,6 +12,7 @@
     <None Include=".github\copilot-instructions.md" />
     <None Include=".github\instructions\backend-coder.instructions.md" />
     <None Include=".github\instructions\backend-tester.instructions.md" />
+    <None Include=".github\instructions\frontend-coder.instructions.md" />
     <None Include="docker-compose.override.yml">
       <DependentUpon>docker-compose.yml</DependentUpon>
     </None>
@@ -89,13 +90,40 @@
     <None Include="docs\project\backend\tests\service-tests\testing-setup.md" />
     <None Include="docs\project\backend\tests\service-tests\testing-structure.md" />
     <None Include="docs\project\backend\tests\service-tests\testing-tech-stack.md" />
+    <None Include="docs\project\frontend\source\information\architecture.md" />
+    <None Include="docs\project\frontend\source\information\coding-style.md" />
+    <None Include="docs\project\frontend\source\information\information-index.md" />
+    <None Include="docs\project\frontend\source\information\tech-stack.md" />
+    <None Include="docs\project\frontend\source\layers\app\app-index.md" />
+    <None Include="docs\project\frontend\source\layers\app\app-structure.md" />
+    <None Include="docs\project\frontend\source\layers\app\error-boundaries.md" />
+    <None Include="docs\project\frontend\source\layers\app\layout.md" />
+    <None Include="docs\project\frontend\source\layers\app\pages.md" />
+    <None Include="docs\project\frontend\source\layers\core\components.md" />
+    <None Include="docs\project\frontend\source\layers\core\core-index.md" />
+    <None Include="docs\project\frontend\source\layers\core\core-structure.md" />
+    <None Include="docs\project\frontend\source\layers\core\hooks.md" />
+    <None Include="docs\project\frontend\source\layers\core\types.md" />
+    <None Include="docs\project\frontend\source\layers\core\utils.md" />
+    <None Include="docs\project\frontend\source\layers\features\actions.md" />
+    <None Include="docs\project\frontend\source\layers\features\barrel.md" />
+    <None Include="docs\project\frontend\source\layers\features\components.md" />
+    <None Include="docs\project\frontend\source\layers\features\error-handling.md" />
+    <None Include="docs\project\frontend\source\layers\features\features-index.md" />
+    <None Include="docs\project\frontend\source\layers\features\features-structure.md" />
+    <None Include="docs\project\frontend\source\layers\features\hooks.md" />
+    <None Include="docs\project\frontend\source\layers\features\types.md" />
+    <None Include="docs\project\frontend\source\layers\infra\api-functions.md" />
+    <None Include="docs\project\frontend\source\layers\infra\http-client.md" />
+    <None Include="docs\project\frontend\source\layers\infra\infra-index.md" />
+    <None Include="docs\project\frontend\source\layers\infra\infra-structure.md" />
+    <None Include="docs\project\frontend\source\layers\layer-index.md" />
     <None Include="docs\source\business\business-requirements.md" />
     <None Include="docs\source\technical\technical-requirements.md" />
     <None Include="todo.txt" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="docs\project\backend\source\layers\infrastructure\caching\" />
-    <Folder Include="docs\project\frontend\" />
     <Folder Include="docs\Source\Business\" />
     <Folder Include="docs\Source\Technical\" />
   </ItemGroup>
