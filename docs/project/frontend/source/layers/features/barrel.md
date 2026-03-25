@@ -7,22 +7,22 @@ Every feature exposes its public API through a single `index.ts` barrel file. Fi
 ## Pattern
 
 ```typescript
-// features/tasks/index.ts
-export { TaskList }      from "./components/TaskList";
-export { TaskCard }      from "./components/TaskCard";
-export { TaskForm }      from "./components/TaskForm";
-export { useGetTasks }   from "./hooks/useGetTasks";
-export { useGetTask }    from "./hooks/useGetTask";
-export { useCreateTask } from "./hooks/useCreateTask";
-export { useUpdateTask } from "./hooks/useUpdateTask";
-export { useDeleteTask } from "./hooks/useDeleteTask";
+// features/{domain}/index.ts
+export { {Entity}List }       from "./components/{Entity}List";
+export { {Entity}Card }       from "./components/{Entity}Card";
+export { {Entity}Form }       from "./components/{Entity}Form";
+export { useGet{Entities} }   from "./hooks/useGet{Entities}";
+export { useGet{Entity} }     from "./hooks/useGet{Entity}";
+export { useCreate{Entity} }  from "./hooks/useCreate{Entity}";
+export { useUpdate{Entity} }  from "./hooks/useUpdate{Entity}";
+export { useDelete{Entity} }  from "./hooks/useDelete{Entity}";
 export type {
-    TaskViewModel,
-    TaskCreateModel,
-    TaskUpdateModel,
-    TaskFilterParams,
-    TaskStatus,
-}                        from "./types/task.types";
+    {Entity}ViewModel,
+    {Entity}CreateModel,
+    {Entity}UpdateModel,
+    {Entity}FilterParams,
+    {Entity}Status,
+}                             from "./types/{domain}.types";
 ```
 
 ---
@@ -30,5 +30,5 @@ export type {
 ## Rules
 
 - Every public symbol (component, hook, type, action) must be re-exported from `index.ts`.
-- Files outside the feature import from `@/features/{domain}` — never from deep paths like `@/features/tasks/hooks/useGetTasks`.
+- Files outside the feature import from `@/features/{domain}` — never from deep paths like `@/features/{domain}/hooks/useGet{Entities}`.
 - Internal files within the same feature may use relative imports.

@@ -7,43 +7,31 @@ All domain-specific TypeScript types live in `features/{domain}/types/{domain}.t
 ## Pattern
 
 ```typescript
-// features/tasks/types/task.types.ts
+// features/{domain}/types/{domain}.types.ts
 
-export type TaskStatus = "Pending" | "Completed";
+export type {Entity}Status = "Active" | "Inactive";
 
-export type TaskViewModel = {
-    taskId:      string;
-    title:       string;
-    description: string | null;
-    status:      TaskStatus;
-    dueDate:     string | null;
-    tags:        TagViewModel[];
-    createdUtc:  string;
-    updatedUtc:  string;
+export type {Entity}ViewModel = {
+    {entity}Id: string;
+    name: string;
+    status: {Entity}Status;
+    createdUtc: string;
+    updatedUtc: string;
 };
 
-export type TaskCreateModel = {
-    title:       string;
-    description: string | null;
-    dueDate:     string | null;
-    tagIds:      string[];
+export type {Entity}CreateModel = {
+    name: string;
 };
 
-export type TaskUpdateModel = {
-    title:       string | null;
-    description: string | null;
-    dueDate:     string | null;
+export type {Entity}UpdateModel = {
+    name: string | null;
 };
 
-export type TaskFilterParams = {
-    keyword?:     string;
-    status?:      TaskStatus;
-    tagId?:       string;
-    dueDateFrom?: string;
-    dueDateTo?:   string;
-    sort?:        string;
-    skip?:        number;
-    take?:        number;
+export type {Entity}FilterParams = {
+    keyword?: string;
+    status?: {Entity}Status;
+    skip?: number;
+    take?: number;
 };
 ```
 

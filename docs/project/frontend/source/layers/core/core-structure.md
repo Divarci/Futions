@@ -20,6 +20,7 @@ src/
     │   └── index.ts
     ├── types/
     │   ├── common.types.ts          ← shared API response shapes (ApiResponse<T>, PaginatedResponse<T>)
+    │   ├── theme.types.ts           ← Theme type ('light' | 'dark' | 'system')
     │   └── index.ts
     └── utils/
         ├── date.utils.ts

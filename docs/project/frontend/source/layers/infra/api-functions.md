@@ -7,39 +7,40 @@ One `.api.ts` file per domain. Each function performs exactly one HTTP call and 
 ## Pattern
 
 ```typescript
-// infra/tasks/task.api.ts
+// infra/{domain}/{domain}.api.ts
 import { httpClient } from "@/infra/http";
+import type { ApiResponse, PaginatedApiResponse } from "@/core/types";
 import type {
-    TaskViewModel,
-    TaskCreateModel,
-    TaskUpdateModel,
-    TaskFilterParams,
-} from "@/features/tasks";
+    {Entity}ViewModel,
+    {Entity}CreateModel,
+    {Entity}UpdateModel,
+    {Entity}FilterParams,
+} from "@/features/{domain}";
 
-const BASE = "/api/v1/tasks";
+const BASE = "/api/v1/{domain}";
 
-export async function getTasks(filter: TaskFilterParams): Promise<TaskViewModel[]> {
-    const response = await httpClient.get<TaskViewModel[]>(BASE, { params: filter });
-    return response.data;
+export async function get{Entities}(filter: {Entity}FilterParams): Promise<{Entity}ViewModel[]> {
+    const response = await httpClient.get<PaginatedApiResponse<{Entity}ViewModel[]>>(BASE, { params: filter });
+    return response.data.data;
 }
 
-export async function getTask(taskId: string): Promise<TaskViewModel> {
-    const response = await httpClient.get<TaskViewModel>(`${BASE}/${taskId}`);
-    return response.data;
+export async function get{Entity}({entity}Id: string): Promise<{Entity}ViewModel> {
+    const response = await httpClient.get<ApiResponse<{Entity}ViewModel>>(`${BASE}/${{entity}Id}`);
+    return response.data.data;
 }
 
-export async function createTask(model: TaskCreateModel): Promise<TaskViewModel> {
-    const response = await httpClient.post<TaskViewModel>(BASE, model);
-    return response.data;
+export async function create{Entity}(model: {Entity}CreateModel): Promise<{Entity}ViewModel> {
+    const response = await httpClient.post<ApiResponse<{Entity}ViewModel>>(BASE, model);
+    return response.data.data;
 }
 
-export async function updateTask(taskId: string, model: TaskUpdateModel): Promise<TaskViewModel> {
-    const response = await httpClient.patch<TaskViewModel>(`${BASE}/${taskId}`, model);
-    return response.data;
+export async function update{Entity}({entity}Id: string, model: {Entity}UpdateModel): Promise<{Entity}ViewModel> {
+    const response = await httpClient.patch<ApiResponse<{Entity}ViewModel>>(`${BASE}/${{entity}Id}`, model);
+    return response.data.data;
 }
 
-export async function deleteTask(taskId: string): Promise<void> {
-    await httpClient.delete(`${BASE}/${taskId}`);
+export async function delete{Entity}({entity}Id: string): Promise<void> {
+    await httpClient.delete(`${BASE}/${{entity}Id}`);
 }
 ```
 

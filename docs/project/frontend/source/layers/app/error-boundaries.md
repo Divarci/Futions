@@ -9,7 +9,7 @@ Each route segment may define its own `error.tsx` and `loading.tsx` following Ne
 Catches unhandled errors propagated from the React component tree below. It is the last-resort safety net for exceptions not caught at the feature level. Must be a Client Component (`"use client"`).
 
 ```typescript
-// app/tasks/error.tsx
+// app/{domain}/error.tsx
 "use client";
 
 type ErrorProps = {
@@ -17,7 +17,7 @@ type ErrorProps = {
     reset: () => void;
 };
 
-export default function TasksError({ error, reset }: ErrorProps) {
+export default function {Entities}Error({ error, reset }: ErrorProps) {
     return (
         <div>
             <p>{error.message}</p>

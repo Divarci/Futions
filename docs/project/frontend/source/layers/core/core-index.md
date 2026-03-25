@@ -32,8 +32,17 @@ Use this index to navigate directly to the topic you need.
 
 ---
 
+## Theme
+
+| Document | What it covers |
+|---|---|
+| [Theme](theme.md) | Token contract, CSS variables, Tailwind config extension, ThemeProvider setup, usage rules |
+
+---
+
 ## Guidelines
 
 - Read **Structure** before adding, moving, or renaming any file in `core/`.
 - A component, hook, or utility is promoted to `core/` only when used by three or more unrelated features.
 - Read **Types** before adding any new shared type — confirm it is not already defined.
+- Read **Theme** before writing any component — all colour classes must reference theme tokens.

@@ -7,10 +7,10 @@
 Handle loading and error states in the consuming component using the values returned by the hook. Every component that calls a query hook must handle all three states: loading, error, and data.
 
 ```typescript
-const { data, isLoading, error } = useGetTasks(filter);
+const { data, isLoading, error } = useGet{Entities}(filter);
 
 if (isLoading) return <Spinner />;
-if (error)     return <ErrorMessage message="Could not load tasks." />;
+if (error)     return <ErrorMessage message="Could not load {entities}." />;
 ```
 
 For mutations, use `onError` in `useSWRMutation` to react to failures (e.g., display a toast notification). Retry strategy is configured per-hook via SWR's `onErrorRetry` option.

@@ -41,8 +41,10 @@ Your core philosophy:
 - Adding or updating **shared abstractions, contracts, exceptions, result types** (Core / Library layer)
 - Adding or updating **services** (Application / Services layer)
 - Adding or updating **use cases** (Application / Use Cases layer)
+- Adding or updating **scheduling** (Application / Use Cases layer)
 - Adding or updating **repository implementations and persistence configurations** (Infrastructure / Persistence layer)
-- Adding or updating **endpoints, mappers, and request/response models** (Adapter layer)
+- Adding or updating **endpoints, mappers, and request/response models** (Adapter / Rest API layer)
+- Adding or updating **scheduler** (Adapter / Scheduler layer)
 - Any backend feature that touches one or more architectural layers
 - **Reviewing** backend code for compliance with project documentation and architectural standards
 
@@ -61,7 +63,23 @@ This determines which documentation files you must read.
 
 ---
 
-### Step 1: Read the Information Index
+### Step 1: Search Requirements
+
+**Files:** `docs/requirements/backend/business-requirements.md` · `docs/requirements/backend/technical-requirements.md`
+
+**Purpose:** Gather domain-specific context (entity fields, business rules, API contracts) relevant to your task — without reading content you don't need.
+
+**Decision flow:**
+
+1. **Search** `business-requirements.md` using keywords from your task (entity name, domain, operation type).
+2. Evaluate the results:
+   - **Matches found** → Read only the matching sections. Then **search** `technical-requirements.md` for related keywords and read only the matching sections.
+   - **No matches found** → Skip both requirement files entirely. Proceed directly to Step 2.
+3. Do not read entire requirement files unless every section is directly relevant to your task.
+
+---
+
+### Step 2: Read the Information Index
 
 **File:** `docs/project/backend/source/information/information-index.md`
 
@@ -69,17 +87,7 @@ This determines which documentation files you must read.
 - Understand the overall documentation structure and navigation map
 - Identify which cross-cutting files are relevant to your task
 
-**Action:** Read the entire index file completely before moving to the next step.
-
----
-
-### Step 2: Read Cross-Cutting Information
-
-**Index:** `docs/project/backend/source/information/information-index.md`
-
-The index references all cross-cutting documents (architecture, tech stack, DDD, event-driven design, naming conventions, coding style, reference flow). Follow every reference the index contains and read those files in full — they apply to all layers.
-
-**Action:** Read the information index, then read every file it references completely.
+**Action:** Read the entire index file. Then read only the cross-cutting files (architecture, DDD, coding style, tech stack) that your task requires.
 
 ---
 
@@ -91,13 +99,13 @@ The index references all cross-cutting documents (architecture, tech stack, DDD,
 - Get a navigation map of all layer-specific documentation
 - Confirm which sub-documents exist for each layer
 
-**Action:** Read the entire layer index file completely.
+**Action:** Read the entire layer index file. Confirm which layers your task touches before proceeding.
 
 ---
 
 ### Step 4: Read Layer-Specific Documentation
 
-Based on which layers your task touches, read the corresponding index file. **The index will reference every sub-document you must read — follow and read them all in full.**
+Based on which layers your task touches, read the corresponding index file. Then read only the sub-documents within that index that are relevant to your task — do not read sub-documents for operations or patterns your task does not involve.
 
 #### Core / Domain Layer - Library Layer
 **Index:** `docs/project/backend/source/layers/core/core-index.md`
@@ -111,7 +119,7 @@ Based on which layers your task touches, read the corresponding index file. **Th
 #### Adapter Layer / Rest API Layer
 **Index:** `docs/project/backend/source/layers/adapter/adapter-index.md`
 
-**Action:** For each layer your task touches, read its index first. Then follow every sub-document reference the index contains and read those in full — do not skip any.
+**Action:** For each layer your task touches, read its index first. Then read only the sub-documents that cover patterns directly used by your task.
 
 ---
 

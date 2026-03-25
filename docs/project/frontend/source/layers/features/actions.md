@@ -17,15 +17,15 @@ Server Actions are the frontend's command handlers — the direct analogy of the
 ## Pattern
 
 ```typescript
-// features/tasks/actions/task.actions.ts
+// features/{domain}/actions/{domain}.actions.ts
 "use server";
 
 import { revalidatePath } from "next/cache";
 
-export async function createTaskAction(formData: FormData): Promise<void> {
-    const title = formData.get("title") as string;
+export async function create{Entity}Action(formData: FormData): Promise<void> {
+    const name = formData.get("name") as string;
     // call backend via httpClient or service
-    revalidatePath("/tasks");
+    revalidatePath("/{domain}");
 }
 ```
 

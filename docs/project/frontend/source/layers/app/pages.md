@@ -7,14 +7,14 @@ Pages are thin wrappers. They receive route params, pass them to feature compone
 ## Collection Page Pattern
 
 ```typescript
-// app/tasks/page.tsx
-import { TaskList } from "@/features/tasks";
+// app/{domain}/page.tsx
+import { {Entity}List } from "@/features/{domain}";
 
-export default function TasksPage() {
+export default function {Entities}Page() {
     return (
         <main>
-            <h1>Tasks</h1>
-            <TaskList filter={{}} />
+            <h1>{Entities}</h1>
+            <{Entity}List filter={{}} />
         </main>
     );
 }
@@ -25,17 +25,17 @@ export default function TasksPage() {
 ## Detail Page Pattern
 
 ```typescript
-// app/tasks/[taskId]/page.tsx
-import { TaskDetail } from "@/features/tasks";
+// app/{domain}/[{entity}Id]/page.tsx
+import { {Entity}Detail } from "@/features/{domain}";
 
-type TaskDetailPageProps = {
-    params: { taskId: string };
+type {Entity}DetailPageProps = {
+    params: { {entity}Id: string };
 };
 
-export default function TaskDetailPage({ params }: TaskDetailPageProps) {
+export default function {Entity}DetailPage({ params }: {Entity}DetailPageProps) {
     return (
         <main>
-            <TaskDetail taskId={params.taskId} />
+            <{Entity}Detail {entity}Id={params.{entity}Id} />
         </main>
     );
 }

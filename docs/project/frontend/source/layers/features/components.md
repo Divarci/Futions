@@ -17,21 +17,21 @@ All components in `features/{domain}/components/` are **Client Components**. The
 ## Pattern
 
 ```typescript
-// features/tasks/components/TaskList.tsx
+// features/{domain}/components/{Entity}List.tsx
 "use client";
 
-import { useGetTasks } from "../hooks/useGetTasks";
-import { TaskCard }    from "./TaskCard";
+import { useGet{Entities} } from "../hooks/useGet{Entities}";
+import { {Entity}Card }    from "./{Entity}Card";
 import { Spinner }     from "@/core/components";
-import type { TaskFilterParams } from "../types/task.types";
+import type { {Entity}FilterParams } from "../types/{domain}.types";
 
-type TaskListProps = {
-    filter: TaskFilterParams;
+type {Entity}ListProps = {
+    filter: {Entity}FilterParams;
 };
 
-export function TaskList({ filter }: TaskListProps) {
+export function {Entity}List({ filter }: {Entity}ListProps) {
 
-    const { data, isLoading, error } = useGetTasks(filter);
+    const { data, isLoading, error } = useGet{Entities}(filter);
 
     if (isLoading)
         return <Spinner />;
@@ -41,8 +41,8 @@ export function TaskList({ filter }: TaskListProps) {
 
     return (
         <ul>
-            {data?.map(task => (
-                <TaskCard key={task.taskId} task={task} />
+            {data?.map({entity} => (
+                <{Entity}Card key={{entity}.{entity}Id} {entity}={{entity}} />
             ))}
         </ul>
     );

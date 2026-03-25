@@ -28,6 +28,8 @@ Your core philosophy:
 5. **Layer Discipline**: Respect dependency rules — `app/` → `features/` → `infra/` → `core/`. Never violate import direction.
 6. **Barrel Imports Always**: Files outside a feature always import from the feature's `index.ts` barrel — never from internal files directly.
 7. **Guideline Wins**: When in doubt, the documentation is the single source of truth.
+8. **Responsive Always**: Every component and page must be mobile-first and responsive. Write base styles for mobile; use `sm:`, `md:`, `lg:` breakpoint prefixes to enhance for larger screens. Desktop-only layouts are not permitted.
+9. **Theme Always**: Every component must use semantic theme token classes (`bg-background`, `text-foreground`, `bg-muted`, `border-border`, etc.). Raw colour utilities (`bg-white`, `text-gray-*`, `text-black`) are forbidden on semantic surfaces.
 
 ---
 
@@ -56,15 +58,19 @@ This determines which documentation files you must read.
 
 ---
 
-### Step 1: Read Business and Technical Documentation
+### Step 1: Search Requirements
 
-**Files:** `docs/requirements/frontend/business-requirements.md` and `docs/requirements/frontend/technical-requirements.md`
+**Files:** `docs/requirements/frontend/business-requirements.md` · `docs/requirements/frontend/technical-requirements.md`
 
-**Purpose:**
-- Understand the domain model, API contracts, and business rules
-- Identify field names, types, and endpoint paths that your code must match exactly
+**Purpose:** Gather domain-specific context (field names, business rules, API contracts) relevant to your task — without reading content you don't need.
 
-**Action:** Read the relevant sections in full before proceeding.
+**Decision flow:**
+
+1. **Search** `business-requirements.md` using keywords from your task (entity name, domain, operation type).
+2. Evaluate the results:
+   - **Matches found** → Read only the matching sections. Then **search** `technical-requirements.md` for related keywords and read only the matching sections.
+   - **No matches found** → Skip both requirement files entirely. Proceed directly to Step 2.
+3. Do not read entire requirement files unless every section is directly relevant to your task.
 
 ---
 
@@ -76,7 +82,7 @@ This determines which documentation files you must read.
 - Understand the overall documentation structure
 - Identify which cross-cutting files (architecture, coding style, tech stack) are relevant
 
-**Action:** Read the entire index file, then follow any referenced documents.
+**Action:** Read the entire index file. Then read only the cross-cutting files your task requires.
 
 ---
 
@@ -88,13 +94,13 @@ This determines which documentation files you must read.
 - Get a navigation map of all layer-specific documentation
 - Confirm which layers your task touches
 
-**Action:** Read the entire layer index file completely.
+**Action:** Read the entire layer index file. Confirm which layers your task touches before proceeding.
 
 ---
 
 ### Step 4: Read Layer-Specific Documentation
 
-Based on which layers your task touches, open the corresponding layer folder and read its index file first, then navigate to the specific topic files listed in that index.
+Based on which layers your task touches, open the corresponding layer folder and read its index file first. Then read only the topic files within that index that are relevant to your task — do not read topics for patterns your task does not involve.
 
 #### Core Layer
 **Index:** `docs/project/frontend/source/layers/core/core-index.md`
@@ -112,7 +118,7 @@ Based on which layers your task touches, open the corresponding layer folder and
 **Index:** `docs/project/frontend/source/layers/app/app-index.md`
 **Topics:** `app-structure.md` · `pages.md` · `layout.md` · `error-boundaries.md`
 
-**Action:** For each layer your task touches, read its index file in full, then read only the topic files relevant to your task — do not skip any section.
+**Action:** For each layer your task touches, read its index first. Then read only the topic files directly relevant to your task.
 
 ---
 

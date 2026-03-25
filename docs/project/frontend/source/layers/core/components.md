@@ -18,7 +18,8 @@ core/components/
 ## Rules
 
 - Accepts only generic props — no `TaskViewModel`, no domain types.
-- Styled with Tailwind CSS.
+- Styled with Tailwind CSS using **semantic theme token classes** (`bg-background`, `text-foreground`, `border-border`, etc.) — never raw colour utilities (`bg-white`, `text-gray-*`).
+- **Mobile-first responsive**: base styles target mobile; use `sm:`, `md:`, `lg:` prefixes to enhance for larger screens.
 - One component per folder.
 - Each folder contains the implementation file and its `Props` type file.
 
@@ -26,4 +27,4 @@ core/components/
 
 ## Examples
 
-`Button`, `Input`, `Modal`, `Spinner`, `Badge`, `ErrorMessage`
+`Button`, `Input`, `Modal`, `Spinner`, `Badge`, `ErrorMessage`, `ThemeToggle`

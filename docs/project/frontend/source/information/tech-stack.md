@@ -20,11 +20,12 @@
 
 ---
 
-## Styling
+## Styling & Theming
 
 | Technology | Layer |
 |---|---|
 | **Tailwind CSS** | `core/`, `features/`, `app/` |
+| **next-themes** | `app/` (provider), `core/` (ThemeToggle) |
 
 ---
 
