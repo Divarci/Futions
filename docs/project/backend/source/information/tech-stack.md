@@ -7,7 +7,7 @@
 | Technology | Project |
 |---|---|
 | **.NET** | All projects |
-| **C#** | All projects |
+| **C#** | C# 14 (projects target `net10.0`; set `LangVersion` to `latest` in project files to enable newer language features) |
 
 ---
 

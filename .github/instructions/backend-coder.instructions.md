@@ -163,12 +163,9 @@ After implementation, verify the project compiles without errors.
 
 After a clean build, perform a final compliance review against all documentation:
 
-1. **Core / Library**: Abstractions, contracts, result pattern usage — all match documented patterns?
-2. **Core / Domain**: Entity structure, value object immutability, domain event usage — all match documented patterns?
-3. **Application / Service Layer**: Service structure, Result pattern usage, service interface contracts — all match?
-4. **Application / Use Case Layer**: Use case structure, workflow orchestration, Result pattern usage — all match?
-5. **Infrastructure / Persistence Layer**: Repository implementation, persistence configurations — all match?
-6. **Adapter / Rest API Layer**: Endpoint registration, mapper correctness, request/response model completeness — all match?
-7. **Architecture**: No layer dependency violations present?
-8. **Naming & Coding Style**: All naming conventions and coding style rules respected?
+1. **Core Layer - Index:** `docs/project/backend/source/layers/core/core-index.md`
+2. **Infrastructure Layer - Index:** `docs/project/backend/source/layers/infrastructure/infrastructure-index.md`
+3. **Application Layer - Index:** `docs/project/backend/source/layers/application/application-index.md`
+4. **Adapter Layer - Index:** `docs/project/backend/source/layers/adapter/adapter-index.md`
+5. **Information:** `docs/project/backend/source/information/information-index.md`
 **Do not report the task as done until the build succeeds and this full compliance checklist is satisfied.**
