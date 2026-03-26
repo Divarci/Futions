@@ -128,3 +128,30 @@ No match found?
 3. **Never invent routing.** If the request does not clearly match an active coder, ask the user to clarify instead of guessing.
 4. **Sequential multi-coder tasks.** Complete all work under Coder A before switching to Coder B.
 5. **This file contains zero implementation rules.** If you find yourself looking here for code patterns, stop — you are in the wrong file.
+
+---
+
+## Skills
+
+Skills are self-contained workflow prompt files. When a user invokes a skill command, load its file and follow it exactly as the complete operating procedure for that session.
+
+### `/Feature` — Full Backend Feature Pipeline
+
+| Field | Value |
+|---|---|
+| **File** | `.github/prompts/Feature.prompt.md` |
+| **Trigger** | `/Feature` in Copilot Chat (Agent Mode) |
+| **Scope** | Complete backend feature — from requirements to final build |
+
+**What it does (in order):**
+1. Asks for the **Use Case ID** (e.g. `UC-01`)
+2. Reads the matching section from `business-requirements.md` and `technical-requirements.md`
+3. Delegates implementation to **Backend Coder** — all layers, entity → controller
+4. Runs **`dotnet build`** — must be clean before continuing
+5. Creates the **Bruno collection** entries for all new endpoints
+6. Delegates **domain unit tests** to **Backend Testing Coder** — runs and must be green
+7. Delegates **service unit tests** to **Backend Testing Coder** — runs and must be green
+8. Performs a full **compliance review** against all layer documentation
+9. Runs final **`dotnet build` + `dotnet test`** — both must be clean
+
+**Invoke when the user wants to implement a single backend use case end-to-end.**

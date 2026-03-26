@@ -15,6 +15,7 @@ HTTP API surface: routing, controllers, request/response models, and mappers.
 | [Structure](rest-api/api-structure.md) | Full folder tree of `Adapter.RestApi`, two-variant controller layout (flat vs nested), and critical structure rules |
 | [AspNetCore Internals](rest-api/asp-net-core.md) | Every file and folder under `AspNetCore/` — filters, authentication helpers, versioning, and extension methods |
 | [Endpoint Pattern](rest-api/endpoint-pattern.md) | Complete copy-ready pattern for a controller, request, response, and mapper with all critical rules |
+| [Bruno Collection](rest-api/bruno.md) | Standards for the Bruno API collection — structure, request templates, variable scoping, and maintenance rules |
 
 ---
 
