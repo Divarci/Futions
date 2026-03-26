@@ -22,6 +22,7 @@ services:
       Authentication__TokenValidationParameters__ClockSkew: "00:00:00"
       Authentication__TokenValidationParameters__ValidIssuers__0: ${AUTH_VALID_ISSUER_0}
       Authentication__TokenValidationParameters__ValidIssuers__1: ${AUTH_VALID_ISSUER_1}
+      Cors__AllowedOrigins__0: ${CORS_ALLOWED_ORIGIN_0}
     depends_on:
       - redis
     ports:

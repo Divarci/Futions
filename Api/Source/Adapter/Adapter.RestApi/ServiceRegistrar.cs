@@ -9,16 +9,38 @@ namespace Adapter.RestApi;
 
 public static class ServiceRegistrar
 {
-    public static IServiceCollection RegisterRestApiLayer(this IServiceCollection services)
+    private const string CorsPolicyName = "FrontendPolicy";
+
+    public static IServiceCollection RegisterRestApiLayer(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddControllers(options => options.Filters.Add<ValidationFilter>());
         services.Configure<ApiBehaviorOptions>(options => options.SuppressModelStateInvalidFilter = true);
         services.AddOpenApi();
+        services.AddCorsInternal(configuration);
         services.AddExceptionHandler<GlobalExceptionHandler>();
         services.AddProblemDetails();
         services.AddApiVersioning();
         services.AddAuthenticationInternal();
         services.AddRateLimiting();
+
+        return services;
+    }
+
+    private static IServiceCollection AddCorsInternal(
+        this IServiceCollection services,
+        IConfiguration configuration)
+    {
+        string[] allowedOrigins = configuration
+            .GetSection("Cors:AllowedOrigins")
+            .Get<string[]>() ?? [];
+
+        services.AddCors(options =>
+            options.AddPolicy(CorsPolicyName, policy =>
+                policy
+                    .WithOrigins(allowedOrigins)
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials()));
 
         return services;
     }

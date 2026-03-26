@@ -13,6 +13,7 @@ services:
       Authentication__RequireHttpsMetadata: "false"
       Authentication__TokenValidationParameters__ValidIssuers__0: http://localhost:18080/realms/Futions
       Authentication__TokenValidationParameters__ValidIssuers__1: http://host.docker.internal:18080/realms/Futions
+      Cors__AllowedOrigins__0: http://localhost:3000
     depends_on:
       - sqlserver  
       - redis

@@ -8,7 +8,7 @@ using Serilog;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services
-    .RegisterRestApiLayer()
+    .RegisterRestApiLayer(builder.Configuration)
     .RegisterUseCaseLayer()
     .RegisterServiceLayer()
     .RegisterCachingLayer(builder.Configuration)
@@ -29,6 +29,8 @@ app.UseSerilogRequestLogging();
 app.UseExceptionHandler();
 
 app.UseRateLimiter();
+
+app.UseCors("FrontendPolicy");
 
 app.UseHttpsRedirection();
 
