@@ -118,9 +118,13 @@
     <None Include="docs\project\frontend\source\layers\infra\infra-index.md" />
     <None Include="docs\project\frontend\source\layers\infra\infra-structure.md" />
     <None Include="docs\project\frontend\source\layers\layer-index.md" />
+    <None Include="docs\requirements\backend\business-requirements.md" />
     <None Include="docs\requirements\backend\business-requirements.template.md" />
+    <None Include="docs\requirements\backend\technical-requirements.md" />
     <None Include="docs\requirements\backend\technical-requirements.template.md" />
+    <None Include="docs\requirements\frontend\business-requirements.md" />
     <None Include="docs\requirements\frontend\business-requirements.template.md" />
+    <None Include="docs\requirements\frontend\technical-requirements.md" />
     <None Include="docs\requirements\frontend\technical-requirements.template.md" />
     <None Include="todo.txt" />
     <None Include="Web\global.json" />
