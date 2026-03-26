@@ -17,7 +17,10 @@
     <Project Path="Api/Source/Infrastructure/Infra.Caching/Infra.Caching.csproj" />
     <Project Path="Api/Source/Infrastructure/Infra.Persistence/Infra.Persistence.csproj" />
   </Folder>
-  <Folder Name="/Api/Tests/" />
+  <Folder Name="/Api/Tests/">
+    <Project Path="Api/Tests/App.Services.Tests/App.Services.Tests.csproj" />
+    <Project Path="Api/Tests/Core.Domain.Tests/Core.Domain.Tests.csproj" />
+  </Folder>
   <Folder Name="/Web/">
     <Project Path="Web/Futions.Web.esproj">
       <Build />
