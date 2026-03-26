@@ -1,2 +1,3 @@
-- sink
-- fail error details
+-architectural tests
+-integration tests
+-frontend tree update
