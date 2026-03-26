@@ -11,13 +11,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Controllers\VersionOne\Organisations\CompanyPeople\**" />
-    <Content Remove="Controllers\VersionOne\Organisations\CompanyPeople\**" />
-    <EmbeddedResource Remove="Controllers\VersionOne\Organisations\CompanyPeople\**" />
-    <None Remove="Controllers\VersionOne\Organisations\CompanyPeople\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Asp.Versioning.Mvc" Version="8.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.5" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.5" />
@@ -35,6 +28,10 @@
     <ProjectReference Include="..\..\Application\App.UseCases\App.UseCases.csproj" />
     <ProjectReference Include="..\..\Infrastructure\Infra.Caching\Infra.Caching.csproj" />
     <ProjectReference Include="..\..\Infrastructure\Infra.Persistence\Infra.Persistence.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controllers\VersionOne\" />
   </ItemGroup>
 
 </Project>

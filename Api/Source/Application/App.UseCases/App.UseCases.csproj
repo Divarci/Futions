@@ -7,11 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Scheduling\DomainEvents\Organisations\Products\**" />
     <Compile Remove="Scheduling\DomainEvents\System\**" />
-    <EmbeddedResource Remove="Scheduling\DomainEvents\Organisations\Products\**" />
     <EmbeddedResource Remove="Scheduling\DomainEvents\System\**" />
-    <None Remove="Scheduling\DomainEvents\Organisations\Products\**" />
     <None Remove="Scheduling\DomainEvents\System\**" />
   </ItemGroup>
 
