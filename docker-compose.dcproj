@@ -121,6 +121,7 @@
     <None Include="docs\source\business\business-requirements.md" />
     <None Include="docs\source\technical\technical-requirements.md" />
     <None Include="todo.txt" />
+    <None Include="Web\global.json" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="docs\project\backend\source\layers\infrastructure\caching\" />

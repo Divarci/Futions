@@ -18,7 +18,12 @@
     <Project Path="Api/Source/Infrastructure/Infra.Persistence/Infra.Persistence.csproj" />
   </Folder>
   <Folder Name="/Api/Tests/" />
-  <Folder Name="/Web/" />
+  <Folder Name="/Web/">
+    <Project Path="Web/Futions.Web.esproj">
+      <Build />
+      <Deploy />
+    </Project>
+  </Folder>
   <Project Path="docker-compose.dcproj">
     <Build />
   </Project>
