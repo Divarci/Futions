@@ -118,14 +118,14 @@
     <None Include="docs\project\frontend\source\layers\infra\infra-index.md" />
     <None Include="docs\project\frontend\source\layers\infra\infra-structure.md" />
     <None Include="docs\project\frontend\source\layers\layer-index.md" />
-    <None Include="docs\source\business\business-requirements.md" />
-    <None Include="docs\source\technical\technical-requirements.md" />
+    <None Include="docs\requirements\backend\business-requirements.template.md" />
+    <None Include="docs\requirements\backend\technical-requirements.template.md" />
+    <None Include="docs\requirements\frontend\business-requirements.template.md" />
+    <None Include="docs\requirements\frontend\technical-requirements.template.md" />
     <None Include="todo.txt" />
     <None Include="Web\global.json" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="docs\project\backend\source\layers\infrastructure\caching\" />
-    <Folder Include="docs\Source\Business\" />
-    <Folder Include="docs\Source\Technical\" />
   </ItemGroup>
 </Project>
