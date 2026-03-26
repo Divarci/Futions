@@ -45,6 +45,22 @@ services:
     networks:
       - futions-network
 
+  frontend:
+    build:
+        context: ./Web
+        dockerfile: Dockerfile
+    image: ${DOCKER_REGISTRY-}futionsweb
+    container_name: Futions-Web
+    environment:
+      NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL}
+    depends_on:
+      - backend
+    ports:
+      - "${WEB_PORT}:3000"
+    restart: unless-stopped
+    networks:
+      - futions-network
+
   redis:
     image: redis:latest
     container_name: Futions-Redis

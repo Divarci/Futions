@@ -4,7 +4,8 @@
       "commandName": "DockerCompose",
       "commandVersion": "1.0",
       "serviceActions": {
-        "adapter.restapi": "StartDebugging"
+        "adapter.restapi": "StartDebugging",
+        "frontend": "StartWithoutDebugging"
       }
     }
   }
