@@ -29,6 +29,14 @@
 
 ---
 
+## Authentication
+
+| Technology | Layer |
+|---|---|
+| **NextAuth.js** (`next-auth`) | `app/` (middleware, auth route handler) |
+
+---
+
 ## Server State Management
 
 | Technology | Layer |

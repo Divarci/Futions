@@ -30,8 +30,19 @@ Use this index to navigate directly to the topic you need.
 
 ---
 
+## Authentication
+
+| Document | What it covers |
+|---|---|
+| [Auth Provider](../app/auth-provider.md) | Current identity provider config — env vars, token flow, provider swap guide |
+
+The `infra/auth/` module owns the NextAuth options (`authOptions`) and module augmentation. It is consumed by the route handler in `app/(public)/api/auth/[...nextauth]/route.ts`.
+
+---
+
 ## Guidelines
 
 - Read **Structure** before adding or moving any file in `infra/`.
 - Read **HTTP Client** before touching `http/http-client.ts` — the Axios instance is a singleton.
 - Read **API Functions** before implementing a new domain API file.
+- To change the identity provider, read **Auth Provider** first — only `infra/auth/auth.config.ts` needs to change.

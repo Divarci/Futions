@@ -1,6 +1,6 @@
 # App Layer — Index
 
-The App layer is the outermost layer of the frontend. It owns all routing, page rendering, and layout concerns. All data flows through `features/` hooks — no direct API calls. This layer maps directly to the Next.js App Router file-system conventions.
+The App layer is the outermost layer of the frontend. It owns all routing, page rendering, layout concerns, and authentication enforcement. All data flows through `features/` hooks — no direct API calls. This layer maps directly to the Next.js App Router file-system conventions.
 
 Use this index to navigate directly to the topic you need.
 
@@ -10,7 +10,7 @@ Use this index to navigate directly to the topic you need.
 
 | Document | What it covers |
 |---|---|
-| [Structure](app-structure.md) | Full folder tree with scale points and critical rules |
+| [Structure](app-structure.md) | Full folder tree with route groups, middleware, auth route, and critical rules |
 
 ---
 
@@ -31,9 +31,20 @@ Use this index to navigate directly to the topic you need.
 
 ---
 
+## Authentication & Middleware
+
+| Document | What it covers |
+|---|---|
+| [Middleware](middleware.md) | JWT-based authentication guard — token validation, redirect rules, header injection |
+| [Auth Provider](auth-provider.md) | Current identity provider config (Keycloak) — env vars, token flow, and provider swap guide |
+
+---
+
 ## Guidelines
 
 - Read **Structure** before adding any new route segment or file.
 - Read **Pages** before implementing any new page component.
+- Read **Middleware** before touching `middleware.ts` or the auth route handler.
 - `app/` must never import from `infra/` — always go through `features/`.
 - `export default` is required for page and layout files (Next.js convention).
+- All new domain pages go inside `(protected)/` — never at the `app/` root.

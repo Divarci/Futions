@@ -4,4 +4,7 @@
     <JavaScriptTestFramework>None</JavaScriptTestFramework>
     <ShouldRunBuildScript>false</ShouldRunBuildScript>
   </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="src\app\%28public%29\api\auth\" />
+  </ItemGroup>
 </Project>

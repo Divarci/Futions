@@ -12,10 +12,14 @@ src/
     ├── http/
     │   ├── http-client.ts           ← Axios instance, base URL, interceptors
     │   └── index.ts
+    ├── auth/
+    │   ├── auth.config.ts           ← NextAuth options (provider, callbacks, refresh logic)
+    │   ├── auth.types.ts            ← NextAuth module augmentation (Session, JWT)
+    │   └── index.ts
     ├── {domain}/                    ← one folder per domain
     │   ├── {domain}.api.ts          ← raw API functions for one domain
     │   └── index.ts
-    └── index.ts                     ← barrel: re-exports all domain API modules
+    └── index.ts                     ← barrel: re-exports all modules
 ```
 
 **Example:**
@@ -24,6 +28,10 @@ src/
 infra/
 ├── http/
 │   └── http-client.ts
+├── auth/
+│   ├── auth.config.ts
+│   ├── auth.types.ts
+│   └── index.ts
 ├── tasks/
 │   ├── task.api.ts
 │   └── index.ts
@@ -31,6 +39,8 @@ infra/
     ├── tag.api.ts
     └── index.ts                     ← new domain folders go here (sibling of tasks/)
 ```
+
+> `auth/` is a fixed infrastructure module — not a domain API module. Do not apply the `{domain}.api.ts` pattern to it. See [Auth Provider](../app/auth-provider.md) for configuration details.
 
 ---
 
