@@ -174,3 +174,49 @@ After a clean build, perform a final compliance review:
 8. **Naming & Coding Style**: All naming conventions and coding style rules respected?
 
 **Do not report the task as done until the build succeeds and this full compliance checklist is satisfied.**
+
+---
+
+## Design Work — When and How to Read Designer Docs
+
+Designer documentation is **only read when a task involves visual or design decisions**. Do not read it for purely structural tasks (wiring hooks, writing API functions, adding types).
+
+### When to Read
+
+Read the designer docs when the task requires any of the following:
+- Creating a new primitive component in `core/components/`
+- Creating a new feature component in `features/{domain}/components/`
+- Creating or updating a page layout in `app/(protected)/`
+- Adjusting colors, tokens, or the theme system (`globals.css`, `tailwind.config.ts`)
+- Designing a new page template, navigation structure, or UI pattern
+
+### When NOT to Read
+
+Do **not** read designer docs for:
+- Adding a new SWR hook
+- Adding a new API function in `infra/`
+- Adding or updating TypeScript types
+- Adding utility functions in `core/utils/`
+- Wiring existing components together in a page without visual changes
+
+### How to Read
+
+**Index file:** `docs/project/frontend/designer/designer-index.md`
+
+1. Open the index — it contains a routing table showing which topic file to read for each concern.
+2. Read **workflow.md** first — it gives the full design process and pre-delivery checklist.
+3. Then read only the topic files relevant to your task — do not read all files for every design task.
+
+**Topic files:**
+
+| Topic | File | Read when |
+|---|---|---|
+| Workflow & Checklist | `workflow.md` | Always — start here for any design task |
+| Prompt Analysis | `prompt-analysis.md` | Establishing a new visual direction from a description |
+| Theme System | `theme.md` | Creating or adjusting colors, dark/light tokens |
+| Responsive Design | `responsive.md` | Designing layouts or adapting for screen sizes |
+| Typography | `typography.md` | Choosing fonts, sizes, line heights |
+| Spacing & Sizing | `spacing.md` | Padding, margins, radius, shadows |
+| Component Library | `components.md` | Designing or referencing Button, Card, Input, Modal, etc. |
+| Motion & Animation | `motion.md` | Adding transitions or animations |
+| Accessibility | `accessibility.md` | Contrast check, ARIA, focus styles, touch targets |
