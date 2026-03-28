@@ -89,6 +89,20 @@ Each entry defines **when** to engage the coder and **where** to find its rules.
 
 ---
 
+### 5. Design Decisions Coder
+| Field | Value |
+|---|---|
+| **File** | `.github/instructions/design-decisions-coder.instructions.md` |
+| **Role** | Design Decisions Recorder |
+| **Status** | Active |
+
+**Engage when the request involves:**
+- Creating `docs/project/frontend/source/information/design-decisions.md` for the first time
+- Updating design decisions after a design change (token values, typography, spacing, motion, etc.)
+- Recording or refreshing the project's concrete design state from the designer docs + implementation files
+
+---
+
 ## Request Routing Logic
 
 Use this decision flow to determine which coder(s) to engage:
@@ -111,6 +125,9 @@ Does the request cover BOTH backend implementation AND backend tests?
 
 Does the request cover BOTH frontend implementation AND frontend tests?
   → YES → Frontend Coder first, then Frontend Testing Coder
+
+Is the request about recording or updating design decisions?
+  → YES → Design Decisions Coder
 
 Does the request cover BOTH backend AND frontend?
   → YES → Backend Coder first, then Frontend Coder

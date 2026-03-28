@@ -201,9 +201,15 @@ Do **not** read designer docs for:
 
 ### How to Read
 
-**Index file:** `docs/project/frontend/designer/designer-index.md`
+**Step 1 — Read the design decisions first:**
+`docs/project/frontend/source/information/design-decisions.md`
 
-1. Open the index — it contains a routing table showing which topic file to read for each concern.
+This file contains the concrete decisions already established for this project — exact token values, typography choices, spacing scale, motion intensity, component defaults. Read it before opening any designer topic files. It tells you what has already been decided; the designer topic files tell you the rules for making new decisions.
+
+**Step 2 — Open the designer index for process and rules:**
+`docs/project/frontend/designer/designer-index.md`
+
+1. The index contains a routing table showing which topic file to read for each concern.
 2. Read **workflow.md** first — it gives the full design process and pre-delivery checklist.
 3. Then read only the topic files relevant to your task — do not read all files for every design task.
 
